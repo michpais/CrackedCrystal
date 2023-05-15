@@ -211,7 +211,7 @@ ButterfreeEvosAttacks:
 	db 14, SLEEP_POWDER
 	db 16, GUST
 	db 18, SUPERSONIC
-	db 22, WHIRLWIND
+	db 22, AERIAL_ACE
 	db 24, PSYBEAM
 	db 28, AIR_SLASH
 	db 36, SAFEGUARD
@@ -238,7 +238,7 @@ BeedrillEvosAttacks:
 	db 1, FURY_ATTACK
 	db 10, FURY_ATTACK
 	db 13, FOCUS_ENERGY
-	db 16, TWINEEDLE
+	db 16, ACID
 	db 19, RAGE
 	db 22, PURSUIT
 	db 25, TOXIC
@@ -259,7 +259,7 @@ PidgeyEvosAttacks:
 	db 17, WING_ATTACK
 	db 21, TWISTER
 	db 29, AGILITY
-	db 33, WHIRLWIND
+	db 33, AERIAL_ACE
 	db 37, ROOST
 	db 41, MIRROR_MOVE
 	db 45, AIR_SLASH
@@ -277,7 +277,7 @@ PidgeottoEvosAttacks:
 	db 17, WING_ATTACK
 	db 22, TWISTER
 	db 32, AGILITY
-	db 37, WHIRLWIND
+	db 37, AERIAL_ACE
 	db 42, ROOST
 	db 47, MIRROR_MOVE
 	db 57, AIR_SLASH
@@ -294,7 +294,7 @@ PidgeotEvosAttacks:
 	db 17, WING_ATTACK
 	db 22, TWISTER
 	db 32, AGILITY
-	db 38, WHIRLWIND
+	db 38, AERIAL_ACE
 	db 44, ROOST
 	db 56, MIRROR_MOVE
 	db 62, AIR_SLASH
