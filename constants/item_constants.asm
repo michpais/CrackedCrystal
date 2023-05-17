@@ -142,32 +142,21 @@
 	const PASS         ; 86
 	const ITEM_87      ; 87
 	const ITEM_88      ; 88
-	const ITEM_89      ; 89
 	const CHARCOAL     ; 8a
 	const BERRY_JUICE  ; 8b
 	const SCOPE_LENS   ; 8c
-	const ITEM_8D      ; 8d
-	const ITEM_8E      ; 8e
 	const METAL_COAT   ; 8f
 	const DRAGON_FANG  ; 90
-	const ITEM_91      ; 91
 	const LEFTOVERS    ; 92
-	const ITEM_93      ; 93
-	const ITEM_94      ; 94
-	const ITEM_95      ; 95
 	const MYSTERYBERRY ; 96
 	const DRAGON_SCALE ; 97
 	const BERSERK_GENE ; 98
-	const ITEM_99      ; 99
-	const ITEM_9A      ; 9a
-	const ITEM_9B      ; 9b
 	const SACRED_ASH   ; 9c
 	const HEAVY_BALL   ; 9d
 	const FLOWER_MAIL  ; 9e
 	const LEVEL_BALL   ; 9f
 	const LURE_BALL    ; a0
 	const FAST_BALL    ; a1
-	const ITEM_A2      ; a2
 	const LIGHT_BALL   ; a3
 	const FRIEND_BALL  ; a4
 	const MOON_BALL    ; a5
@@ -176,15 +165,12 @@
 	const GORGEOUS_BOX ; a8
 	const SUN_STONE    ; a9
 	const POLKADOT_BOW ; aa
-	const ITEM_AB      ; ab
 	const UP_GRADE     ; ac
 	const BERRY        ; ad
 	const GOLD_BERRY   ; ae
 	const SQUIRTBOTTLE ; af
-	const ITEM_B0      ; b0
 	const PARK_BALL    ; b1
 	const RAINBOW_WING ; b2
-	const ITEM_B3      ; b3
 	const BRICK_PIECE  ; b4
 	const SURF_MAIL    ; b5
 	const LITEBLUEMAIL ; b6
@@ -195,7 +181,6 @@
 	const BLUESKY_MAIL ; bb
 	const MUSIC_MAIL   ; bc
 	const MIRAGE_MAIL  ; bd
-	const ITEM_BE      ; be
 DEF NUM_ITEMS EQU const_value - 1
 
 DEF __tmhm_value__ = 1
@@ -226,14 +211,14 @@ DEF TM01 EQU const_value
 	add_tm TOXIC        ; c5
 	add_tm ZAP_CANNON   ; c6
 	add_tm ROCK_SMASH   ; c7
-	add_tm PSYCH_UP     ; c8
+	add_tm BULK_UP      ; c8
 	add_tm HIDDEN_POWER ; c9
 	add_tm SUNNY_DAY    ; ca
-	add_tm SWEET_SCENT  ; cb
-	add_tm SNORE        ; cc
+	add_tm SNORE        ; cb
+	add_tm ICE_BEAM     ; cc
 	add_tm BLIZZARD     ; cd
 	add_tm HYPER_BEAM   ; ce
-	add_tm ICY_WIND     ; cf
+	add_tm AVALANCHE     ; cf
 	add_tm PROTECT      ; d0
 	add_tm RAIN_DANCE   ; d1
 	add_tm GIGA_DRAIN   ; d2
@@ -258,7 +243,7 @@ DEF TM01 EQU const_value
 	add_tm SANDSTORM    ; e5
 	add_tm FIRE_BLAST   ; e6
 	add_tm SWIFT        ; e7
-	add_tm DEFENSE_CURL ; e8
+	add_tm GIGA_IMPACT  ; e8
 	add_tm THUNDERPUNCH ; e9
 	add_tm DREAM_EATER  ; ea
 	add_tm DETECT       ; eb
@@ -268,7 +253,27 @@ DEF TM01 EQU const_value
 	add_tm STEEL_WING   ; ef
 	add_tm FIRE_PUNCH   ; f0
 	add_tm FURY_CUTTER  ; f1
-	add_tm NIGHTMARE    ; f2
+	add_tm SNARL        ; f2
+	add_tm ZEN_HEADBUTT ; 89
+	add_tm EARTH_POWER  ; 8d
+	add_tm DRAGON_CLAW  ; 8e
+	add_tm DARK_PULSE   ; 91
+	add_tm FLASH_CANNON ; 93
+	add_tm DRAGON_PULSE ; 94
+	add_tm AERIAL_ACE   ; 95
+	add_tm SHADOW_CLAW  ; 99
+	add_tm HEX          ; 9a
+	add_tm FOCUS_BLAST  ; 9b
+	add_tm PAYBACK      ; a2
+	add_tm SHOCK_WAVE   ; ab
+	add_tm HAIL         ; b0
+	add_tm WATER_PULSE  ; b3
+	add_tm MOONBLAST    ; be
+	add_tm DRAIN_KISS   ; dummy2
+	add_tm FLAMETHROWER ; dummy3
+	add_tm THUNDERBOLT  ; dummy4
+	add_tm LIGHT_SCREEN ; dummy5
+	add_tm REFLECT      ; dummy6
 DEF NUM_TMS EQU __tmhm_value__ - 1
 
 MACRO add_hm
