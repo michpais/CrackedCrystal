@@ -92,6 +92,7 @@ DEF BATTLEANIM_BASE_TILE EQU 7 * 7  ; Maximum size of a pokemon picture
 	const ANIM_OBJ_CUT_LONG_DOWN_RIGHT
 	const ANIM_OBJ_SOLAR_BEAM_CHARGE
 	const ANIM_OBJ_ABSORB_CENTER
+	const ANIM_OBJ_DRAIN_KISS_CENTER
 	const ANIM_OBJ_GUST
 	const ANIM_OBJ_VINE_WHIP1
 	const ANIM_OBJ_VINE_WHIP2
@@ -100,6 +101,7 @@ DEF BATTLEANIM_BASE_TILE EQU 7 * 7  ; Maximum size of a pokemon picture
 	const ANIM_OBJ_SONICBOOM_JP
 	const ANIM_OBJ_WARP
 	const ANIM_OBJ_ABSORB
+	const ANIM_OBJ_DRAIN_KISS
 	const ANIM_OBJ_EGG
 	const ANIM_OBJ_FOCUS
 	const ANIM_OBJ_BIND1
@@ -170,7 +172,7 @@ DEF BATTLEANIM_BASE_TILE EQU 7 * 7  ; Maximum size of a pokemon picture
 	const ANIM_OBJ_SAFEGUARD
 	const ANIM_OBJ_PROTECT
 	const ANIM_OBJ_THIEF
-	const ANIM_OBJ_OCTAZOOKA
+	const ANIM_OBJ_MUDSHOT
 	const ANIM_OBJ_PRESENT
 	const ANIM_OBJ_SPIKES
 	const ANIM_OBJ_POWDER_SNOW
@@ -179,7 +181,7 @@ DEF BATTLEANIM_BASE_TILE EQU 7 * 7  ; Maximum size of a pokemon picture
 	const ANIM_OBJ_SPIDER_WEB
 	const ANIM_OBJ_CAKE_UNUSED
 	const ANIM_OBJ_NIGHTMARE
-	const ANIM_OBJ_IN_NIGHTMARE
+	const ANIM_OBJ_WILL_O_WISP
 	const ANIM_OBJ_LOVELY_KISS
 	const ANIM_OBJ_SWEET_KISS
 	const ANIM_OBJ_SKETCH
@@ -218,6 +220,7 @@ DEF BATTLEANIM_BASE_TILE EQU 7 * 7  ; Maximum size of a pokemon picture
 	const ANIM_OBJ_PLAYERHEAD_1ROW
 	const ANIM_OBJ_ENEMYFEET_2ROW
 	const ANIM_OBJ_PLAYERHEAD_2ROW
+	const ANIM_OBJ_DRAGON_DANCE
 DEF NUM_ANIM_OBJS EQU const_value
 
 ; DoBattleAnimFrame arguments (see engine/battle_anims/functions.asm)

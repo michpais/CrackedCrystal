@@ -101,7 +101,7 @@ Moves:
 	move THUNDERBOLT,  EFFECT_PARALYZE_HIT,       95, ELECTRIC,     100, 15,  10
 	move THUNDER_WAVE, EFFECT_PARALYZE,            0, ELECTRIC,     100, 20,   0
 	move THUNDER,      EFFECT_THUNDER,           120, ELECTRIC,      70, 10,  30
-	move ROCK_THROW,   EFFECT_NORMAL_HIT,         50, ROCK,          90, 15,   0
+	move ROCK_THROW,   EFFECT_NORMAL_HIT,         50, ROCK,         100, 15,   0
 	move EARTHQUAKE,   EFFECT_EARTHQUAKE,        100, GROUND,       100, 10,   0
 	move ROCK_BLAST,   EFFECT_MULTI_HIT,          25, ROCK,          90, 10,   0
 	move DIG,          EFFECT_FLY,                60, GROUND,       100, 10,   0
@@ -175,7 +175,7 @@ Moves:
 	move AQUA_TAIL,    EFFECT_NORMAL_HIT,         90, WATER,         90, 10,   0
 	move CONVERSION,   EFFECT_CONVERSION,          0, NORMAL,       100, 30,   0
 	move TRI_ATTACK,   EFFECT_TRI_ATTACK,         80, NORMAL,       100, 10,  20
-	move SUPER_FANG,   EFFECT_SUPER_FANG,          1, NORMAL,        90, 10,   0
+	move AQUA_JET,     EFFECT_PRIORITY_HIT,       40, WATER,        100, 20,   0
 	move SLASH,        EFFECT_NORMAL_HIT,         70, NORMAL,       100, 20,   0
 	move SUBSTITUTE,   EFFECT_SUBSTITUTE,          0, NORMAL,       100, 10,   0
 	move STRUGGLE,     EFFECT_RECOIL_HIT,         50, NORMAL,       100,  1,   0
