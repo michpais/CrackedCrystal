@@ -34,7 +34,7 @@ Moves:
 	move FOCUS_BLAST,  EFFECT_SP_DEF_DOWN_HIT,   120, FIGHTING,      70,  5,  10
 	move FLY,          EFFECT_FLY,                70, FLYING,        95, 15,   0
 	move HAIL,         EFFECT_HAIL,                0, ICE,          100, 10,   0
-	move DISCHARGE,    EFFECT_PARALYZE_HIT        80, ELECTRIC,     100, 15,  30
+	move DISCHARGE,    EFFECT_PARALYZE_HIT,       80, ELECTRIC,     100, 15,  30
 	move VINE_WHIP,    EFFECT_NORMAL_HIT,         35, GRASS,        100, 10,   0
 	move STOMP,        EFFECT_STOMP,              65, NORMAL,       100, 20,  30
 	move DOUBLE_KICK,  EFFECT_DOUBLE_HIT,         30, FIGHTING,     100, 30,   0
