@@ -28,6 +28,7 @@ BulbasaurEvosAttacks:
 	db 21, SWEET_SCENT
 	db 25, GROWTH
 	db 27, DOUBLE_EDGE
+	db 30, LEAF_BLADE
 	db 33, SYNTHESIS
 	db 37, SOLARBEAM
 	db 0 ; no more level-up moves
@@ -48,6 +49,7 @@ IvysaurEvosAttacks:
 	db 23, SWEET_SCENT
 	db 28, GROWTH
 	db 31, DOUBLE_EDGE
+	db 35, LEAF_BLADE
 	db 39, SYNTHESIS
 	db 44, SOLARBEAM
 	db 0 ; no more level-up moves
@@ -68,6 +70,7 @@ VenusaurEvosAttacks:
 	db 28, GROWTH
 	db 31, DOUBLE_EDGE
 	db 32, PETAL_DANCE
+	db 38, LEAF_BLADE
 	db 45, SYNTHESIS
 	db 53, SOLARBEAM
 	db 0 ; no more level-up moves
@@ -121,6 +124,7 @@ CharizardEvosAttacks:
 	db 32, FLAMETHROWER
 	db 36, WING_ATTACK
 	db 41, SLASH
+	db 45, DRAGON_CLAW
 	db 47, FIRE_SPIN
 	db 50, AIR_SLASH
 	db 56, FIRE_BLAST
@@ -920,6 +924,8 @@ GrowlitheEvosAttacks:
 	db 23, TAKE_DOWN
 	db 28, FLAMETHROWER
 	db 30, AGILITY
+	db 33, SNARL
+	db 36, WILL_O_WISP
 	db 39, CRUNCH
 	db 41, FIRE_BLAST
 	db 43, OUTRAGE
@@ -1226,6 +1232,7 @@ PonytaEvosAttacks:
 	db 13, FLAME_WHEEL
 	db 17, STOMP
 	db 23, FIRE_SPIN
+	db 25, WILL_O_WISP
 	db 29, TAKE_DOWN
 	db 33, FLAMETHROWER
 	db 37, AGILITY
@@ -1243,6 +1250,7 @@ RapidashEvosAttacks:
 	db 13, EMBER
 	db 19, STOMP
 	db 26, FIRE_SPIN
+	db 29, WILL_O_WISP
 	db 34, TAKE_DOWN
 	db 37, AGILITY
 	db 40, FURY_ATTACK
@@ -2263,6 +2271,7 @@ FlareonEvosAttacks:
 	db 25, FIRE_SPIN
 	db 29, SCARY_FACE
 	db 33, SMOG
+	db 34, WILL_O_WISP
 	db 37, FLAMETHROWER
 	db 41, SUNNY_DAY
 	db 50, FIRE_BLAST
@@ -2418,7 +2427,7 @@ ArticunoEvosAttacks:
 
 ZapdosEvosAttacks:
 	db 0 ; no more evolutions
-	db 1, DRILL PECK
+	db 1, DRILL_PECK
 	db 1, THUNDERSHOCK
 	db 8, THUNDER_WAVE
 	db 15, DETECT
@@ -2508,6 +2517,7 @@ DragoniteEvosAttacks:
 	db 47, DRAGON_PULSE
 	db 53, SAFEGUARD
 	db 55, WING_ATTACK
+	db 55, DRAGON_CLAW
 	db 61, DRAGON_DANCE
 	db 67, OUTRAGE
 	db 75, HYPER_BEAM
@@ -2566,6 +2576,7 @@ ChikoritaEvosAttacks:
 	db 28, SWEET_SCENT
 	db 31, LIGHT_SCREEN
 	db 34, BODY_SLAM
+	db 36, LEAF_BLADE
 	db 39, SAFEGUARD
 	db 42, SOLARBEAM
 	db 0 ; no more level-up moves
@@ -2586,6 +2597,7 @@ BayleefEvosAttacks:
 	db 32, SWEET_SCENT
 	db 36, LIGHT_SCREEN
 	db 40, BODY_SLAM
+	db 43, LEAF_BLADE
 	db 46, SAFEGUARD
 	db 50, SOLARBEAM
 	db 0 ; no more level-up moves
@@ -2605,6 +2617,7 @@ MeganiumEvosAttacks:
 	db 32, SWEET_SCENT
 	db 40, LIGHT_SCREEN
 	db 46, BODY_SLAM
+	db 50, LEAF_BLADE
 	db 54, SAFEGUARD
 	db 60, SOLARBEAM
 	db 0 ; no more level-up moves
