@@ -1658,35 +1658,35 @@ BattleCommand_CheckHit:
 	ld a, 1
 	and a
 	ret
-
-.LockOn:
+;
+;.LockOn:
 ; Return nz if we are locked-on and aren't trying to use Earthquake,
 ; Fissure or Magnitude on a monster that is flying.
-	ld a, BATTLE_VARS_SUBSTATUS5_OPP
-	call GetBattleVarAddr
-	bit SUBSTATUS_LOCK_ON, [hl]
-	res SUBSTATUS_LOCK_ON, [hl]
-	ret z
-
-	ld a, BATTLE_VARS_SUBSTATUS3_OPP
-	call GetBattleVar
-	bit SUBSTATUS_FLYING, a
-	jr z, .LockedOn
-
-	ld a, BATTLE_VARS_MOVE_ANIM
-	call GetBattleVar
-
-	cp EARTHQUAKE
-	ret z
-	cp FISSURE
-	ret z
-	cp MAGNITUDE
-	ret z
-
-.LockedOn:
-	ld a, 1
-	and a
-	ret
+;	ld a, BATTLE_VARS_SUBSTATUS5_OPP
+;	call GetBattleVarAddr
+;	bit SUBSTATUS_LOCK_ON, [hl]
+;	res SUBSTATUS_LOCK_ON, [hl]
+;	ret z
+;
+;	ld a, BATTLE_VARS_SUBSTATUS3_OPP
+;	call GetBattleVar
+;	bit SUBSTATUS_FLYING, a
+;	jr z, .LockedOn
+;
+;	ld a, BATTLE_VARS_MOVE_ANIM
+;	call GetBattleVar
+;
+;	cp EARTHQUAKE
+;	ret z
+;	cp FISSURE
+;	ret z
+;	cp MAGNITUDE
+;	ret z
+;
+;.LockedOn:
+;	ld a, 1
+;	and a
+;	ret
 
 .DrainSub:
 ; Return z if using an HP drain move on a substitute.
@@ -1723,8 +1723,8 @@ BattleCommand_CheckHit:
 
 	cp GUST
 	ret z
-	cp WHIRLWIND
-	ret z
+;	cp WHIRLWIND
+;	ret z
 	cp THUNDER
 	ret z
 	cp TWISTER
@@ -1735,8 +1735,6 @@ BattleCommand_CheckHit:
 	call GetBattleVar
 
 	cp EARTHQUAKE
-	ret z
-	cp FISSURE
 	ret z
 	cp MAGNITUDE
 	ret
@@ -5568,21 +5566,21 @@ BattleCommand_Charge:
 	text_asm
 	ld a, BATTLE_VARS_MOVE_ANIM
 	call GetBattleVar
-	cp RAZOR_WIND
-	ld hl, .BattleMadeWhirlwindText
-	jr z, .done
+;	cp RAZOR_WIND
+;	ld hl, .BattleMadeWhirlwindText
+;	jr z, .done
 
 	cp SOLARBEAM
 	ld hl, .BattleTookSunlightText
 	jr z, .done
-
-	cp SKULL_BASH
-	ld hl, .BattleLoweredHeadText
-	jr z, .done
-
-	cp SKY_ATTACK
-	ld hl, .BattleGlowingText
-	jr z, .done
+;
+;	cp SKULL_BASH
+;	ld hl, .BattleLoweredHeadText
+;	jr z, .done
+;
+;	cp SKY_ATTACK
+;	ld hl, .BattleGlowingText
+;	jr z, .done
 
 	cp FLY
 	ld hl, .BattleFlewText
@@ -5670,10 +5668,8 @@ BattleCommand_TrapTarget:
 	jp StdBattleTextbox
 
 .Traps:
-	dbw BIND,      UsedBindText      ; 'used BIND on'
 	dbw WRAP,      WrappedByText     ; 'was WRAPPED by'
 	dbw FIRE_SPIN, FireSpinTrapText  ; 'was trapped!'
-	dbw CLAMP,     ClampedByText     ; 'was CLAMPED by'
 	dbw WHIRLPOOL, WhirlpoolTrapText ; 'was trapped!'
 
 INCLUDE "engine/battle/move_effects/mist.asm"

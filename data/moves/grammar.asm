@@ -12,15 +12,11 @@ MoveGrammar:
 	db SMOKESCREEN
 	db WITHDRAW
 	db DEFENSE_CURL
-	db EGG_BOMB
 	db SMOG
-	db BONE_CLUB
 	db FLASH
 	db SPLASH
 	db ACID_ARMOR
-	db BONEMERANG
 	db REST
-	db SHARPEN
 	db SUBSTITUTE
 	db MIND_READER
 	db SNORE
@@ -31,7 +27,6 @@ MoveGrammar:
 	db SWAGGER
 	db SLEEP_TALK
 	db HIDDEN_POWER
-	db PSYCH_UP
 	db EXTREMESPEED
 	db 0 ; end set
 
@@ -49,7 +44,6 @@ MoveGrammar:
 	db AGILITY
 	db MIMIC
 	db DOUBLE_TEAM
-	db BARRAGE
 	db TRANSFORM
 	db STRUGGLE
 	db SCARY_FACE
@@ -61,8 +55,6 @@ MoveGrammar:
 	db VICEGRIP
 	db WING_ATTACK
 	db FLY
-	db BIND
-	db SLAM
 	db HORN_ATTACK
 	db WRAP
 	db THRASH
@@ -76,19 +68,14 @@ MoveGrammar:
 	db ABSORB
 	db STRING_SHOT
 	db EARTHQUAKE
-	db FISSURE
 	db DIG
 	db TOXIC
 	db SCREECH
 	db METRONOME
 	db LICK
-	db CLAMP
-	db CONSTRICT
 	db POISON_GAS
 	db BUBBLE
 	db SLASH
-	db SPIDER_WEB
-	db NIGHTMARE
 	db CURSE
 	db FORESIGHT
 	db CHARM

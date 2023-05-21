@@ -1088,23 +1088,6 @@ ResidualDamage:
 
 	ld a, BATTLE_VARS_SUBSTATUS1
 	call GetBattleVarAddr
-	bit SUBSTATUS_NIGHTMARE, [hl]
-	jr z, .not_nightmare
-	xor a
-	ld [wNumHits], a
-	ld de, ANIM_IN_NIGHTMARE
-	call Call_PlayBattleAnim_OnlyIfVisible
-	call GetQuarterMaxHP
-	call SubtractHPFromUser
-	ld hl, HasANightmareText
-	call StdBattleTextbox
-.not_nightmare
-
-	call HasUserFainted
-	jr z, .fainted
-
-	ld a, BATTLE_VARS_SUBSTATUS1
-	call GetBattleVarAddr
 	bit SUBSTATUS_CURSE, [hl]
 	jr z, .not_cursed
 

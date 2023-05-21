@@ -7,7 +7,8 @@ SunnyDayMoves:
 	db FLAMETHROWER
 	db FIRE_SPIN
 	db FIRE_BLAST
+	db FLAME_WHEEL
 	db SACRED_FIRE
-	db MORNING_SUN
+	db SOLARBEAM
 	db SYNTHESIS
 	db -1 ; end
