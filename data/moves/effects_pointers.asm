@@ -164,4 +164,6 @@ MoveEffectsPointers:
 	dw Hex
 	dw SpatkSpdefUp
 	dw AttackSpeedUp
+	dw AtkDefUp
+	dw DoBurn
 	assert_table_length NUM_MOVE_EFFECTS

@@ -6,6 +6,8 @@ Retaliation:
 Hex:
 SpatkSpdefUp:
 AttackSpeedUp:
+AtkDefUp:
+DoBurn:
 NormalHit:
 	checkobedience
 	usedmovetext

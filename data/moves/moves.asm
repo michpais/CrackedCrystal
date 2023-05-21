@@ -265,7 +265,7 @@ Moves:
 	move ROCK_SMASH,   EFFECT_DEFENSE_DOWN_HIT,   20, FIGHTING,     100, 15,  50
 	move WHIRLPOOL,    EFFECT_TRAP_TARGET,        15, WATER,         70, 15,   0
 	move BUG_BUZZ,     EFFECT_SP_DEF_DOWN_HIT,    90, BUG,          100, 10,  10
-	move PLAY_ROUGH,   EFFECT_ATTACK_DOWN_HIT,    90, FAIRY,         90, 10,  10
-	move DRAIN_KISS,   EFFECT_LEECH_HIT,          50, FAIRY,        100, 10,   0
-	move MOONBLAST,    EFFECT_SP_ATK_DOWN_HIT,    95, FAIRY,        100, 15,  30
+	move PLAY_ROUGH,   EFFECT_ATTACK_DOWN_HIT,    90, NORMAL,         90, 10,  10
+	move DRAIN_KISS,   EFFECT_LEECH_HIT,          50, NORMAL,        100, 10,   0
+	move MOONBLAST,    EFFECT_SP_ATK_DOWN_HIT,    95, NORMAL,        100, 15,  30
 	assert_table_length NUM_ATTACKS
