@@ -46,13 +46,13 @@ Route34IlexForestGateTeacherScript:
 	opentext
 	checkevent EVENT_FOREST_IS_RESTLESS
 	iftrue .ForestIsRestless
-	checkevent EVENT_GOT_TM12_SWEET_SCENT
+	checkevent EVENT_GOT_TM66_DRAIN_KISS
 	iftrue .GotSweetScent
 	writetext Route34IlexForestGateTeacherText
 	promptbutton
-	verbosegiveitem TM_SWEET_SCENT
+	verbosegiveitem TM_DRAIN_KISS
 	iffalse .NoRoom
-	setevent EVENT_GOT_TM12_SWEET_SCENT
+	setevent EVENT_GOT_TM66_DRAIN_KISS
 .GotSweetScent:
 	writetext Route34IlexForestGateTeacher_GotSweetScent
 	waitbutton
@@ -91,21 +91,21 @@ Route34IlexForestGateTeacherText:
 	text "Oh, honey. You're"
 	line "making a #DEX?"
 
-	para "It must be hard if"
-	line "#MON won't"
+	para "That's so cute!"
+	line "I'm jealous, but"
 
-	para "appear. Try using"
-	line "this TM."
+	para "I think thiis TM"
+	line "can help!"
 	done
 
 Route34IlexForestGateTeacher_GotSweetScent:
-	text "It's SWEET SCENT."
+	text "It's DRAIN KISS."
 
-	para "Use it wherever"
-	line "#MON appear."
+	para "Use it in battle"
+	line "with a cute #MON"
 
-	para "#MON will be"
-	line "enticed by it."
+	para "and you'll rec-"
+	line "over some HP!"
 	done
 
 Route34IlexForestGateTeacher_ForestIsRestless:

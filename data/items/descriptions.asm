@@ -137,32 +137,21 @@ ItemDescriptions:
 	dw PassDesc
 	dw TeruSama9Desc
 	dw TeruSama10Desc
-	dw TeruSama11Desc
 	dw CharcoalDesc
 	dw BerryJuiceDesc
 	dw ScopeLensDesc
-	dw TeruSama12Desc
-	dw TeruSama13Desc
 	dw MetalCoatDesc
 	dw DragonFangDesc
-	dw TeruSama14Desc
 	dw LeftoversDesc
-	dw TeruSama15Desc
-	dw TeruSama16Desc
-	dw TeruSama17Desc
 	dw MysteryBerryDesc
 	dw DragonScaleDesc
 	dw BerserkGeneDesc
-	dw TeruSama18Desc
-	dw TeruSama19Desc
-	dw TeruSama20Desc
 	dw SacredAshDesc
 	dw HeavyBallDesc
 	dw FlowerMailDesc
 	dw LevelBallDesc
 	dw LureBallDesc
 	dw FastBallDesc
-	dw TeruSama21Desc
 	dw LightBallDesc
 	dw FriendBallDesc
 	dw MoonBallDesc
@@ -171,15 +160,12 @@ ItemDescriptions:
 	dw GorgeousBoxDesc
 	dw SunStoneDesc
 	dw PolkadotBowDesc
-	dw TeruSama22Desc
 	dw UpGradeDesc
 	dw BerryDesc
 	dw GoldBerryDesc
 	dw SquirtBottleDesc
-	dw TeruSama23Desc
 	dw ParkBallDesc
 	dw RainbowWingDesc
-	dw TeruSama24Desc
 	dw BrickPieceDesc
 	dw SurfMailDesc
 	dw LiteBlueMailDesc
@@ -190,7 +176,6 @@ ItemDescriptions:
 	dw BlueSkyMailDesc
 	dw MusicMailDesc
 	dw MirageMailDesc
-	dw TeruSama25Desc
 	assert_table_length NUM_ITEMS
 	dw TeruSama26Desc
 	dw TeruSama26Desc
@@ -253,6 +238,21 @@ ItemDescriptions:
 	dw TeruSama28Desc
 	dw TeruSama28Desc
 	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
+	dw TeruSama29Desc
 	dw TeruSama30Desc
 	dw TeruSama31Desc
 	dw TeruSama32Desc
@@ -261,7 +261,7 @@ ItemDescriptions:
 
 MasterBallDesc:
 	db   "The best BALL. It"
-	next "never misses.@"
+	next "never fails.@"
 
 UltraBallDesc:
 	db   "A BALL with a high"
