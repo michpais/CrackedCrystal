@@ -162,7 +162,7 @@ Moves:
 	move DIZZY_PUNCH,  EFFECT_CONFUSE_HIT,        70, NORMAL,       100, 10,  20
 	move SPORE,        EFFECT_SLEEP,               0, GRASS,        100, 15,   0
 	move FLASH,        EFFECT_ACCURACY_DOWN,       0, NORMAL,        70, 20,   0
-	move WILL_O_WSIP,  EFFECT_BURN,                0, FIRE,          85, 15,   0
+	move WILL_O_WISP,  EFFECT_BURN,                0, FIRE,          85, 15,   0
 	move SPLASH,       EFFECT_SPLASH,              0, NORMAL,       100, 40,   0
 	move ACID_ARMOR,   EFFECT_DEFENSE_UP_2,        0, POISON,       100, 40,   0
 	move CRABHAMMER,   EFFECT_NORMAL_HIT,         90, WATER,         85, 10,   0
@@ -257,7 +257,7 @@ Moves:
 	move SUNNY_DAY,    EFFECT_SUNNY_DAY,           0, FIRE,          90,  5,   0
 	move CRUNCH,       EFFECT_SP_DEF_DOWN_HIT,    80, DARK,         100, 15,  20
 	move MIRROR_COAT,  EFFECT_MIRROR_COAT,         1, PSYCHIC_TYPE, 100, 20,   0
-	move BULK_UP,      EFFECT_ATT_DEF_UP,          0, FIGHTING,     100, 20,   0
+	move BULK_UP,      EFFECT_ATK_DEF_UP,          0, FIGHTING,     100, 20,   0
 	move EXTREMESPEED, EFFECT_PRIORITY_HIT,       80, NORMAL,       100,  5,   0
 	move ANCIENTPOWER, EFFECT_ALL_UP_HIT,         60, ROCK,         100,  5,  10
 	move SHADOW_BALL,  EFFECT_SP_DEF_DOWN_HIT,    80, GHOST,        100, 15,  20

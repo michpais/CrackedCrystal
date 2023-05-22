@@ -1553,9 +1553,6 @@ BattleCommand_CheckHit:
 	call .DrainSub
 	jp z, .Miss
 
-	call .LockOn
-	ret nz
-
 	call .FlyDigMoves
 	jp nz, .Miss
 

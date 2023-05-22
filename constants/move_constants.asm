@@ -277,7 +277,7 @@ DEF NUM_ATTACKS EQU const_value - 1
 	const ANIM_PAR               ; 109
 	const ANIM_IN_LOVE           ; 10a
 	const ANIM_IN_SANDSTORM      ; 10b
-	;const ANIM_IN_NIGHTMARE      ; 10c
+	const ANIM_IN_NIGHTMARE      ; 10c
 	const ANIM_IN_WHIRLPOOL      ; 10d
 ; battle anims
 	const ANIM_MISS              ; 10e

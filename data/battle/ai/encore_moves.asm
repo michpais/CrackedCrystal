@@ -2,7 +2,6 @@
 
 EncoreMoves:
 	db SWORDS_DANCE
-	db WHIRLWIND
 	db LEER
 	db ROAR
 	db DISABLE
@@ -20,9 +19,7 @@ EncoreMoves:
 	db DREAM_EATER
 	db POISON_GAS
 	db SPLASH
-	db SHARPEN
 	db CONVERSION
-	db SUPER_FANG
 	db SUBSTITUTE
 	db RAIN_DANCE
 	db SUNNY_DAY
