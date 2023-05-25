@@ -4,10 +4,6 @@ MoveEffects: ; used only for BANK(MoveEffects)
 
 Retaliation:
 Hex:
-SpatkSpdefUp:
-AttackSpeedUp:
-AtkDefUp:
-DoBurn:
 NormalHit:
 	checkobedience
 	usedmovetext
@@ -28,6 +24,7 @@ NormalHit:
 	kingsrock
 	endmove
 
+DoBurn:
 DoSleep:
 	checkobedience
 	usedmovetext
@@ -190,6 +187,9 @@ MirrorMove:
 	mirrormove
 	endmove
 
+SpatkSpdefUp:
+AttackSpeedUp:
+AtkDefUp:
 AttackUp:
 	checkobedience
 	usedmovetext

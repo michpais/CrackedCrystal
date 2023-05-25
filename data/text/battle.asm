@@ -1122,6 +1122,6 @@ ItStartedToHailText:
 	prompt
 
 PeltedByHailText:
-	text "<User>"
+	text "<USER>"
 	line "is pelted by hail!"
 	prompt

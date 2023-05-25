@@ -138,7 +138,7 @@ Moves:
 	move LICK,         EFFECT_PARALYZE_HIT,       20, GHOST,        100, 30,  30
 	move SMOG,         EFFECT_POISON_HIT,         20, POISON,        70, 20,  40
 	move SLUDGE,       EFFECT_POISON_HIT,         65, POISON,       100, 20,  30
-	move MUD_SHOT,     EFFECT_SPEED_DOWN,         55, GROUND,        95, 15, 100
+	move MUD_SHOT,     EFFECT_SPEED_DOWN_HIT,     55, GROUND,        95, 15, 100
 	move FIRE_BLAST,   EFFECT_BURN_HIT,          120, FIRE,          85,  5,  10
 	move WATERFALL,    EFFECT_NORMAL_HIT,         80, WATER,        100, 15,   0
 	move EARTH_POWER,  EFFECT_SP_DEF_DOWN_HIT,    90, GROUND,       100, 10,  10
