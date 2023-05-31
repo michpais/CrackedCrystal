@@ -2,8 +2,6 @@ INCLUDE "data/moves/effects_pointers.asm"
 
 MoveEffects: ; used only for BANK(MoveEffects)
 
-Retaliation:
-Hex:
 NormalHit:
 	checkobedience
 	usedmovetext
@@ -24,7 +22,6 @@ NormalHit:
 	kingsrock
 	endmove
 
-DoBurn:
 DoSleep:
 	checkobedience
 	usedmovetext
@@ -187,9 +184,6 @@ MirrorMove:
 	mirrormove
 	endmove
 
-SpatkSpdefUp:
-AttackSpeedUp:
-AtkDefUp:
 AttackUp:
 	checkobedience
 	usedmovetext
@@ -1061,6 +1055,16 @@ DoParalyze:
 	checkhit
 	checksafeguard
 	paralyze
+	endmove
+
+DoBurn:
+	checkobedience
+	usedmovetext
+	doturn
+	checkhit
+	stab
+	checksafeguard
+	burn
 	endmove
 
 SkyAttack:
@@ -2089,4 +2093,88 @@ Hail:
 	usedmovetext
 	doturn
 	starthail
+	endmove
+
+Retaliation:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	retaliation
+	checkhit
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	kingsrock
+	endmove
+
+Hex:
+	checkobedience
+	usedmovetext
+	doturn
+	critical
+	damagestats
+	damagecalc
+	stab
+	damagevariation
+	hex
+	checkhit
+	moveanim
+	failuretext
+	applydamage
+	criticaltext
+	supereffectivetext
+	checkfaint
+	buildopponentrage
+	kingsrock
+	endmove
+
+SpatkSpdefUp:
+	checkobedience
+	usedmovetext
+	doturn
+	specialattackup
+	lowersub
+	statupanim
+	raisesub
+	statupmessage
+	specialdefenseup
+	statupmessage
+	statupfailtext
+	endmove
+
+AttackSpeedUp:
+	checkobedience
+	usedmovetext
+	doturn
+	attackup
+	lowersub
+	statupanim
+	raisesub
+	statupmessage
+	speedup
+	statupmessage
+	statupfailtext
+	endmove
+
+AtkDefUp:
+	checkobedience
+	usedmovetext
+	doturn
+	attackup
+	lowersub
+	statupanim
+	raisesub
+	statupmessage
+	defenseup
+	statupmessage
+	statupfailtext
 	endmove

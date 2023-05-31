@@ -1077,9 +1077,9 @@ BattleCommand_DoTurn:
 	ret
 
 .continuousmoves
-	db EFFECT_RAZOR_WIND
-	db EFFECT_SKY_ATTACK
-	db EFFECT_SKULL_BASH
+	;db EFFECT_RAZOR_WIND
+	;db EFFECT_SKY_ATTACK
+	;db EFFECT_SKULL_BASH
 	db EFFECT_SOLARBEAM
 	db EFFECT_FLY
 	db EFFECT_ROLLOUT
@@ -3833,6 +3833,109 @@ PoisonOpponent:
 	set PSN, [hl]
 	jp UpdateOpponentInParty
 
+BattleCommand_Burn:
+	ld hl, DoesntAffectText
+	ld a, [wTypeModifier]
+	and $7f
+	jp z, .failed
+
+	call CheckIfTargetIsFireType
+	jp z, .failed
+
+	ld a, BATTLE_VARS_STATUS_OPP
+	call GetBattleVar
+	ld b, a
+	ld hl, AlreadyBurnedText
+	and 1 << BRN
+	jp nz, .failed
+
+	call GetOpponentItem
+	ld a, b
+	cp HELD_PREVENT_BURN
+	jr nz, .do_burn
+	ld a, [hl]
+	ld [wNamedObjectIndex], a
+	call GetItemName
+	ld hl, ProtectedByText
+	jr .failed
+
+.do_burn
+	ld hl, DidntAffect1Text
+	ld a, BATTLE_VARS_STATUS_OPP
+	call GetBattleVar
+	and a
+	jr nz, .failed
+
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .dont_sample_failure
+
+	ld a, [wLinkMode]
+	and a
+	jr nz, .dont_sample_failure
+
+	ld a, [wInBattleTowerBattle]
+	and a
+	jr nz, .dont_sample_failure
+
+	ld a, [wPlayerSubStatus5]
+	bit SUBSTATUS_LOCK_ON, a
+	jr nz, .dont_sample_failure
+
+	call BattleRandom
+	cp 25 percent + 1 ; 25% chance AI fails
+	jr c, .failed
+
+.dont_sample_failure
+	call CheckSubstituteOpp
+	jr nz, .failed
+	ld a, [wAttackMissed]
+	and a
+	jr nz, .failed
+
+	call .apply_burn
+	ld hl, WasBurnedText
+	call StdBattleTextbox
+	jr .finished
+
+.finished
+	farcall UseHeldStatusHealingItem
+	ret
+
+.failed
+	push hl
+	call AnimateFailedMove
+	pop hl
+	jp StdBattleTextbox
+
+.apply_burn
+	call AnimateCurrentMove
+	call BurnOpponent
+	jp RefreshBattleHuds
+
+CheckIfTargetIsFireType:
+	ld de, wEnemyMonType1
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .ok
+	ld de, wBattleMonType1
+.ok
+	ld a, [de]
+	inc de
+	cp FIRE
+	ret z
+	ld a, [de]
+	cp FIRE
+	ret
+
+BurnOpponent:
+	ld a, BATTLE_VARS_STATUS_OPP
+	call GetBattleVarAddr
+	set BRN, [hl]
+	call UpdateOpponentInParty
+	ld hl, ApplyBrnEffectOnAttack
+	jp CallBattleCore
+
 BattleCommand_DrainTarget:
 	call SapHealth
 	ld hl, SuckedHealthText
@@ -5964,6 +6067,10 @@ EndRechargeOpp:
 	ret
 
 INCLUDE "engine/battle/move_effects/rage.asm"
+
+INCLUDE "engine/battle/move_effects/hex.asm"
+
+INCLUDE "engine/battle/move_effects/retaliation.asm"
 
 BattleCommand_DoubleFlyingDamage:
 	ld a, BATTLE_VARS_SUBSTATUS3_OPP

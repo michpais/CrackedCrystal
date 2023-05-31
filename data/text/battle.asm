@@ -723,6 +723,11 @@ DreamEatenText:
 	line "dream was eaten!"
 	prompt
 
+AlreadyBurnedText:
+	text "<TARGET>'s"
+	line "already burned!"
+	prompt
+
 WasBurnedText:
 	text "<TARGET>"
 	line "was burned!"
