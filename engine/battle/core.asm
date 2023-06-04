@@ -5674,8 +5674,8 @@ MoveInfoBox:
 	xor a
 	ldh [hBGMapMode], a
 
-	hlcoord 0, 8
-	ld b, 3
+	hlcoord 0, 7
+	ld b, 4
 	ld c, 9
 	call Textbox
 	call MobileTextBorder
@@ -5691,10 +5691,11 @@ MoveInfoBox:
 	cp b
 	jr nz, .not_disabled
 
-	hlcoord 1, 10
+	hlcoord 1, 9
 	ld de, .Disabled
 	call PlaceString
-	jr .done
+	;jr .done
+	call .done
 
 .not_disabled
 	ld hl, wMenuCursorY
@@ -5729,7 +5730,7 @@ MoveInfoBox:
 	ld a, [wPlayerMoveStruct + MOVE_ANIM]
 	ld b, a
 	farcall GetMoveCategoryName
-	hlcoord 1, 9
+	hlcoord 1, 8
 	ld de, wStringBuffer1
 	call PlaceString
 
@@ -5739,24 +5740,74 @@ MoveInfoBox:
 
 	ld a, [wPlayerMoveStruct + MOVE_ANIM]
 	ld b, a
-	hlcoord 2, 10
+	hlcoord 2, 9
 	predef PrintMoveType
 
-.done
+	hlcoord 1, 10
+	ld de, .PowAcc
+	call PlaceString
+
+	ld a, [wPlayerMoveStruct + MOVE_POWER]
+	ld b, a
+	cp 2
+	jr c, .no_power
+	ld [wTextDecimalByte], a
+	ld de, wTextDecimalByte
+	lb bc, 1, 3
+	call PrintNum
+	jr .place_accuracy
+.no_power
+	ld de, .NA
+	call PlaceString
+
+.place_accuracy
+	hlcoord 6, 10
+
+	ld a, [wPlayerMoveStruct + MOVE_EFFECT]
+	cp EFFECT_ALWAYS_HIT
+	jr z, .no_acc
+	
+	ld a, [wPlayerMoveStruct + MOVE_ACC]
+	; accuracy is only give as a value of 255, must convert to percent
+	; divide by 51
+	ld c, 51
+	call SimpleDivide
+	; multipy by 20
+	ld c, b
+	ld b, a
+	ld a, 20
+	call SimpleMultiply
+	; add the remainder to get the percent accuracy
+	add b
+	cp 2
+	jr c, .no_acc
+	ld [wTextDecimalByte], a
+	ld de, wTextDecimalByte
+	lb bc, 1, 3
+	call PrintNum
+	ret
+.no_acc
+	ld de, .NA
+	call PlaceString
+	ret
+
+.done:
 	ret
 
 .Disabled:
 	db "Disabled!@"
-.Type:
-	db "TYPE/@"
+
+.PowAcc:
+	db "   P/   <PERCNT>@"
+.NA:
+	db "---@"
 
 .PrintPP:
-	hlcoord 5, 11
-	ld a, [wLinkMode] ; What's the point of this check?
-	cp LINK_MOBILE
-	jr c, .ok
-	hlcoord 5, 11
-.ok
+	hlcoord 2, 11
+	ld a, "<PP>"
+	ld [hli], a
+	ld [hli], a
+	inc hl
 	push hl
 	ld de, wStringBuffer1
 	lb bc, 1, 2

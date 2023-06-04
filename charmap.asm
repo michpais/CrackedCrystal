@@ -158,6 +158,7 @@
 	charmap "x",         $b7
 	charmap "y",         $b8
 	charmap "z",         $b9
+	charmap "<PERCNT>",  $ba
 
 	charmap "Ä",         $c0
 	charmap "Ö",         $c1
@@ -180,6 +181,7 @@
 	charmap "<MN>",      $e2
 	charmap "-",         $e3
 
+	charmap "<PP>",      $e5
 	charmap "?",         $e6
 	charmap "!",         $e7
 	charmap ".",         $e8
