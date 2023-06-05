@@ -5777,7 +5777,57 @@ MoveInfoBox:
 	ld b, a
 	ld a, 20
 	call SimpleMultiply
-	; add the remainder to get the percent accuracy
+	; this should give you the round number for 0, 20, 40, 60, 80, or 100% acc
+	; store that number in c
+	ld c, a
+	; load the remainder in b to a to do comparisons
+	ld a, b
+	; jump to addfifteen routine if remainder is 38.25 (aka 15%)
+	cp 38
+	jr z, .addfifteen
+	; jump to addten routine if remainder is 25.5 (aka 10%)
+	cp 25
+	jr z, .addten
+	; jump to addten routine if remainder is 12.75 (aka 5%)
+	cp 12
+	jr z, .addfive
+	; reload the rounded number into a, make sure its not 0, and print
+	ld a, c
+	cp 2
+	jr c, .no_acc
+	ld [wTextDecimalByte], a
+	ld de, wTextDecimalByte
+	lb bc, 1, 3
+	call PrintNum
+	ret
+.addfifteen
+	; reload the rounded number into a, make sure its not 0, and print
+	ld a, c
+	ld b, 15
+	add b
+	cp 2
+	jr c, .no_acc
+	ld [wTextDecimalByte], a
+	ld de, wTextDecimalByte
+	lb bc, 1, 3
+	call PrintNum
+	ret
+.addten
+	; reload the rounded number into a, make sure its not 0, and print
+	ld a, c
+	ld b, 10
+	add b
+	cp 2
+	jr c, .no_acc
+	ld [wTextDecimalByte], a
+	ld de, wTextDecimalByte
+	lb bc, 1, 3
+	call PrintNum
+	ret
+.addfive
+	; reload the rounded number into a, make sure its not 0, and print
+	ld a, c
+	ld b, 5
 	add b
 	cp 2
 	jr c, .no_acc
