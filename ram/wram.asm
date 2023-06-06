@@ -2121,7 +2121,7 @@ SECTION UNION "Miscellaneous WRAM 1", WRAMX
 
 ; Every previous SECTION UNION takes up 60 or fewer bytes,
 ; except the initial "mon buffer" one.
-;	ds 60
+	ds 60
 
 UNION
 ; trainer data
