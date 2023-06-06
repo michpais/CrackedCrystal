@@ -126,7 +126,7 @@ MartGoldenrod3F:
 	db -1 ; end
 
 MartGoldenrod3F2:
-	db 6 ; # items
+	db 10 ; # items
 	db FIRE_STONE
 	db THUNDERSTONE
 	db WATER_STONE
@@ -135,6 +135,8 @@ MartGoldenrod3F2:
 	db SUN_STONE
 	db METAL_COAT
 	db KINGS_ROCK
+	db DRAGON_FANG ;get rid of after testing
+	db UPGRADE ; get rid of after testing
 	db -1 ; end
 
 MartGoldenrod4F:
