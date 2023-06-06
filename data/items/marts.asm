@@ -136,7 +136,7 @@ MartGoldenrod3F2:
 	db METAL_COAT
 	db KINGS_ROCK
 	db DRAGON_FANG ;get rid of after testing
-	db UPGRADE ; get rid of after testing
+	db UP_GRADE ; get rid of after testing
 	db -1 ; end
 
 MartGoldenrod4F:
