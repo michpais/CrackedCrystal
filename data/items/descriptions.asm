@@ -813,8 +813,8 @@ MetalCoatDesc:
 	next "type moves. (HOLD)@"
 
 DragonFangDesc:
-	db   "Powers up dragon-"
-	next "type moves. (HOLD)@"
+	db   "Evolves certain"
+	next "kinds of #MON.@"
 
 TeruSama14Desc:
 	db   "?@"

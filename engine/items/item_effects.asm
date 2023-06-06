@@ -95,7 +95,7 @@ ItemEffects:
 	dw StatusHealingEffect ; BURNT_BERRY
 	dw StatusHealingEffect ; ICE_BERRY
 	dw NoEffect            ; POISON_BARB
-	dw NoEffect            ; KINGS_ROCK
+	dw EvoStoneEffect      ; KINGS_ROCK
 	dw BitterBerryEffect   ; BITTER_BERRY
 	dw StatusHealingEffect ; MINT_BERRY
 	dw NoEffect            ; RED_APRICORN
@@ -153,8 +153,8 @@ ItemEffects:
 	dw NoEffect            ; CHARCOAL
 	dw RestoreHPEffect     ; BERRY_JUICE
 	dw NoEffect            ; SCOPE_LENS
-	dw NoEffect            ; METAL_COAT
-	dw NoEffect            ; DRAGON_FANG
+	dw EvoStoneEffect      ; METAL_COAT
+	dw EvoStoneEffect      ; DRAGON_FANG
 	dw NoEffect            ; LEFTOVERS
 	dw RestorePPEffect     ; MYSTERYBERRY
 	dw NoEffect            ; DRAGON_SCALE
@@ -173,7 +173,7 @@ ItemEffects:
 	dw GorgeousBoxEffect   ; GORGEOUS_BOX
 	dw EvoStoneEffect      ; SUN_STONE
 	dw NoEffect            ; POLKADOT_BOW
-	dw NoEffect            ; UP_GRADE
+	dw EvoStoneEffect      ; UP_GRADE
 	dw RestoreHPEffect     ; BERRY
 	dw RestoreHPEffect     ; GOLD_BERRY
 	dw SquirtbottleEffect  ; SQUIRTBOTTLE
