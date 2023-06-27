@@ -707,11 +707,11 @@ DefenseUpHit:
 	applydamage
 	criticaltext
 	supereffectivetext
-; BUG: Moves that do damage and increase your stats do not increase stats after a KO (see docs/bugs_and_glitches.md)
-	checkfaint
-	buildopponentrage
+; BUG (fixed): Moves that do damage and increase your stats do not increase stats after a KO (see docs/bugs_and_glitches.md)
 	defenseup
 	statupmessage
+	checkfaint
+	buildopponentrage
 	endmove
 
 AttackUpHit:
@@ -730,10 +730,10 @@ AttackUpHit:
 	applydamage
 	criticaltext
 	supereffectivetext
-	checkfaint
-	buildopponentrage
 	attackup
 	statupmessage
+	checkfaint
+	buildopponentrage
 	endmove
 
 AllUpHit:
@@ -752,9 +752,9 @@ AllUpHit:
 	applydamage
 	criticaltext
 	supereffectivetext
+	allstatsup
 	checkfaint
 	buildopponentrage
-	allstatsup
 	endmove
 
 PayDay:
