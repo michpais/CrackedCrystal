@@ -316,6 +316,7 @@ ROMX $7d
 	"Mobile News Data"
 ROMX $7e
 	"Crystal Events"
+	"Sprites 3"
 ROMX $7f
 	org $7de0
 	"Stadium 2 Checksums"

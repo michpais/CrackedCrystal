@@ -274,7 +274,19 @@ DoPlayerMovement::
 	call CheckIceTile
 	jr nc, .ice
 
+	call .BikeCheck
+	jr nz, .HandleWalkAndRun
+
+.HandleWalkAndRun
+       call .CheckStandingStill
+       jr z, .ensurewalk
+       call .CheckBHeldDown
+       jr z, .ensurerun
+       jr .ensurewalk
+
 ; Downhill riding is slower when not moving down.
+	call .RunCheck
+	jr z, .fast
 	call .BikeCheck
 	jr nz, .walk
 
@@ -290,6 +302,18 @@ DoPlayerMovement::
 	call .DoStep
 	scf
 	ret
+
+.ensurerun
+       ld a, [wPlayerState]
+       cp PLAYER_RUN
+       call nz, .StartRunning
+       jr .fast
+
+.ensurewalk
+       ld a, [wPlayerState]
+       cp PLAYER_NORMAL
+       call nz, .StartWalking
+       jr .walk
 
 .fast
 	ld a, STEP_BIKE
@@ -732,6 +756,26 @@ ENDM
 	cp PLAYER_SKATE
 	ret
 
+.RunCheck:
+	ld a, [wPlayerState]
+	cp PLAYER_NORMAL
+	ret nz
+	ldh a, [hJoypadDown]
+	and B_BUTTON
+	cp B_BUTTON
+	ret
+
+.CheckBHeldDown:
+       ldh a, [hJoypadDown]
+       and B_BUTTON
+       cp B_BUTTON
+       ret
+
+.CheckStandingStill
+       ld a, [wWalkingDirection]
+       cp STANDING
+       ret
+
 .CheckWalkable:
 ; Return 0 if tile a is land. Otherwise, return carry.
 
@@ -782,6 +826,22 @@ ENDM
 	call UpdatePlayerSprite ; UpdateSprites
 	pop bc
 	ret
+
+.StartRunning:
+       push bc
+       ld a, PLAYER_RUN
+       ld [wPlayerState], a
+       call UpdatePlayerSprite
+       pop bc
+       ret
+
+.StartWalking:
+       push bc
+       ld a, PLAYER_NORMAL
+       ld [wPlayerState], a
+       call UpdatePlayerSprite
+       pop bc
+       ret
 
 CheckStandingOnIce::
 	ld a, [wPlayerTurningDirection]
