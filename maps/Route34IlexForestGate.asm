@@ -102,7 +102,8 @@ Route34IlexForestGateTeacher_GotSweetScent:
 	text "It's DRAIN KISS."
 
 	para "Use it in battle"
-	line "with a cute #MON"
+	line "with a cute"
+	cont "#MON"
 
 	para "and you'll rec-"
 	line "over some HP!"

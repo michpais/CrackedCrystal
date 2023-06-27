@@ -1273,7 +1273,7 @@ PlayRoughDescription:
 	next "lower foe SP.ATK@"
 
 DrainKissDescription:
-	db   "User steals foe,"
+	db   "User steals foe's"
 	next "HP with a kiss@"
 
 MoonblastDescription:
