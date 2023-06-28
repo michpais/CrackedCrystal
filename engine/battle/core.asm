@@ -5694,10 +5694,12 @@ MoveInfoBox:
 	jr nz, .not_disabled
 
 	hlcoord 1, 9
+	ld de, .Moveis
+	call PlaceString
+	hlcoord 1, 10
 	ld de, .Disabled
 	call PlaceString
-	;jr .done
-	call .done
+	ret
 
 .not_disabled
 	ld hl, wMenuCursorY
@@ -5843,8 +5845,8 @@ MoveInfoBox:
 	call PlaceString
 	ret
 
-.done:
-	ret
+.Moveis:
+	db "Move is@"
 
 .Disabled:
 	db "Disabled!@"
