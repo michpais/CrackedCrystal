@@ -1,3 +1,7 @@
+DEF FRUIT_TREE_2_MIN EQU 2
+DEF FRUIT_TREE_3     EQU 3
+DEF FRUIT_TREE_4_MAX EQU 4
+
 FruitTreeScript::
 	callasm GetCurTreeFruit
 	opentext
@@ -13,12 +17,44 @@ FruitTreeScript::
 	sjump .end
 
 .fruit
-	writetext HeyItsFruitText
+	farwritetext _HeyItsFruitText
+	callasm GetFruitTreeCount
+	ifequal FRUIT_TREE_2_MIN, .try_two
+	ifequal FRUIT_TREE_3, .try_three
+	; only possible value left it could be is FRUIT_TREE_4_MAX
+	readmem wCurFruit
+	giveitem ITEM_FROM_MEM, $4
+	iffalse .try_three
+	promptbutton
+	writetext ObtainedFourFruitText
+	sjump .continue
+.try_three
+	readmem wCurFruit
+	giveitem ITEM_FROM_MEM, $3
+	iffalse .try_two
+	promptbutton
+	writetext ObtainedThreeFruitText
+	sjump .continue
+.try_two
+	readmem wCurFruit
+	giveitem ITEM_FROM_MEM, $2
+	iffalse .try_one
+	promptbutton
+	writetext ObtainedTwoFruitText
+	sjump .continue
+.try_one
+; if you somehow approach the limit of number of a single berry
+; and 2-2 will not fit in the bag but 1 will, it prints the "bag is full" text to let you know
+; but still gives you the 1 berry too
+; if not even one berry will fit, print "bag is full text" and do not print ObtainedFruitText 
 	readmem wCurFruit
 	giveitem ITEM_FROM_MEM
 	iffalse .packisfull
 	promptbutton
+	writetext FruitPackIsFullText
+	promptbutton
 	writetext ObtainedFruitText
+.continue
 	callasm PickedFruitTree
 	specialsound
 	itemnotify
@@ -32,6 +68,16 @@ FruitTreeScript::
 .end
 	closetext
 	end
+
+GetFruitTreeCount:
+; RandomRange returns a random number between 0 and 2
+; the range is in a, not inclusive
+; We want a possible range of 2-4 so we add 2 after
+	ld a, 3
+	call RandomRange
+	add 2
+	ld [wScriptVar], a
+	ret
 
 GetCurTreeFruit:
 	ld a, [wCurFruitTree]
@@ -106,6 +152,18 @@ HeyItsFruitText:
 
 ObtainedFruitText:
 	text_far _ObtainedFruitText
+	text_end
+
+ObtainedTwoFruitText:
+	text_far _ObtainedTwoFruitText
+	text_end
+
+ObtainedThreeFruitText:
+	text_far _ObtainedThreeFruitText
+	text_end
+
+ObtainedFourFruitText:
+	text_far _ObtainedFourFruitText
 	text_end
 
 FruitPackIsFullText:
