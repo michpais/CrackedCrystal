@@ -4730,23 +4730,21 @@ PrintPlayerHUD:
 	ld a, "♀"
 
 .got_gender_char
+	; print gender
 	hlcoord 18, 8
 	ld [hl], a
 	hlcoord 11, 8
+
 	push af ; back up gender
 	push hl
+	; print status condition
 	ld de, wBattleMonStatus
 	predef PlaceNonFaintStatus
 	pop hl
 	pop bc
-	;ret nz
-	hlcoord 15, 8
-	ld a, b
-	cp " "
-	jr nz, .copy_level ; male or female
-	dec hl ; genderless
 
-.copy_level
+	;print level
+	hlcoord 15, 8
 	ld a, [wBattleMonLevel]
 	ld [wTempMonLevel], a
 	jp PrintLevel
@@ -4807,27 +4805,24 @@ DrawEnemyHUD:
 	ld a, "♀"
 
 .got_gender
+	;print gender
 	hlcoord 9, 1
 	ld [hl], a
 
+	; print pokemon status (if any)
 	hlcoord 2, 1
-	push af
+	push af ;backup gender
 	push hl
 	ld de, wEnemyMonStatus
 	predef PlaceNonFaintStatus
 	pop hl
 	pop bc
-	;jr nz, .skip_level
+
+	; print pokemon level
 	hlcoord 6, 1
-	ld a, b
-	cp " "
-	jr nz, .print_level
-	dec hl
-.print_level
 	ld a, [wEnemyMonLevel]
 	ld [wTempMonLevel], a
 	call PrintLevel
-.skip_level
 
 	ld hl, wEnemyMonHP
 	ld a, [hli]
