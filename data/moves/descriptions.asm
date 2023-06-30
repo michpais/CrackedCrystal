@@ -366,7 +366,7 @@ MegaKickDescription:
 
 RevengeDescription:
 	db   "Power doubled if"
-	next "user is hit first@"
+	next "user under 1/2 HP@"
 
 PsychoCutDescription:
 	db   "Psychic blade with"
@@ -790,7 +790,7 @@ DragonDanceDescription:
 
 PaybackDescription:
 	db   "Power doubled if"
-	next "user is hit first@"
+	next "user under 1/2 HP@"
 
 AmnesiaDescription:
 	db   "Sharply raises the"
@@ -822,7 +822,7 @@ PoisonGasDescription:
 
 AvalancheDescription:
 	db   "Power doubled if"
-	next "user is hit first@"
+	next "user under 1/2 HP@"
 
 LeechLifeDescription:
 	db   "Steals 1/2 of the"

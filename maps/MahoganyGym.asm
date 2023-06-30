@@ -216,8 +216,9 @@ PryceText_AvalancheSpeech:
 	line "AVALANCHE."
 
 	para "It inflicts double"
-	line "damage if the user"
-	cont "was already hit."
+	line "the damage if the"
+	cont "user is under half"
+	cont "health."
 
 	para "It demonstrates"
 	line "the harshness of"
