@@ -1,5 +1,13 @@
 _OakText6::
-	text "Now, what did you"
+	text "RED has been miss-"
+	line "ing since then."
+	cont "Maybe another tra-"
+	cont "iner will emerge"
+
+	para "and take them down"
+	line "for good..."
+	
+	para "Now, what did you"
 	line "say your name was?"
 	prompt
 

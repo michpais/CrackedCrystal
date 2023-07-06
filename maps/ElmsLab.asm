@@ -727,8 +727,20 @@ ElmText_Intro:
 	text "ELM: <PLAY_G>!"
 	line "There you are!"
 
-	para "I needed to ask"
-	line "you a favor."
+	para "I heard from"
+	line "PROFESSOR OAK that"
+	cont "you are ready for"
+	cont "a #MON. So-"
+
+	para "I'm going to give"
+	line "you one of mine!"
+
+	para "You'll start your"
+	line "journey as a"
+	cont "#MON trainer!"
+
+	para "In return, I have"
+	line "a favor to ask."
 
 	para "I'm conducting new"
 	line "#MON research"
@@ -737,46 +749,25 @@ ElmText_Intro:
 	line "wondering if you"
 
 	para "could help me with"
-	line "it, <PLAY_G>."
-
-	para "You see…"
-
-	para "I'm writing a"
-	line "paper that I want"
-
-	para "to present at a"
-	line "conference."
-
-	para "But there are some"
-	line "things I don't"
-
-	para "quite understand"
-	line "yet."
-
-	para "So!"
-
-	para "I'd like you to"
-	line "raise a #MON"
-
-	para "that I recently"
-	line "caught."
+	line "it, <PLAY_G>?"
 	done
 
 ElmText_Accepted:
 	text "Thanks, <PLAY_G>!"
 
-	para "You're a great"
+	para "That'll be a great"
 	line "help!"
 	done
 
 ElmText_Refused:
-	text "But… Please, I"
-	line "need your help!"
+	text "Are you sure? This"
+	line "is your chance!"
 	done
 
 ElmText_ResearchAmbitions:
 	text "When I announce my"
-	line "findings, I'm sure"
+	line "findings, on evol-"
+	cont "ution, I'm sure"
 
 	para "we'll delve a bit"
 	line "deeper into the"
@@ -823,24 +814,18 @@ ElmText_MissionFromMrPokemon:
 	para "with our #MON"
 	line "research…"
 
-	para "Wait!"
-
-	para "I know!"
-
 	para "<PLAY_G>, can you"
-	line "go in our place?"
+	line "go look into this?"
 	done
 
 ElmText_ChooseAPokemon:
-	text "I want you to"
-	line "raise one of the"
-
-	para "#MON contained"
-	line "in these BALLS."
+	text "Your first #MON"
+	line "is in one of"
+	cont "these BALLS."
 
 	para "You'll be that"
 	line "#MON's first"
-	cont "partner, <PLAY_G>!"
+	cont "partner too!"
 
 	para "Go on. Pick one!"
 	done

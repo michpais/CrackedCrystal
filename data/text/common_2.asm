@@ -1535,17 +1535,32 @@ _OakText4::
 	para "Some people play"
 	line "with #MON, some"
 	cont "battle with them."
+
+	para "I study the many"
+	line "things we still"
+	cont "don't know about"
+	cont "#MON!"
 	prompt
 
 _OakText5::
-	text "But we don't know"
-	line "everything about"
-	cont "#MON yet."
+	text "Some people use"
+	line "#MON for"
+	cont "evil means."
 
-	para "There are still"
-	line "many mysteries to"
-	cont "solve."
+	para "Three years ago I"
+	line "gave a boy named"
+	cont "RED a #MON"
+	cont "and he took down"
+	cont "an evil team named"
 
-	para "That's why I study"
-	line "#MON every day."
+	para "TEAM ROCKET in the"
+	line "KANTO region."
+
+	para "It seems like they"
+	line "are up to no good"
+	cont "again here in"
+	cont "JHOTO."
+
+	para "Who knows what"
+	line "they are up to."
 	prompt
