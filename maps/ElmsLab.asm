@@ -273,8 +273,9 @@ ElmDirectionsScript:
 	closetext
 	setevent EVENT_GOT_A_POKEMON_FROM_ELM
 	setevent EVENT_RIVAL_CHERRYGROVE_CITY
+	setevent EVENT_EUSINE_NEW_BARK_TOWN
 	setscene SCENE_ELMSLAB_AIDE_GIVES_POTION
-	setmapscene NEW_BARK_TOWN, SCENE_NEWBARKTOWN_NOOP
+	setmapscene NEW_BARK_TOWN, SCENE_NEWBARKTOWN_MEET_EUSINE
 	end
 
 ElmDescribesMrPokemonScript:

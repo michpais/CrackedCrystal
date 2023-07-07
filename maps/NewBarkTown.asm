@@ -2,10 +2,12 @@
 	const NEWBARKTOWN_TEACHER
 	const NEWBARKTOWN_FISHER
 	const NEWBARKTOWN_RIVAL
+	const NEWBARKTOWN_EUSINE
 
 NewBarkTown_MapScripts:
 	def_scene_scripts
 	scene_script NewBarkTownNoop1Scene, SCENE_NEWBARKTOWN_TEACHER_STOPS_YOU
+	scene_script NewBarkTownNoop3Scene, SCENE_NEWBARKTOWN_MEET_EUSINE
 	scene_script NewBarkTownNoop2Scene, SCENE_NEWBARKTOWN_NOOP
 
 	def_callbacks
@@ -15,6 +17,9 @@ NewBarkTownNoop1Scene:
 	end
 
 NewBarkTownNoop2Scene:
+	end
+
+NewBarkTownNoop3Scene:
 	end
 
 NewBarkTownFlypointCallback:
@@ -125,6 +130,39 @@ NewBarkTownRivalScript:
 	applymovement NEWBARKTOWN_RIVAL, NewBarkTown_RivalReturnsToTheShadowsMovement
 	end
 
+NewBarkTownEusineScript:
+	playmusic MUSIC_MYSTICALMAN_ENCOUNTER
+	showemote EMOTE_SHOCK, PLAYER, 15
+	appear NEWBARKTOWN_EUSINE
+	applymovement NEWBARKTOWN_EUSINE, NewBarkTown_EusineApproachesMovement
+	opentext
+	writetext MeetEusineNewBarkTown1
+	waitbutton
+	closetext
+	playsound SFX_CALL
+	waitsfx
+	playsound SFX_CALL
+	waitsfx
+	opentext
+	writetext MeetEusineNewBarkTown2
+	waitbutton
+	closetext
+	turnobject NEWBARKTOWN_EUSINE, LEFT
+	opentext
+	writetext MeetEusineNewBarkTown3
+	waitbutton
+	closetext
+	turnobject NEWBARKTOWN_EUSINE, UP
+	opentext
+	writetext MeetEusineNewBarkTown4
+	waitbutton
+	closetext
+	applymovement NEWBARKTOWN_EUSINE, NewBarkTown_EusineLeavesMovement
+	disappear NEWBARKTOWN_EUSINE
+	setscene SCENE_NEWBARKTOWN_NOOP
+	special RestartMapMusic
+	end
+
 NewBarkTownSign:
 	jumptext NewBarkTownSignText
 
@@ -184,6 +222,27 @@ NewBarkTown_RivalShovesYouOutMovement:
 
 NewBarkTown_RivalReturnsToTheShadowsMovement:
 	step RIGHT
+	step_end
+
+NewBarkTown_EusineApproachesMovement:
+	step LEFT
+	step LEFT
+	step LEFT
+	step LEFT
+	step LEFT
+	step LEFT
+	step UP
+	step_end
+
+NewBarkTown_EusineLeavesMovement:
+	step DOWN
+	step LEFT
+	step LEFT
+	step DOWN
+	step DOWN
+	step LEFT
+	step LEFT
+	step LEFT
 	step_end
 
 Text_GearIsImpressive:
@@ -252,11 +311,72 @@ NewBarkTownRivalText1:
 	para "So this is the"
 	line "famous ELM #MON"
 	cont "LAB…"
+
+	para "Are those the new"
+	line "#MON he caught?"
+	
+	para "With one of those"
+	line "strong #MON I"
+	cont "could…"
 	done
 
 NewBarkTownRivalText2:
 	text "…What are you"
 	line "staring at?"
+	done
+
+MeetEusineNewBarkTown1:
+	text "Hey there! Is this"
+	line "PROF. ELM's lab?"
+
+	para "..."
+
+	para "Oh yes, I forgot"
+	line "to introduce"
+	cont "myself!"
+
+	para "I'm EUSINE and you"
+	line "are…?"
+
+	para "Great to meet you"
+	line "<PLAYER>!"
+
+	para "I came over from"
+	line "KANTO in search"
+	cont "of a #MON."
+
+	para "I think PROF. ELM"
+	line "can help me."
+	done
+
+MeetEusineNewBarkTown2:
+	text "Hold on, I'm sorry"
+	line "about this. I'm"
+	cont "getting a call."
+	done
+
+MeetEusineNewBarkTown3:
+	text "..."
+
+	para "Yes?"
+
+	para "..."
+
+	para "Oh that's great"
+	line "news! I'll be"
+	cont "right over!"
+	done
+
+MeetEusineNewBarkTown4:
+	text "I got a lead over"
+	line "in ECRUTEAK CITY."
+	cont "So I'm going to"
+	cont "head over there."
+	
+	para "Sorry to waste"
+	line "your time."
+
+	para "Bye <PLAYER>!"
 	done
 
 NewBarkTownSignText:
@@ -291,6 +411,7 @@ NewBarkTown_MapEvents:
 	def_coord_events
 	coord_event  1,  8, SCENE_NEWBARKTOWN_TEACHER_STOPS_YOU, NewBarkTown_TeacherStopsYouScene1
 	coord_event  1,  9, SCENE_NEWBARKTOWN_TEACHER_STOPS_YOU, NewBarkTown_TeacherStopsYouScene2
+	coord_event  6,  4, SCENE_NEWBARKTOWN_MEET_EUSINE, NewBarkTownEusineScript
 
 	def_bg_events
 	bg_event  8,  8, BGEVENT_READ, NewBarkTownSign
@@ -302,3 +423,4 @@ NewBarkTown_MapEvents:
 	object_event  6,  8, SPRITE_TEACHER, SPRITEMOVEDATA_SPINRANDOM_SLOW, 1, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, NewBarkTownTeacherScript, -1
 	object_event 12,  9, SPRITE_FISHER, SPRITEMOVEDATA_WALK_UP_DOWN, 0, 1, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, NewBarkTownFisherScript, -1
 	object_event  3,  2, SPRITE_RIVAL, SPRITEMOVEDATA_STANDING_RIGHT, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, NewBarkTownRivalScript, EVENT_RIVAL_NEW_BARK_TOWN
+	object_event 12,  6, SPRITE_SUPER_NERD, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_EUSINE_NEW_BARK_TOWN
