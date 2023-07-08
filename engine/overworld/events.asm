@@ -284,6 +284,13 @@ PlayerEvents:
 	xor a
 	ld [wLandmarkSignTimer], a
 
+; Have player stand (resets running sprite to standing if event starts while running)
+	ld a, PLAYER_NORMAL
+	ld [wPlayerState], a
+	push bc
+	farcall UpdatePlayerSprite
+	pop bc
+
 .ok2
 	scf
 	ret
