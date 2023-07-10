@@ -285,6 +285,9 @@ PlayerEvents:
 	ld [wLandmarkSignTimer], a
 
 ; Have player stand (resets running sprite to standing if event starts while running)
+	ld a, [wPlayerState]
+	cp PLAYER_RUN
+	jr nz, .ok2
 	ld a, PLAYER_NORMAL
 	ld [wPlayerState], a
 	push bc
