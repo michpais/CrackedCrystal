@@ -296,7 +296,7 @@ ChooseWildEncounter:
 	ld b, a
 ; If the Pokemon is encountered by surfing, we need to give the levels some variety.
 	call CheckOnWater
-	jr nz, .ok
+	jr nz, .not_on_water
 ; Check if we buff the wild mon, and by how much.
 	call Random
 	cp 35 percent
@@ -309,6 +309,23 @@ ChooseWildEncounter:
 	jr c, .ok
 	inc b
 	cp 95 percent
+	jr c, .ok
+	inc b
+	jr .ok
+; If not on water, we add level variety, but only buff by 3 levels max instead of 4
+.not_on_water
+; If the Pokemon is encountered in a special way, skip randomizing level.
+	ld a, [wBattleType]
+	cp BATTLETYPE_SUICUNE
+	jr z, .ok
+	call Random
+	cp 35 percent
+	jr c, .ok
+	inc b
+	cp 65 percent
+	jr c, .ok
+	inc b
+	cp 90 percent
 	jr c, .ok
 	inc b
 ; Store the level
