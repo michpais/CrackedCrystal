@@ -3239,11 +3239,11 @@ BattleAnim_Thief:
 
 BattleAnim_PoisonJab:
 	anim_1gfx ANIM_GFX_HIT
-	anim_call BattleAnim_TargetObj_2Row
+	anim_call BattleAnim_TargetObj_1Row
 	anim_bgeffect ANIM_BG_TACKLE, $0, BG_EFFECT_USER, $0
 	anim_wait 4
 	anim_sound 0, 1, SFX_TACKLE
-	anim_obj ANIM_OBJ_HIT_BIG_YFIX, 136, 48, $0
+	anim_obj ANIM_OBJ_HIT_YFIX, 136, 48, $0
 	anim_wait 8
 	anim_call BattleAnim_ShowMon_0
 	anim_1gfx ANIM_GFX_POISON
@@ -3602,31 +3602,15 @@ BattleAnim_WaterPulse:
 	anim_sound 16, 2, SFX_WATER_GUN
 	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
 	anim_bgeffect ANIM_BG_WATER, $1c, $0, $0
-	anim_wait 8
+	anim_wait 12
 	anim_sound 16, 2, SFX_WATER_GUN
 	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
 	anim_bgeffect ANIM_BG_WATER, $8, $0, $0
-	anim_wait 8
+	anim_wait 12
 	anim_sound 16, 2, SFX_WATER_GUN
 	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
 	anim_bgeffect ANIM_BG_WATER, $30, $0, $0
-	anim_wait 8
-	anim_sound 16, 2, SFX_WATER_GUN
-	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
-	anim_bgeffect ANIM_BG_WATER, $1c, $0, $0
-	anim_wait 8
-	anim_sound 16, 2, SFX_WATER_GUN
-	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
-	anim_bgeffect ANIM_BG_WATER, $8, $0, $0
-	anim_wait 8
-	anim_sound 16, 2, SFX_WATER_GUN
-	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
-	anim_bgeffect ANIM_BG_WATER, $30, $0, $0
-	anim_wait 8
-	anim_sound 16, 2, SFX_WATER_GUN
-	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
-	anim_bgeffect ANIM_BG_WATER, $1c, $0, $0
-	anim_wait 32
+	anim_wait 16
 	anim_call BattleAnim_ShowMon_1
 	anim_bgeffect ANIM_BG_END_WATER, $0, $0, $0
 	anim_wait 16
