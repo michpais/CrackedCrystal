@@ -224,17 +224,21 @@ BurnedTowerRival_AfterText2:
 	done
 
 BurnedTower1FEusineIntroText:
-	text "EUSINE: My name's"
-	line "EUSINE."
+	text "EUSINE: Oh hey"
+	line "<PLAYER>!"
 
-	para "I'm on the trail"
-	line "of a #MON named"
+	para "It's EUSINE, we"
+	line "met back at PROF."
+	cont "ELM's lab!"
+
+	para "Remember that"
+	line "#MON named I ment-"
+	cont "ioned back then?"
+
+	para "Well, its actually"
+	line "a legendary"
+	cont "#MON named"
 	cont "SUICUNE."
-
-	para "And you are…?"
-
-	para "<PLAYER>? Glad to"
-	line "meet you!"
 
 	para "I heard rumors"
 	line "that SUICUNE is in"
