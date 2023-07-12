@@ -2615,10 +2615,12 @@ MeganiumEvosAttacks:
 	db 22, MEGA_DRAIN
 	db 26, LEECH_SEED
 	db 32, SWEET_SCENT
+	db 34, DRAIN_KISS
 	db 40, LIGHT_SCREEN
 	db 46, BODY_SLAM
 	db 50, LEAF_BLADE
-	db 54, SAFEGUARD
+	db 52, MOONBLAST
+	db 56, SAFEGUARD
 	db 60, SOLARBEAM
 	db 0 ; no more level-up moves
 
