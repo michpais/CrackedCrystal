@@ -1,6 +1,6 @@
 	db TOGETIC ; 176
 
-	db  55,  40,  85,  40,  80, 105
+	db  65,  60,  85,  60,  90, 95
 	;   hp  atk  def  spd  sat  sdf
 
 	db FAIRY, FLYING ; type
