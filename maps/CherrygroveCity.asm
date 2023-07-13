@@ -439,25 +439,26 @@ CherrygroveRivalText_Seen:
 	para "What a waste."
 	line "A wimp like you."
 
-	para "<……> <……> <……>"
+	para "I hate weak"
+	line "trainers<……>"
 
-	para "Don't you get what"
-	line "I'm saying?"
-
-	para "Well, I too, have"
-	line "a good #MON."
+	para "And with this"
+	line "#MON I'll show"
+	cont "everyone that I'm"
+	cont "strong."
 
 	para "I'll show you"
 	line "what I mean!"
 	done
 
 RivalCherrygroveWinText:
-	text "Humph. Are you"
-	line "happy you won?"
+	text "Humph. My #MON"
+	line "let me down…"
 	done
 
 CherrygroveRivalText_YouLost:
-	text "<……> <……> <……>"
+	text "Hah! I knew I"
+	line "could win."
 
 	para "My name's ???."
 
@@ -465,6 +466,11 @@ CherrygroveRivalText_YouLost:
 	line "the world's great-"
 	cont "est #MON"
 	cont "trainer."
+
+	para "I'll show 'em all."
+
+	para "Don't get in my"
+	line "way."
 	done
 
 RivalCherrygroveLossText:
@@ -473,14 +479,21 @@ RivalCherrygroveLossText:
 	done
 
 CherrygroveRivalText_YouWon:
-	text "<……> <……> <……>"
-
-	para "My name's ???."
+	text "My name's ???."
 
 	para "I'm going to be"
 	line "the world's great-"
 	cont "est #MON"
 	cont "trainer."
+	
+	para "I'll show 'em all."
+
+	para "Next time my"
+	line "#MON will be"
+	cont "stronger."
+
+	para "So don't get in"
+	line "my way."
 	done
 
 CherrygroveTeacherText_NoMapCard:

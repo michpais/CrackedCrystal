@@ -952,6 +952,19 @@ ElmAfterTheftText1:
 	text "ELM: <PLAY_G>, this"
 	line "is terrible…"
 
+	para "He was just a boy."
+
+	para "Shows you the eff-"
+	line "ect TEAM ROCKET is"
+	
+	para "having on young"
+	line "trainers. To steal"
+	cont "#MON is awful."
+
+	para "Anyway, thanks for"
+	line "coming so quickly"
+	cont "<PLAY_G>."
+
 	para "Oh, yes, what was"
 	line "MR.#MON's big"
 	cont "discovery?"

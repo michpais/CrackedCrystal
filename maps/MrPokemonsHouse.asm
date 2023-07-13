@@ -240,11 +240,9 @@ MrPokemonText_AlwaysNewDiscoveries:
 	done
 
 MrPokemonsHouse_OakText1:
-	text "OAK: Aha! So"
-	line "you're <PLAY_G>!"
-
-	para "I'm OAK! A #MON"
-	line "researcher."
+	text "OAK: Aha! So good"
+	line "to see you again"
+	cont "<PLAY_G>!"
 
 	para "I was just visit-"
 	line "ing my old friend"
@@ -257,7 +255,8 @@ MrPokemonsHouse_OakText1:
 	line "waited here."
 
 	para "Oh! What's this?"
-	line "A rare #MON!"
+	line "The #MON PROF."
+	cont "ELM gave you?"
 
 	para "Let's see…"
 
@@ -265,9 +264,7 @@ MrPokemonsHouse_OakText1:
 
 	para "I understand why"
 	line "PROF.ELM gave you"
-
-	para "a #MON for this"
-	line "errand."
+	cont "this rare #MON."
 
 	para "To researchers"
 	line "like PROF.ELM and"
@@ -281,7 +278,7 @@ MrPokemonsHouse_OakText1:
 	para "#MON with love"
 	line "and care."
 
-	para "…Ah!"
+	para "Also…"
 
 	para "You seem to be"
 	line "dependable."
