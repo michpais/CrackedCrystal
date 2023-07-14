@@ -23,9 +23,9 @@ Features to come include:
 - Pokemon Abilities
 
 #### Credits:
-pret - for the disassembly of Pokémon Crystal
-[Tom Wang] (https://github.com/froyomuffin) - for Chris's (male character's) running sprite
-[Seasick] (https://github.com/SeasickShore) - for Kris's (female character's) running sprite
+[pret](https://github.com/pret/pokecrystal) - for the disassembly of Pokémon Crystal  
+[Tom Wang](https://github.com/froyomuffin) - for Chris's (male character's) running sprite  
+[Seasick](https://github.com/SeasickShore) - for Kris's (female character's) running sprite  
 
 #### Note:
 This not not a full overview of changes. Page will be updated as development is underway!
