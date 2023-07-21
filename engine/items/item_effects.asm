@@ -326,6 +326,7 @@ PokeBallEffect:
 	ld a, 1
 .statuscheck
 ; BUG (fixed): BRN/PSN/PAR do not affect catch rate
+	ld b, a
 	ld a, [wEnemyMonStatus]
 	and 1 << FRZ | SLP_MASK
 	ld c, 10

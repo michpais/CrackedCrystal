@@ -124,8 +124,8 @@ CherrygroveRivalSceneNorth:
 	startbattle
 	dontrestartmapmusic
 	reloadmap
-	iftrue .AfterVictorious
-	sjump .AfterYourDefeat
+	iftrue .AfterYourDefeat
+	sjump .AfterVictorious
 
 .Totodile:
 	winlosstext RivalCherrygroveWinText, RivalCherrygroveLossText
@@ -135,8 +135,8 @@ CherrygroveRivalSceneNorth:
 	startbattle
 	dontrestartmapmusic
 	reloadmap
-	iftrue .AfterVictorious
-	sjump .AfterYourDefeat
+	iftrue .AfterYourDefeat
+	sjump .AfterVictorious
 
 .Chikorita:
 	winlosstext RivalCherrygroveWinText, RivalCherrygroveLossText
@@ -146,21 +146,21 @@ CherrygroveRivalSceneNorth:
 	startbattle
 	dontrestartmapmusic
 	reloadmap
-	iftrue .AfterVictorious
-	sjump .AfterYourDefeat
-
-.AfterVictorious:
-	playmusic MUSIC_RIVAL_AFTER
-	opentext
-	writetext CherrygroveRivalText_YouWon
-	waitbutton
-	closetext
-	sjump .FinishRival
+	iftrue .AfterYourDefeat
+	sjump .AfterVictorious
 
 .AfterYourDefeat:
 	playmusic MUSIC_RIVAL_AFTER
 	opentext
 	writetext CherrygroveRivalText_YouLost
+	waitbutton
+	closetext
+	sjump .FinishRival
+
+.AfterVictorious:
+	playmusic MUSIC_RIVAL_AFTER
+	opentext
+	writetext CherrygroveRivalText_YouWon
 	waitbutton
 	closetext
 .FinishRival:
