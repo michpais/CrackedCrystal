@@ -4,6 +4,7 @@ DEF PLAYER_NAME_LENGTH        EQU 8
 DEF BOX_NAME_LENGTH           EQU 9
 DEF MON_NAME_LENGTH           EQU 11
 DEF MOVE_NAME_LENGTH          EQU 13
+DEF ABILITY_NAME_LENGTH       EQU 13
 DEF ITEM_NAME_LENGTH          EQU 13
 DEF TRAINER_CLASS_NAME_LENGTH EQU 13
 DEF NAME_LENGTH_JAPANESE      EQU 6
@@ -12,7 +13,7 @@ DEF NAME_LENGTH_JAPANESE      EQU 6
 	const_def 1
 	const MON_NAME              ; 1
 	const MOVE_NAME             ; 2
-	const DUMMY_NAME            ; 3
+	const ABILITY_NAME          ; 3
 	const ITEM_NAME             ; 4
 	const PARTY_OT_NAME         ; 5
 	const ENEMY_OT_NAME         ; 6

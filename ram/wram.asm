@@ -402,6 +402,7 @@ wEnemySubStatus3:: db
 wEnemySubStatus4:: db
 wEnemySubStatus5:: db
 
+wPlayerAbility:: db
 wPlayerRolloutCount:: db
 wPlayerConfuseCount:: db
 wPlayerToxicCount:: db
@@ -411,6 +412,7 @@ wPlayerPerishCount:: db
 wPlayerFuryCutterCount:: db
 wPlayerProtectCount:: db
 
+wEnemyAbility:: db
 wEnemyRolloutCount:: db
 wEnemyConfuseCount:: db
 wEnemyToxicCount:: db
@@ -433,7 +435,7 @@ wBattleScriptBufferAddress:: dw
 
 wTurnEnded:: db
 
-	ds 1
+;	ds 1
 
 wPlayerStats::
 wPlayerAttack::  dw
@@ -441,7 +443,7 @@ wPlayerDefense:: dw
 wPlayerSpeed::   dw
 wPlayerSpAtk::   dw
 wPlayerSpDef::   dw
-	ds 1
+;	ds 1
 
 wEnemyStats::
 wEnemyAttack::  dw
@@ -599,6 +601,8 @@ wPlayerWrapCount:: db
 wEnemyWrapCount:: db
 wPlayerCharging:: db
 wEnemyCharging:: db
+;
+;wAnimationsDisabled:: db ; used to temporarily disable animations for abilities
 
 wBattleEnded:: db
 
@@ -2677,6 +2681,9 @@ wBaseDefense:: db
 wBaseSpeed:: db
 wBaseSpecialAttack:: db
 wBaseSpecialDefense:: db
+wBaseEVs::
+wBaseHPAtkDefSpdEVs:: db
+wBaseSpAtkSpDefEVs:: db
 wBaseType::
 wBaseType1:: db
 wBaseType2:: db
@@ -2686,17 +2693,16 @@ wBaseItems::
 wBaseItem1:: db
 wBaseItem2:: db
 wBaseGender:: db
-wBaseUnknown1:: db
 wBaseEggSteps:: db
-wBaseUnknown2:: db
 wBasePicSize:: db
-wBaseUnusedFrontpic:: dw
-wBaseUnusedBackpic:: dw
+wBaseAbility:: db
 wBaseGrowthRate:: db
 wBaseEggGroups:: db
 wBaseTMHM:: flag_array NUM_TM_HM_TUTOR
 wCurBaseDataEnd::
 	assert wCurBaseDataEnd - wCurBaseData == BASE_DATA_SIZE
+
+	ds 2
 
 wCurDamage:: dw
 
@@ -3643,6 +3649,12 @@ wDecompressEnemyFrontpic:: ds $80 tiles
 NEXTU
 ; unidentified uses
 w6_d000:: ds $1000
+
+NEXTU
+wAbilityTiles:: ds 22 tiles
+; + 1 to include the "'s"
+wAbilityPkmn:: ds MON_NAME_LENGTH + 1
+wAbilityName:: ds 20
 ENDU
 
 

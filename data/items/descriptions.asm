@@ -136,7 +136,7 @@ ItemDescriptions:
 	dw BasementKeyDesc
 	dw PassDesc
 	dw TeruSama9Desc
-	dw TeruSama10Desc
+	dw ZincDesc
 	dw CharcoalDesc
 	dw BerryJuiceDesc
 	dw ScopeLensDesc
@@ -378,7 +378,7 @@ LuckyPunchDesc:
 	next "ratio of CHANSEY.@"
 
 CalciumDesc:
-	db   "Ups SPECIAL stats"
+	db   "Raises SPCL.ATK"
 	next "of one #MON.@"
 
 RareCandyDesc:
@@ -784,8 +784,9 @@ PassDesc:
 TeruSama9Desc:
 	db   "?@"
 
-TeruSama10Desc:
-	db   "?@"
+ZincDesc:
+	db   "Raises SPCL.DEF"
+	next "of one #MON.@"
 
 TeruSama11Desc:
 	db   "?@"

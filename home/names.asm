@@ -2,7 +2,7 @@ NamesPointers::
 ; entries correspond to GetName constants (see constants/text_constants.asm)
 	dba PokemonNames        ; MON_NAME (not used; jumps to GetPokemonName)
 	dba MoveNames           ; MOVE_NAME
-	dba NULL                ; DUMMY_NAME
+	dba AbilityNames        ; ABILITY_NAME
 	dba ItemNames           ; ITEM_NAME
 	dbw 0, wPartyMonOTs     ; PARTY_OT_NAME
 	dbw 0, wOTPartyMonOTs   ; ENEMY_OT_NAME
@@ -144,6 +144,22 @@ GetPokemonName::
 	pop hl
 	pop af
 	rst Bankswitch
+	ret
+
+GetAbilityName::
+; Get Pokemon Ability name for wNamedObjectIndex
+
+	push hl
+	push bc
+	ld a, [wNamedObjectIndex]
+
+	ld [wCurSpecies], a
+	ld a, ABILITY_NAME
+	ld [wNamedObjectType], a
+	call GetName
+	ld de, wStringBuffer1
+	pop bc
+	pop hl
 	ret
 
 GetItemName::

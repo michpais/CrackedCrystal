@@ -65,7 +65,6 @@ INCLUDE "engine/events/bug_contest/judging.asm"
 INCLUDE "engine/events/pokerus/apply_pokerus_tick.asm"
 INCLUDE "engine/events/bug_contest/contest_2.asm"
 INCLUDE "engine/pokemon/correct_party_errors.asm"
-INCLUDE "engine/math/get_square_root.asm"
 
 
 SECTION "bank5", ROMX
@@ -217,6 +216,7 @@ INCLUDE "engine/smallflag.asm"
 INCLUDE "engine/gfx/trademon_frontpic.asm"
 INCLUDE "engine/events/pokerus/check_pokerus.asm"
 INCLUDE "engine/events/lucky_number.asm"
+INCLUDE "engine/pokemon/abilities.asm"
 INCLUDE "engine/pokemon/caught_data.asm"
 INCLUDE "engine/pokemon/search_party.asm"
 INCLUDE "engine/pokemon/stats_screen.asm"

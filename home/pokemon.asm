@@ -274,18 +274,6 @@ GetBaseData::
 	ld hl, wBasePicSize
 	ld [hl], b
 
-; Beta front and back sprites
-; (see pokegold-spaceworld's data/pokemon/base_stats/*)
-	ld hl, wBaseUnusedFrontpic
-	ld [hl], e
-	inc hl
-	ld [hl], d
-	inc hl
-	ld [hl], e
-	inc hl
-	ld [hl], d
-	jr .end ; useless
-
 .end
 ; Replace Pokedex # with species
 	ld a, [wCurSpecies]
@@ -297,6 +285,18 @@ GetBaseData::
 	pop de
 	pop bc
 	ret
+
+GetAbility::
+	push bc
+	push de
+	push hl
+	push af
+	ldh a, [hROMBank]
+	push af
+	ld a, BANK(BaseData)
+	rst Bankswitch
+	pop af
+	
 
 GetCurNickname::
 	ld a, [wCurPartyMon]
