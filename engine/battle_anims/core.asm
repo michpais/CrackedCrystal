@@ -263,8 +263,7 @@ InitBattleAnimBuffer:
 	jr nz, .no_sub
 	ld a, [wFXAnimID]
 	cp KINESIS
-	jr z, .do_sub
-.do_sub
+	jr nz, .no_sub
 	pop af
 	sub 1 * 8
 	jr .done

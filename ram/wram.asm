@@ -1880,7 +1880,7 @@ wBugContestResults::
 	bugcontestwinner wBugContestThirdPlace
 wBugContestWinnersEnd::
 	bugcontestwinner wBugContestTemp
-;	ds 4
+	ds 4
 wBugContestWinnerName:: ds NAME_LENGTH
 
 
@@ -2097,19 +2097,19 @@ SECTION UNION "Miscellaneous WRAM 1", WRAMX
 wd002:: ds 1
 wd003:: ds 1
 wd004:: ds 1
-;	ds 3
+	ds 3
 wd008:: ds 2
-;	ds 6
+	ds 6
 wd010:: ds 1
 wd011:: ds 1
 wd012:: ds 1
 wd013:: ds 1
 wd014:: ds 2
-;	ds 1
+	ds 1
 wd017:: ds 1
 wd018:: ds 1
 wd019:: ds 1
-;	ds 19
+	ds 19
 wd02d:: ds 1
 wd02e:: ds 1
 wd02f:: ds 1
@@ -2247,7 +2247,7 @@ wPoisonStepPartyFlags:: ds PARTY_LENGTH
 wPoisonStepDataEnd::
 ENDU
 
-;	ds 23
+	ds 23
 
 
 SECTION "More WRAM 1", WRAMX
@@ -2594,7 +2594,7 @@ wRestartClockMin::  db
 
 NEXTU
 ; link
-	ds 9
+;	ds 9
 wLinkBattleRNPreamble:: ds SERIAL_RN_PREAMBLE_LENGTH
 wLinkBattleRNs:: ds SERIAL_RNS_LENGTH
 
@@ -2610,7 +2610,7 @@ wd1f0:: ds 1
 wd1f1:: ds 1
 wd1f2:: ds 1
 wd1f3:: ds 1
-	ds 6
+;	ds 6
 
 NEXTU
 ; miscellaneous bytes
@@ -2702,11 +2702,11 @@ wBaseTMHM:: flag_array NUM_TM_HM_TUTOR
 wCurBaseDataEnd::
 	assert wCurBaseDataEnd - wCurBaseData == BASE_DATA_SIZE
 
-	ds 2
+;	ds 2
 
 wCurDamage:: dw
 
-	ds 2
+;	ds 2
 
 wMornEncounterRate::  db
 wDayEncounterRate::   db
@@ -2742,7 +2742,7 @@ wMonTriedToEvolve:: db
 
 wTimeOfDay:: db
 
-	ds 1
+;	ds 1
 
 
 SECTION "Enemy Party", WRAMX
@@ -2857,22 +2857,22 @@ wMapReentryScriptQueueFlag:: db
 wMapReentryScriptBank:: db
 wMapReentryScriptAddress:: dw
 
-;	ds 4
+	ds 4
 
 wTimeCyclesSinceLastCall:: db
 wReceiveCallDelay_MinsRemaining:: db
 wReceiveCallDelay_StartTime:: ds 3
 
-;	ds 3
+	ds 3
 
 wBugContestMinsRemaining:: db
 wBugContestSecsRemaining:: db
 
-;	ds 2
+	ds 2
 
 wMapStatusEnd::
 
-;	ds 2
+	ds 2
 
 wCrystalData::
 wPlayerGender::
@@ -2911,7 +2911,7 @@ wStartSecond:: db
 
 wRTC:: ds 4
 
-;	ds 4
+	ds 4
 
 wDST::
 ; bit 7: dst
@@ -2924,11 +2924,11 @@ wGameTimeMinutes:: db
 wGameTimeSeconds:: db
 wGameTimeFrames::  db
 
-;	ds 2
+	ds 2
 
 wCurDay:: db
 
-;	ds 1
+	ds 1
 
 wObjectFollow_Leader:: db
 wObjectFollow_Follower:: db
@@ -2945,7 +2945,7 @@ endr
 
 wCmdQueue:: ds CMDQUEUE_CAPACITY * CMDQUEUE_ENTRY_SIZE
 
-;	ds 40
+	ds 40
 
 wMapObjects::
 wPlayerObject:: map_object wPlayer ; player is map object 0
