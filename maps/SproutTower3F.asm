@@ -196,6 +196,9 @@ SproutTowerRivalOnlyCareAboutStrongText:
 	para "I really couldn't"
 	line "care less about"
 	cont "weak #MON."
+
+	para "Now for the gym."
+	line "Watch out FALKNER!"
 	done
 
 SproutTowerRivalUsedEscapeRopeText:
