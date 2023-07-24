@@ -26,7 +26,11 @@ gfx/pokemon/*/frames.asm
 # tool binaries
 *.exe
 
+# error stackdumps
+*.stackdump
+
 # precompiled python
+*.py
 *.pyc
 *$py.class
 
