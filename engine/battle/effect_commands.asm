@@ -3604,6 +3604,7 @@ BattleCommand_SleepTarget:
 	ld hl, AlreadyAsleepText
 	jr nz, .fail
 
+	ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
 	jp nz, PrintDidntAffect2
@@ -3715,8 +3716,10 @@ BattleCommand_Poison:
 	and a
 	jr nz, .failed
 
+	ld hl, ProtectingItselfText
 	call CheckSubstituteOpp
 	jr nz, .failed
+	ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
 	jr nz, .failed
@@ -3841,8 +3844,10 @@ BattleCommand_Burn:
 	jr c, .failed
 
 .dont_sample_failure
+	ld hl, ProtectingItselfText
 	call CheckSubstituteOpp
 	jr nz, .failed
+	ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
 	jr nz, .failed
@@ -5820,8 +5825,10 @@ BattleCommand_Confuse:
 	jp StdBattleTextbox
 
 .not_already_confused
+	ld hl, ProtectingItselfText
 	call CheckSubstituteOpp
 	jr nz, BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
+	ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
 	jr nz, BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
@@ -5905,10 +5912,12 @@ BattleCommand_Paralyze:
 	call GetBattleVarAddr
 	and a
 	jr nz, .failed
+	ld hl, ProtectingItselfText
+	call CheckSubstituteOpp
+	jr nz, .failed
+	ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
-	jr nz, .failed
-	call CheckSubstituteOpp
 	jr nz, .failed
 	ld c, 30
 	call DelayFrames
@@ -6258,8 +6267,8 @@ PrintDidntAffect:
 
 PrintDidntAffect2:
 	call AnimateFailedMove
-	ld hl, DidntAffect1Text ; 'it didn't affect'
-	ld de, DidntAffect2Text ; 'it didn't affect'
+	ld hl, EvadedText ; 'evaded the attack'
+	ld de, ProtectingItselfText ; 'protecting itself'
 	jp FailText_CheckOpponentProtect
 
 PrintParalyze:

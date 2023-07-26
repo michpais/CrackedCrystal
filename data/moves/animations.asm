@@ -3598,20 +3598,18 @@ BattleAnim_MudSlap:
 BattleAnim_WaterPulse:
 	anim_bgeffect ANIM_BG_START_WATER, $0, BG_EFFECT_TARGET, $0
 	anim_1gfx ANIM_GFX_PSYCHIC
-	anim_call BattleAnim_UserObj_2Row
-	anim_sound 16, 2, SFX_WATER_GUN
-	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
+.loop
 	anim_bgeffect ANIM_BG_WATER, $1c, $0, $0
-	anim_wait 12
 	anim_sound 16, 2, SFX_WATER_GUN
 	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
-	anim_bgeffect ANIM_BG_WATER, $8, $0, $0
-	anim_wait 12
-	anim_sound 16, 2, SFX_WATER_GUN
-	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
-	anim_bgeffect ANIM_BG_WATER, $30, $0, $0
+	anim_wait 8
+	anim_loop 3, .loop
+;	anim_sound 16, 2, SFX_WATER_GUN
+;	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
+;	anim_wait 8
+;	anim_sound 16, 2, SFX_WATER_GUN
+;	anim_obj ANIM_OBJ_WAVE, 64, 88, $2
 	anim_wait 16
-	anim_call BattleAnim_ShowMon_1
 	anim_bgeffect ANIM_BG_END_WATER, $0, $0, $0
 	anim_wait 16
 	anim_ret

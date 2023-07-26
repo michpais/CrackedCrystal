@@ -2683,8 +2683,10 @@ TyphlosionEvosAttacks:
 TotodileEvosAttacks:
 	db EVOLVE_LEVEL, 18, CROCONAW
 	db 0 ; no more evolutions
-	db 1, SCRATCH
-	db 1, LEER
+	db 1, SUPERSONIC
+	db 1, WATER_PULSE
+	db 1, HYPNOSIS
+	db 1, WILL_O_WISP
 	db 6, WATER_GUN
 	db 8, RAGE
 	db 13, BITE
@@ -3322,12 +3324,16 @@ YanmaEvosAttacks:
 	db 6, QUICK_ATTACK
 	db 11, DOUBLE_TEAM
 	db 14, SONICBOOM
-	db 17, DETECT
-	db 22, SUPERSONIC
+	db 17, TWISTER
+	db 19, SUPERSONIC
+	db 22, DRAGONBREATH
+	db 25, DETECT
 	db 27, WING_ATTACK
 	db 30, PURSUIT
 	db 33, ANCIENTPOWER
+	db 35, DRAGON_DANCE
 	db 38, HYPNOSIS
+	db 40, OUTRAGE
 	db 43, AIR_SLASH
 	db 46, SCREECH
 	db 49, BUG_BUZZ
