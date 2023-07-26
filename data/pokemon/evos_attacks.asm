@@ -2683,10 +2683,8 @@ TyphlosionEvosAttacks:
 TotodileEvosAttacks:
 	db EVOLVE_LEVEL, 18, CROCONAW
 	db 0 ; no more evolutions
-	db 1, SUPERSONIC
-	db 1, WATER_PULSE
-	db 1, HYPNOSIS
-	db 1, WILL_O_WISP
+	db 1, SCRATCH
+	db 1, LEER
 	db 6, WATER_GUN
 	db 8, RAGE
 	db 13, BITE
