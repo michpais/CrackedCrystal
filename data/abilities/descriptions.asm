@@ -50,226 +50,181 @@ AbilityDescriptions::
 
 OvergrowDescription:
     db   "Powers up GRASS type"
-    next "moves in a pinch"
-    next "@"
+    next "moves in a pinch@"
 
 BlazeDescription:
     db   "Powers up FIRE type"
-    next "moves in a pinch"
-    next "@"
+    next "moves in a pinch@"
 
 TorrentDescription:
     db   "Powers up WATER type"
-    next "moves in a pinch"
-    next "@"
+    next "moves in a pinch@"
 
 ShieldDustDescription:
     db   "Can't be hit by"
-    next "additional move"
-    next "effects@"
+    next "move effects@"
 
 ShedSkinDescription:
     db   "May cure itself of"
     next "status conditions@"
-    next "@"
 
 CompoundEyesDescription:
-    db   "Raises accuracy"
-    next "@"
+    db   "Raises ACCURACY"
     next "@"
 
 SwarmDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Powers up BUG type"
+    next "moves in a pinch@"
 
 KeenEyeDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents loss of"
+    next "ACCURACY@"
    
 GutsDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Boosts ATTACK with a"
+    next "status condition@"
    
 IntimidateDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Lowers foe's ATTACK"
+    next "upon entering battle@"
    
 StaticDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "May paralyze on"
+    next "contact@"
    
 SandVeilDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Ups evasion in a"
+    next "sandstorm@"
    
 PoisonPointDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "May poison on"
+    next "contact@"
    
 CuteCharmDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "May infatuate on"
+    next "contact@"
    
 FlashFireDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Powers up FIRE type"
+    next "moves if hit by fire@"
    
 InnerFocusDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents flinching"
+    next "@"
    
 ChlorophyllDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Raises SPEED in"
+    next "sunshine@"
    
 EffectSporeDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "May leave spores on"
+    next "contact@"
    
 LimberDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents paralysis"
+    next "@"
    
 CloudNineDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Negates weather"
+    next "effects@"
    
 VitalSpiritDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents sleep"
+    next "@"
    
 WaterAbsorbDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Heals from WATER"
+    next "type attacks@"
    
 ClearBodyDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents stat"
+    next "reduction@"
    
 SturdyDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Endures hits from"
+    next "full HP@"
    
 OwnTempoDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents confusion"
+    next "@"
    
 ThickFatDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Protects against"
+    next "heat and cold@"
    
 StickyHoldDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents item theft"
+    next "@"
    
 ShellArmorDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Blocks critical hits"
+    next "@"
    
 LevitateDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Immune to GROUND"
+    next "type attacks@"
    
 InsomniaDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents sleep"
+    next "@"
    
 RockHeadDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents recoil"
+    next "damage@"
    
 SereneGraceDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Promotes additional"
+    next "move effects@"
    
 SwiftSwimDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Raises SPEED in rain"
+    next "@"
    
 NaturalCureDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Switching out heals"
+    next "status conditions@"
    
 FlameBodyDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "May burn on contact"
+    next "@"
    
 HyperCutterDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents ATTACK"
+    next "reduction@"
    
 VoltAbsorbDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Heals from ELECTRIC"
+    next "type attacks@"
    
 ImmunityDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Prevents poisoning"
+    next "@"
    
 PressureDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Doubles foe's PP"
+    next "usage@"
    
 SynchronizeDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Passes on status"
+    next "conditions to foe@"
    
 HugePowerDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Doubles ATTACK power"
+    next "@"
    
 SnowWarningDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Summons a hail storm"
+    next "upon entering battle@"
    
 SuctionCupsDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Anchors the body"
+    next "to the battlefield@"
    
 SniperDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Critical hits deal"
+    next "additional damage@"
    
 SandstreamDescription:
-    db   "Placeholder"
-    next "Placeholder"
-    next "Placeholder@"
+    db   "Summons a sandstorm"
+    next "upon entering battle@"
    
