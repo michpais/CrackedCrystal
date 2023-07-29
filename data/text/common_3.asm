@@ -1,8 +1,9 @@
 _OakText6::
 	text "RED has been miss-"
 	line "ing since then."
-	cont "Maybe another tra-"
-	cont "iner will emerge"
+
+	para "Maybe another tra-"
+	line "iner will emerge"
 
 	para "and take them down"
 	line "for good..."

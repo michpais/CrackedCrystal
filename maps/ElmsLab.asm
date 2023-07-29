@@ -730,8 +730,9 @@ ElmText_Intro:
 
 	para "I heard from"
 	line "PROFESSOR OAK that"
-	cont "you are ready for"
-	cont "a #MON. So-"
+
+	para "you are ready for"
+	line "a #MON. So-"
 
 	para "I'm going to give"
 	line "you one of mine!"

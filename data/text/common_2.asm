@@ -1538,8 +1538,9 @@ _OakText4::
 
 	para "I study the many"
 	line "things we still"
-	cont "don't know about"
-	cont "#MON!"
+
+	para "don't know about"
+	line "#MON!"
 	prompt
 
 _OakText5::
@@ -1550,17 +1551,18 @@ _OakText5::
 	para "Three years ago I"
 	line "gave a boy named"
 	cont "RED a #MON"
-	cont "and he took down"
-	cont "an evil team named"
 
-	para "TEAM ROCKET in the"
-	line "KANTO region."
+	para "With it, he took"
+	line "down the evil TEAM"
+	cont "ROCKET."
 
-	para "It seems like they"
-	line "are up to no good"
-	cont "again here in"
+	para "That was in the"
+	cont "KANTO region. It"
+
+	para "looks like they've"
+	cont "resurfaced here in"
 	cont "JHOTO."
 
 	para "Who knows what"
-	line "they are up to."
+	line "they're up to now."
 	prompt
