@@ -66,7 +66,7 @@ TreeMonSet_Route:
 	db 50, HOOTHOOT,   10
 	db 15, PINECO,     10
 	db 15, PINECO,     10
-	db 10, EXEGGCUTE,  10
+	db 10, HERACROSS,  10
 	db  5, EXEGGCUTE,  10
 	db  5, EXEGGCUTE,  10
 	db -1

@@ -268,9 +268,13 @@ Route31PokeBall:
 Route31CooltrainerMText:
 	text "DARK CAVE…"
 
-	para "If #MON could"
-	line "light it up, I'd"
+	para "If my #MON"
+	line "knew FLASH, I'd"
 	cont "explore it."
+
+	para "I heard a rare"
+	line "#MON can be"
+	cont "found inside."
 	done
 
 BugCatcherWade1SeenText:

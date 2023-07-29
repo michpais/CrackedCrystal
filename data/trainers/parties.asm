@@ -13,8 +13,10 @@ Trainers:
 FalknerGroup:
 	; FALKNER (1)
 	db "FALKNER@", TRAINERTYPE_MOVES
-	db  7, PIDGEY,     TACKLE, MUD_SLAP, NO_MOVE, NO_MOVE
-	db  9, PIDGEOTTO,  TACKLE, MUD_SLAP, GUST, NO_MOVE
+	db  9, HOOTHOOT,   TACKLE, MUD_SLAP, GROWL, HYPNOSIS
+	db 10, NATU,       PECK, LEER, NIGHT_SHADE, NO_MOVE
+	db 10, MURKROW,    PECK, MUD_SLAP, PURSUIT, NO_MOVE
+	db 12, PIDGEOTTO,  TACKLE, MUD_SLAP, GUST, NO_MOVE
 	db -1 ; end
 
 WhitneyGroup:
@@ -1497,7 +1499,7 @@ BugCatcherGroup:
 	; BUG_CATCHER (1)
 	db "DON@", TRAINERTYPE_NORMAL
 	db  3, CATERPIE
-	db  3, CATERPIE
+	db  4, CATERPIE
 	db -1 ; end
 
 	; BUG_CATCHER (2)
@@ -1518,7 +1520,7 @@ BugCatcherGroup:
 	db  2, CATERPIE
 	db  2, CATERPIE
 	db  3, WEEDLE
-	db  2, CATERPIE
+	db  3, CATERPIE
 	db -1 ; end
 
 	; BUG_CATCHER (5)
@@ -3073,23 +3075,23 @@ ExecutiveFGroup:
 	db -1 ; end
 
 SageGroup:
-	; SAGE (1)
+	; SAGE (1) 3F Sprout Tower
 	db "CHOW@", TRAINERTYPE_NORMAL
-	db  3, BELLSPROUT
-	db  3, BELLSPROUT
-	db  3, BELLSPROUT
+	db  4, BELLSPROUT
+	db  4, BELLSPROUT
+	db  4, BELLSPROUT
 	db -1 ; end
 
-	; SAGE (2)
+	; SAGE (2) 2F Sprout Tower (first)
 	db "NICO@", TRAINERTYPE_NORMAL
 	db  3, BELLSPROUT
 	db  3, BELLSPROUT
 	db  3, BELLSPROUT
 	db -1 ; end
 
-	; SAGE (3)
+	; SAGE (3) 4F first
 	db "JIN@", TRAINERTYPE_NORMAL
-	db  6, BELLSPROUT
+	db  7, BELLSPROUT
 	db -1 ; end
 
 	; SAGE (4)
@@ -3112,16 +3114,16 @@ SageGroup:
 	db 16, GASTLY
 	db -1 ; end
 
-	; SAGE (7)
+	; SAGE (7) 2F Sprout Tower (second)
 	db "EDMOND@", TRAINERTYPE_NORMAL
-	db  3, BELLSPROUT
-	db  3, BELLSPROUT
-	db  3, BELLSPROUT
+	db  5, BELLSPROUT
+	db  5, BELLSPROUT
+	db  5, BELLSPROUT
 	db -1 ; end
 
-	; SAGE (8)
+	; SAGE (8) 4F second
 	db "NEAL@", TRAINERTYPE_NORMAL
-	db  6, BELLSPROUT
+	db  8, BELLSPROUT
 	db -1 ; end
 
 	; SAGE (9)
