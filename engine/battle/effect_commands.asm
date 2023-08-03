@@ -5825,10 +5825,8 @@ BattleCommand_Confuse:
 	jp StdBattleTextbox
 
 .not_already_confused
-;	ld hl, ProtectingItselfText
 	call CheckSubstituteOpp
 	jr nz, BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
-;	ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
 	jr nz, BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
