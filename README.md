@@ -7,17 +7,19 @@ Currently under development, CrackedCrystal is how I imagine Pokémon Crystal ca
 The new features are to include:
 - Revamped Eusine storyline (in development)
 - Revamped Team Rocket storyline to include Giovanni and activity in Kanto (in development)
+- Revamped trainer Pokémon and Gyme Leaders
 - Added new moves (Wiki page to be updated)
 - Updated Pokemon learnsets to reflect Gen VI (similar but not exact)
 - Added Physical/Special split
-- Made all pokemon available in game. All Jhoto pokemon available before E4.
-- Buffed the following Jhoto pokemon: Sneasel, Murkrow, Ariados, Yanma, Misdreavus, Togetic (Wiki to be updated)
+- All pokemon will be available in game. All Jhoto pokemon available before E4.
+- Buffed the following Jhoto pokemon: Sneasel, Murkrow, Ariados, Yanma (now BUG/DRAGON), Misdreavus, Togetic (now FAIRY/FLYING) (Wiki to be updated)
 - Impossible evolutions updated (Wiki to be updated)
 - Berry trees give 2-4 berries/apricorns
 - Kurt finishes ball making immediately
-- Added hail and added sandstorm effects
+- Added hail and added sandstorm additional effects
 - Updated all HM field moves to be usable if you have the HM and you have a pokemon who is capable of learning it and have passed a certain stage of the game
 - Added running shoes
+- Added MED POCKET in PACK
 
 Features to come include:
 - Pokemon Abilities
