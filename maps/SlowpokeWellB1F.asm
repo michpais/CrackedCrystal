@@ -143,29 +143,24 @@ KurtSlowpokeWellVictoryMovementData:
 	step_end
 
 SlowpokeWellB1FKurtText:
-	text "KURT: Hey there,"
-	line "<PLAYER>!"
+	text "KURT: Ugh… hey"
+	line "there, <PLAYER>."
 
-	para "The guard up top"
-	line "took off when I"
-	cont "shouted at him."
+	para "I confronted the"
+	line "ROCKET guard…"
+	cont "but fell down…"
+	
+	para "and hurt my back…"
+	line "after chasing him."
 
-	para "But then I took a"
-	line "tumble down the"
-	cont "WELL."
+	para "I need a minute to"
+	line "recover."
 
-	para "I slammed down"
-	line "hard on my back,"
-	cont "so I can't move."
+	para "Can you help us"
+	line "save the SLOWPOKE?"
 
-	para "Rats! If I were"
-	line "fit, my #MON"
-
-	para "would've punished"
-	line "them…"
-
-	para "Ah, it can't be"
-	line "helped."
+	para "Our town would be"
+	line "forever grateful!"
 
 	para "<PLAYER>, show them"
 	line "how gutsy you are"
@@ -176,12 +171,16 @@ KurtLeaveSlowpokeWellText:
 	text "KURT: Way to go,"
 	line "<PLAYER>!"
 
-	para "TEAM ROCKET has"
-	line "taken off."
+	para "I saw TEAM ROCKET"
+	line "running out of"
+	cont "here."
 
-	para "My back's better"
-	line "too. Let's get out"
-	cont "of here."
+	para "You must have done"
+	line "a number on them!"
+
+	para "My back is feeling"
+	line "better, let's get"
+	cont "out of here."
 	done
 
 GruntM29SeenText:
@@ -228,26 +227,42 @@ GruntM1SeenText:
 	para "If you interrupt"
 	line "our work, don't"
 	cont "expect any mercy!"
+
+	para "These TAILS will"
+	line "fund our big plans"
+
+	para "coming up for"
+	line "JHOTO."
+
+	para "Oops- I might have"
+	line "said too much!"
+
+	para "I'll have to beat"
+	line "it out of you!"
 	done
 
 GruntM1BeatenText:
-	text "You did OK today,"
-	line "but wait till next"
-	cont "time!"
+	text "Oh no…"
+	line "You didn't hear"
+	
+	para "anything about"
+	line "plans from me."
 	done
 
 TrainerGruntM1WhenTalkText:
 	text "Yeah, TEAM ROCKET"
-	line "was broken up"
+	line "was broken up by"
+
+	para "our boss GIOVANNI"
 	cont "three years ago."
 
 	para "But we continued"
 	line "our activities"
 	cont "underground."
 
-	para "Now you can have"
-	line "fun watching us"
-	cont "stir up trouble!"
+	para "Our dream is to"
+	line "get back to our"
+	cont "former glory!"
 	done
 
 GruntM2SeenText:
@@ -265,8 +280,8 @@ GruntM2BeatenText:
 	done
 
 GruntM2AfterBattleText:
-	text "We need the money,"
-	line "but selling SLOW-"
+	text "We need the money"
+	line "from selling SLOW-"
 	cont "POKETAILS?"
 
 	para "It's tough being a"

@@ -251,6 +251,12 @@ AzaleaTownRivalBeforeText:
 	line "TEAM ROCKET has"
 	cont "returned?"
 
+	para "I came to see it"
+	line "for myself, but"
+
+	para "I don't see any"
+	line "sign of them…"
+
 	para "What? You beat"
 	line "them? Hah! Quit"
 	cont "lying."
@@ -262,21 +268,19 @@ AzaleaTownRivalBeforeText:
 
 AzaleaTownRivalWinText:
 	text "… Humph! Useless"
-	line "#MON!"
-
-	para "Listen, you. You"
-	line "only won because"
-
-	para "my #MON were"
-	line "weak."
+	line "#MON! You've"
+	
+	para "failed me once"
+	line "again."
 	done
 
 AzaleaTownRivalAfterText:
 	text "I hate the weak."
+	line "Weak #MON,"
+	cont "weak trainers."
 
-	para "#MON, trainers."
-	line "It doesn't matter"
-	cont "who or what."
+	para "It doesn't matter"
+	line "who or what."
 
 	para "I'm going to be"
 	line "strong and wipe"
@@ -288,9 +292,12 @@ AzaleaTownRivalAfterText:
 	para "They act big and"
 	line "tough in a group."
 
-	para "But get them"
-	line "alone, and they're"
-	cont "weak."
+	para "But get them alone"
+	line "and they're weak."
+
+	para "That's why they"
+	line "broke up in KANTO."
+	cont "I saw it myself."
 
 	para "I hate them all."
 
@@ -312,7 +319,7 @@ AzaleaTownRocket1Text:
 	cont "standing guard."
 
 	para "Aren't I a good"
-	line "Samaritan?"
+	line "Samaritan? Hehe…"
 	done
 
 AzaleaTownRocket2Text:
@@ -327,22 +334,27 @@ AzaleaTownRocket2Text:
 AzaleaTownGrampsTextBefore:
 	text "The SLOWPOKE have"
 	line "disappeared from"
-	cont "town…"
+	
+	para "town ever since"
+	line "TEAM ROCKET showed"
+	cont "up… I heard they"
 
-	para "I heard their"
-	line "TAILS are being"
-	cont "sold somewhere."
+	para "are selling the"
+	line "SLOWPOKE's TAILS"
+	cont "somewhere."
 	done
 
 AzaleaTownGrampsTextAfter:
 	text "The SLOWPOKE have"
-	line "returned."
+	line "returned and TEAM"
+	cont "ROCKET is gone."
 
-	para "Knowing them, they"
-	line "could've just been"
+	para "Thankfully, the"
+	line "town is back to" 
+	cont "normal again!"
 
-	para "goofing off some-"
-	line "where."
+	para "I wonder what"
+	line "drove them out."
 	done
 
 AzaleaTownTeacherText:

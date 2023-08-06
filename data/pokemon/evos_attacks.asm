@@ -2864,7 +2864,8 @@ SpinarakEvosAttacks:
 	db 8, WRAP
 	db 12, LEECH_LIFE
 	db 15, NIGHT_SHADE
-	db 22, FURY_SWIPES
+	db 19, FURY_SWIPES
+	db 22, HEX
 	db 26, FAINT_ATTACK
 	db 29, MEAN_LOOK
 	db 33, AGILITY
@@ -2885,7 +2886,7 @@ AriadosEvosAttacks:
 	db 12, LEECH_LIFE
 	db 15, NIGHT_SHADE
 	db 19, HEX
-	db 23, FURY_SWIPES
+	db 22, FURY_SWIPES
 	db 28, FAINT_ATTACK
 	db 32, MEAN_LOOK
 	db 37, AGILITY

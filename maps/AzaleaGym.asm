@@ -155,10 +155,10 @@ BugsyText_INeverLose:
 	line "#MON."
 
 	para "My research is"
-	line "going to make me"
+	line "going to make my"
 
-	para "the authority on"
-	line "bug #MON!"
+	para "bug #MON even"
+	line "better!"
 
 	para "Let me demonstrate"
 	line "what I've learned"
