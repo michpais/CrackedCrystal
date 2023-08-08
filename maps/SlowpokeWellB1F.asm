@@ -254,7 +254,7 @@ TrainerGruntM1WhenTalkText:
 	line "was broken up by"
 
 	para "our boss GIOVANNI"
-	cont "three years ago."
+	line "three years ago."
 
 	para "But we continued"
 	line "our activities"

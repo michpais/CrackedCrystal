@@ -1557,10 +1557,10 @@ _OakText5::
 	cont "ROCKET."
 
 	para "That was in the"
-	cont "KANTO region. It"
+	line "KANTO region. It"
 
 	para "looks like they've"
-	cont "resurfaced here in"
+	line "resurfaced here in"
 	cont "JHOTO."
 
 	para "Who knows what"

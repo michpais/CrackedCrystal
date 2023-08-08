@@ -193,11 +193,12 @@ BugsyText_HiveBadgeSpeech:
 	para "will obey you,"
 	line "even traded ones."
 
-	para "#MON that know"
-	line "CUT will be able"
+	para "#MON that can"
+	line "learn CUT will be"
 
-	para "to use it outside"
-	line "of battle too."
+	para "able to use it"
+	line "outside of battle" 
+	cont "too."
 
 	para "Here, I also want"
 	line "you to have this."
@@ -287,9 +288,11 @@ BugCatcherJoshBeatenText:
 	done
 
 BugCatcherJoshAfterBattleText:
-	text "I guess I should"
-	line "teach them better"
-	cont "moves…"
+	text "You're pretty"
+	line "strong! No wonder"
+	
+	para "you beat TEAM"
+	line "ROCKET!"
 	done
 
 TwinsAmyandmay1SeenText:
