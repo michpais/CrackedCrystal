@@ -14,6 +14,7 @@ EngineFlags:
 	engine_flag wPokegearFlags, POKEGEAR_PHONE_CARD_F
 	engine_flag wPokegearFlags, POKEGEAR_EXPN_CARD_F
 	engine_flag wPokegearFlags, POKEGEAR_OBTAINED_F
+	engine_flag wPokegearFlags, GOT_TM02_HEADBUTT ; not related to pokegear
 
 	; day-care
 	engine_flag wDayCareMan, DAYCAREMAN_HAS_EGG_F

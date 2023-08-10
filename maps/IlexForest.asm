@@ -378,6 +378,7 @@ IlexForestHeadbuttGuyScript:
 	verbosegiveitem TM_HEADBUTT
 	iffalse .BagFull
 	setevent EVENT_GOT_TM02_HEADBUTT
+	setflag ENGINE_HEADBUTT
 .AlreadyGotHeadbutt:
 	writetext Text_HeadbuttOutro
 	waitbutton
@@ -825,15 +826,24 @@ Text_HeadbuttIntro:
 	para "I'm shaking trees"
 	line "using HEADBUTT."
 
-	para "It's fun. Here,"
-	line "you try it too!"
+	para "Just have your"
+	line "#MON use the"
+	
+	para "move against one"
+	line "of these trees!"
+
+	para "Here's the TM so,"
+	line "you can use it in"
+	cont "battle too!"
 	done
 
 Text_HeadbuttOutro:
-	text "Rattle trees with"
-	line "HEADBUTT. Some-"
-	cont "times, sleeping"
-	cont "#MON fall out."
+	text "If you rattle"
+	line "trees with HEAD-"
+	cont "BUTT, sometimes"
+	
+	para "sleeping #MON"
+	line "will fall out."
 	done
 
 Text_IlexForestLass:

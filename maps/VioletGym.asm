@@ -157,10 +157,10 @@ FalknerZephyrBadgeText:
 	cont "power of #MON."
 
 	para "It also enables"
-	line "#MON to use"
+	line "#MON that can"
 
-	para "FLASH, if they"
-	line "have it, anytime."
+	para "learn flash to use"
+	line "it outside battle."
 
 	para "Here--take this"
 	line "too."

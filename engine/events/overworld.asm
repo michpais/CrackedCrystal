@@ -1461,8 +1461,8 @@ HeadbuttScript:
 	end
 
 TryHeadbuttOW::
-; Step 1 - check for HIVEBADGE
-	ld de, ENGINE_HIVEBADGE
+; Step 1 - check for got TM02 (Headbutt)
+	ld de, ENGINE_HEADBUTT
 	call CheckEngineFlag
 	jr c, .no
 

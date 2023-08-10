@@ -13,26 +13,28 @@ Trainers:
 FalknerGroup:
 	; FALKNER (1)
 	db "FALKNER@", TRAINERTYPE_MOVES
-	db  9, HOOTHOOT,   TACKLE, MUD_SLAP, GROWL, HYPNOSIS
-	db 10, NATU,       PECK, LEER, NIGHT_SHADE, NO_MOVE
-	db 10, MURKROW,    PECK, MUD_SLAP, PURSUIT, NO_MOVE
-	db 12, PIDGEOTTO,  TACKLE, MUD_SLAP, GUST, NO_MOVE
+	db  8, HOOTHOOT,   TACKLE, MUD_SLAP, GROWL, HYPNOSIS
+	db  9, NATU,       PECK, LEER, NIGHT_SHADE, NO_MOVE
+	db  9, MURKROW,    PECK, MUD_SLAP, PURSUIT, NO_MOVE
+	db 11, PIDGEOTTO,  TACKLE, MUD_SLAP, GUST, NO_MOVE
 	db -1 ; end
 
 WhitneyGroup:
 	; WHITNEY (1)
 	db "WHITNEY@", TRAINERTYPE_MOVES
-	db 18, CLEFAIRY,   DOUBLESLAP, MIMIC, ENCORE, METRONOME
-	db 20, MILTANK,    ROLLOUT, ATTRACT, STOMP, RECOVER
+	db 20, TOGETIC,    METRONOME, SWEET_KISS, ATTRACT, DRAIN_KISS
+	db 20, CLEFAIRY,   DOUBLESLAP, DRAIN_KISS, ENCORE, METRONOME
+	db 21, MILTANK,    ROLLOUT, ATTRACT, STOMP, RECOVER
+	db 23, GRANBULL,   HEADBUTT, CHARM, BITE, LICK
 	db -1 ; end
 
 BugsyGroup:
 	; BUGSY (1)
 	db "BUGSY@", TRAINERTYPE_MOVES
-	db 15, LEDIAN,     MACH_PUNCH, SUPERSONIC, LIGHT_SCREEN, FURY_CUTTER
-	db 17, ARIADOS,    POISON_STING, STRING_SHOT, NIGHT_SHADE, FURY_SWIPES
-	db 15, HERACROSS,  LEER, HORN_ATTACK, FURY_CUTTER, AERIAL_ACE
-	db 19, SCYTHER,    QUICK_ATTACK, AGILITY, FURY_CUTTER, PURSUIT
+	db 14, LEDIAN,     MACH_PUNCH, SUPERSONIC, LIGHT_SCREEN, FURY_CUTTER
+	db 16, ARIADOS,    POISON_STING, STRING_SHOT, NIGHT_SHADE, FURY_SWIPES
+	db 14, HERACROSS,  LEER, HORN_ATTACK, FURY_CUTTER, AERIAL_ACE
+	db 18, SCYTHER,    QUICK_ATTACK, AGILITY, FURY_CUTTER, PURSUIT
 	db -1 ; end
 
 MortyGroup:
@@ -92,28 +94,28 @@ Rival1Group:
 	db  5, TOTODILE
 	db -1 ; end
 
-	; RIVAL1 (4)
+	; RIVAL1 (4) Azaelea Town - Totodile Starter
 	db "?@", TRAINERTYPE_NORMAL
 	db 15, GASTLY
-	db 17, ZUBAT
-	db 18, TENTACOOL
-	db 19, BAYLEEF
+	db 16, ZUBAT
+	db 16, TENTACOOL
+	db 18, BAYLEEF
 	db -1 ; end
 
-	; RIVAL1 (5)
+	; RIVAL1 (5) Azaelea Town - Bayleef Starter
 	db "?@", TRAINERTYPE_NORMAL
 	db 15, GASTLY
-	db 17, ZUBAT
-	db 18, ODDISH
-	db 19, QUILAVA
+	db 16, ZUBAT
+	db 16, ODDISH
+	db 18, QUILAVA
 	db -1 ; end
 
-	; RIVAL1 (6)
+	; RIVAL1 (6) Azaelea Town - Quilava Starter
 	db "?@", TRAINERTYPE_NORMAL
 	db 15, GASTLY
-	db 17, ZUBAT
-	db 18, HOUNDOUR
-	db 19, CROCONAW
+	db 16, ZUBAT
+	db 16, HOUNDOUR
+	db 18, CROCONAW
 	db -1 ; end
 
 	; RIVAL1 (7)
@@ -353,29 +355,29 @@ YoungsterGroup:
 	db  4, RATTATA
 	db -1 ; end
 
-	; YOUNGSTER (3)
+	; YOUNGSTER (3) Route 32
 	db "ALBERT@", TRAINERTYPE_NORMAL
-	db  9, RATTATA
-	db 11, ZUBAT
+	db  8, RATTATA
+	db 10, ZUBAT
 	db -1 ; end
 
-	; YOUNGSTER (4)
+	; YOUNGSTER (4) Route 32
 	db "GORDON@", TRAINERTYPE_NORMAL
-	db 13, WOOPER
+	db 12, WOOPER
 	db -1 ; end
 
-	; YOUNGSTER (5)
+	; YOUNGSTER (5) Route 34
 	db "SAMUEL@", TRAINERTYPE_NORMAL
-	db  7, RATTATA
-	db 10, SANDSHREW
-	db  8, SPEAROW
-	db  8, SPEAROW
+	db 11, RATTATA
+	db 14, SANDSHREW
+	db 12, SPEAROW
+	db 12, SPEAROW
 	db -1 ; end
 
-	; YOUNGSTER (6)
+	; YOUNGSTER (6) Route 34
 	db "IAN@", TRAINERTYPE_NORMAL
-	db 10, MANKEY
-	db 12, DIGLETT
+	db 13, MANKEY
+	db 15, DIGLETT
 	db -1 ; end
 
 	; YOUNGSTER (7)
@@ -423,8 +425,8 @@ YoungsterGroup:
 SchoolboyGroup:
 	; SCHOOLBOY (1)
 	db "JACK@", TRAINERTYPE_NORMAL
-	db 12, ODDISH
-	db 15, VOLTORB
+	db 16, ODDISH
+	db 18, VOLTORB
 	db -1 ; end
 
 	; SCHOOLBOY (2)
@@ -437,7 +439,7 @@ SchoolboyGroup:
 
 	; SCHOOLBOY (3)
 	db "ALAN@", TRAINERTYPE_NORMAL
-	db 16, TANGELA
+	db 20, TANGELA
 	db -1 ; end
 
 	; SCHOOLBOY (4)
@@ -588,10 +590,10 @@ BirdKeeperGroup:
 	db  9, SPEAROW
 	db -1 ; end
 
-	; BIRD_KEEPER (3)
+	; BIRD_KEEPER (3) Route 35
 	db "BRYAN@", TRAINERTYPE_NORMAL
-	db 12, PIDGEY
-	db 14, PIDGEOTTO
+	db 16, PIDGEY
+	db 18, PIDGEOTTO
 	db -1 ; end
 
 	; BIRD_KEEPER (4)
@@ -652,11 +654,11 @@ BirdKeeperGroup:
 	db 36, FARFETCH_D
 	db -1 ; end
 
-	; BIRD_KEEPER (13)
+	; BIRD_KEEPER (13) Route 32
 	db "PETER@", TRAINERTYPE_NORMAL
-	db  9, PIDGEY
-	db  9, PIDGEY
-	db 11, SPEAROW
+	db  8, PIDGEY
+	db  8, PIDGEY
+	db 10, SPEAROW
 	db -1 ; end
 
 	; BIRD_KEEPER (14)
@@ -693,16 +695,16 @@ BirdKeeperGroup:
 	db -1 ; end
 
 LassGroup:
-	; LASS (1)
+	; LASS (1) Goldenrod Gym
 	db "CARRIE@", TRAINERTYPE_MOVES
-	db 18, SNUBBULL,   SCARY_FACE, CHARM, BITE, LICK
+	db 20, AZUMARILL,   ROLLOUT, DEFENSE_CURL, BUBBLEBEAM, PLAY_ROUGH
 	db -1 ; end
 
-	; LASS (2)
-	db "BRIDGET@", TRAINERTYPE_NORMAL
-	db 15, JIGGLYPUFF
-	db 15, JIGGLYPUFF
-	db 15, JIGGLYPUFF
+	; LASS (2) Goldenrod Gym
+	db "BRIDGET@", TRAINERTYPE_MOVES
+	db 19, JIGGLYPUFF,	SING, DEFENSE_CURL, ROLLOUT, DRAIN_KISS
+	db 19, CLEFAIRY,	SING, DOUBLESLAP, MINIMIZE, DRAIN_KISS
+	db 20, TEDDIURSA,	SCRATCH, LICK, FAINT_ATTACK, ATTRACT
 	db -1 ; end
 
 	; LASS (3)
@@ -712,10 +714,10 @@ LassGroup:
 	db 30, GLOOM
 	db -1 ; end
 
-	; LASS (4)
+	; LASS (4) National Park
 	db "KRISE@", TRAINERTYPE_NORMAL
-	db 12, ODDISH
-	db 15, CUBONE
+	db 16, ODDISH
+	db 18, CUBONE
 	db -1 ; end
 
 	; LASS (5)
@@ -1069,17 +1071,17 @@ CooltrainerFGroup:
 	db -1 ; end
 
 BeautyGroup:
-	; BEAUTY (1)
+	; BEAUTY (1) Goldenrod Gym
 	db "VICTORIA@", TRAINERTYPE_NORMAL
-	db  9, SENTRET
 	db 13, SENTRET
-	db 17, SENTRET
+	db 17, SNUBBULL
+	db 21, FURRET
 	db -1 ; end
 
-	; BEAUTY (2)
+	; BEAUTY (2) Goldenrod Gym
 	db "SAMANTHA@", TRAINERTYPE_MOVES
-	db 16, MEOWTH,     SCRATCH, GROWL, BITE, PAY_DAY
-	db 16, MEOWTH,     SCRATCH, GROWL, BITE, SLASH
+	db 20, MEOWTH,     SCRATCH, GROWL, BITE, PAY_DAY
+	db 20, SNUBBULL,   SCARY_FACE, CHARM, BITE, DRAIN_KISS
 	db -1 ; end
 
 	; BEAUTY (3)
@@ -1164,7 +1166,7 @@ BeautyGroup:
 	db -1 ; end
 
 PokemaniacGroup:
-	; POKEMANIAC (1)
+	; POKEMANIAC (1) Union Cave
 	db "LARRY@", TRAINERTYPE_NORMAL
 	db 13, SLOWPOKE
 	db -1 ; end
@@ -1217,15 +1219,15 @@ PokemaniacGroup:
 	db 36, PORYGON,    RECOVER, PSYCHIC_M, THUNDERBOLT, TRI_ATTACK
 	db -1 ; end
 
-	; POKEMANIAC (11)
+	; POKEMANIAC (11) Goldenrod Underground
 	db "ISSAC@", TRAINERTYPE_MOVES
-	db 12, LICKITUNG,  LICK, SUPERSONIC, CUT, NO_MOVE
+	db 16, LICKITUNG,  LICK, SUPERSONIC, CUT, THIEF
 	db -1 ; end
 
-	; POKEMANIAC (12)
+	; POKEMANIAC (12) Goldenrod Underground
 	db "DONALD@", TRAINERTYPE_NORMAL
-	db 10, SLOWPOKE
-	db 10, SLOWPOKE
+	db 14, SLOWPOKE
+	db 15, SLOWPOKE
 	db -1 ; end
 
 	; POKEMANIAC (13)
@@ -1417,9 +1419,9 @@ GruntMGroup:
 	db 19, RATICATE
 	db -1 ; end
 
-	; GRUNTM (29)
+	; GRUNTM (29) Slowpoke Well
 	db "GRUNT@", TRAINERTYPE_NORMAL
-	db 13, RATTATA
+	db 12, RATTATA
 	db 13, RATTATA
 	db -1 ; end
 
@@ -1527,28 +1529,28 @@ BugCatcherGroup:
 	db  3, CATERPIE
 	db -1 ; end
 
-	; BUG_CATCHER (5)
+	; BUG_CATCHER (5) Azaelea Gym
 	db "BENNY@", TRAINERTYPE_NORMAL
-	db 10, WEEDLE
-	db 13, KAKUNA
+	db  9, WEEDLE
+	db 12, KAKUNA
 	db 15, BEEDRILL
 	db -1 ; end
 
-	; BUG_CATCHER (6)
+	; BUG_CATCHER (6) Azaelea Gym
 	db "AL@", TRAINERTYPE_NORMAL
-	db 10, CATERPIE
-	db 13, METAPOD
+	db  9, CATERPIE
+	db 12, METAPOD
 	db 15, BUTTERFREE
 	db -1 ; end
 
-	; BUG_CATCHER (7)
+	; BUG_CATCHER (7) Azaelea Gym
 	db "JOSH@", TRAINERTYPE_MOVES
-	db 16, PINECO,     TACKLE, PROTECT, TAKE_DOWN, BUG_BITE
+	db 15, PINECO,     TACKLE, PROTECT, TAKE_DOWN, BUG_BITE
 	db -1 ; end
 
-	; BUG_CATCHER (8)
+	; BUG_CATCHER (8) Route 35
 	db "ARNIE@", TRAINERTYPE_NORMAL
-	db 15, VENONAT
+	db 18, VENONAT
 	db -1 ; end
 
 	; BUG_CATCHER (9)
@@ -1614,10 +1616,10 @@ BugCatcherGroup:
 	db 40, VENOMOTH,   GUST, SUPERSONIC, PSYCHIC_M, TOXIC
 	db -1 ; end
 
-	; BUG_CATCHER (19)
+	; BUG_CATCHER (19) Ilex Forest
 	db "WAYNE@", TRAINERTYPE_NORMAL
-	db  8, LEDYBA
-	db 10, PARAS
+	db 13, LEDYBA
+	db 15, PARAS
 	db -1 ; end
 
 FisherGroup:
@@ -1646,10 +1648,10 @@ FisherGroup:
 	db 31, SEAKING
 	db -1 ; end
 
-	; FISHER (5)
+	; FISHER (5) Route 32
 	db "HENRY@", TRAINERTYPE_NORMAL
-	db 11, POLIWAG
-	db 11, POLIWAG
+	db 10, POLIWAG
+	db 10, POLIWAG
 	db -1 ; end
 
 	; FISHER (6)
@@ -2120,10 +2122,10 @@ SuperNerdGroup:
 	db 20, GRIMER
 	db -1 ; end
 
-	; SUPER_NERD (2)
+	; SUPER_NERD (2) Goldenrod Underground
 	db "ERIC@", TRAINERTYPE_NORMAL
-	db 11, GRIMER
-	db 11, GRIMER
+	db 15, GRIMER
+	db 15, GRIMER
 	db -1 ; end
 
 	; SUPER_NERD (3)
@@ -2169,12 +2171,12 @@ SuperNerdGroup:
 	db 31, MAGNEMITE
 	db -1 ; end
 
-	; SUPER_NERD (10)
+	; SUPER_NERD (10) Goldenrod Underground
 	db "TERU@", TRAINERTYPE_NORMAL
-	db  7, MAGNEMITE
-	db 11, VOLTORB
-	db  7, MAGNEMITE
-	db  9, MAGNEMITE
+	db 11, MAGNEMITE
+	db 15, VOLTORB
+	db 13, MAGNEMITE
+	db 15, MAGNEMITE
 	db -1 ; end
 
 	; SUPER_NERD (11)
@@ -2301,10 +2303,10 @@ HikerGroup:
 	db 25, MACHOP
 	db -1 ; end
 
-	; HIKER (5)
+	; HIKER (5) Route 33
 	db "ANTHONY@", TRAINERTYPE_NORMAL
-	db 14, GEODUDE
-	db 14, MACHOP
+	db 13, GEODUDE
+	db 13, MACHOP
 	db -1 ; end
 
 	; HIKER (6)
@@ -2388,9 +2390,9 @@ HikerGroup:
 	db 35, MACHAMP
 	db -1 ; end
 
-	; HIKER (18)
+	; HIKER (18) Union Cave 1F
 	db "DANIEL@", TRAINERTYPE_NORMAL
-	db 13, ONIX
+	db 12, ONIX
 	db -1 ; end
 
 	; HIKER (19)
@@ -2534,19 +2536,19 @@ FirebreatherGroup:
 	db 32, SLUGMA
 	db -1 ; end
 
-	; FIREBREATHER (5)
+	; FIREBREATHER (5) Union Cave 1F
 	db "BILL@", TRAINERTYPE_NORMAL
 	db 11, KOFFING
-	db 12, KOFFING
+	db 11, KOFFING
 	db -1 ; end
 
-	; FIREBREATHER (6)
+	; FIREBREATHER (6) Route 35
 	db "WALT@", TRAINERTYPE_NORMAL
-	db 11, MAGMAR
-	db 13, MAGMAR
+	db 15, MAGMAR
+	db 17, MAGMAR
 	db -1 ; end
 
-	; FIREBREATHER (7)
+	; FIREBREATHER (7) Union Cave 1F
 	db "RAY@", TRAINERTYPE_NORMAL
 	db 13, VULPIX
 	db -1 ; end
@@ -2559,12 +2561,12 @@ FirebreatherGroup:
 	db -1 ; end
 
 JugglerGroup:
-	; JUGGLER (1)
+	; JUGGLER (1) Route 35
 	db "IRWIN@", TRAINERTYPE_NORMAL
-	db  2, VOLTORB
 	db  6, VOLTORB
 	db 10, VOLTORB
 	db 14, VOLTORB
+	db 18, VOLTORB
 	db -1 ; end
 
 	; JUGGLER (2)
@@ -2728,11 +2730,11 @@ PsychicGroup:
 	db 20, SLOWPOKE,   CURSE, BODY_SLAM, WATER_GUN, CONFUSION
 	db -1 ; end
 
-	; PSYCHIC_T (7)
+	; PSYCHIC_T (7) Route 36
 	db "MARK@", TRAINERTYPE_MOVES
-	db 13, ABRA,       TELEPORT, FLASH, NO_MOVE, NO_MOVE
-	db 13, ABRA,       TELEPORT, FLASH, NO_MOVE, NO_MOVE
-	db 15, KADABRA,    TELEPORT, KINESIS, CONFUSION, NO_MOVE
+	db 15, ABRA,       TELEPORT, FLASH, NO_MOVE, NO_MOVE
+	db 15, ABRA,       TELEPORT, FLASH, NO_MOVE, NO_MOVE
+	db 19, KADABRA,    TELEPORT, KINESIS, CONFUSION, NO_MOVE
 	db -1 ; end
 
 	; PSYCHIC_T (8)
@@ -2767,26 +2769,26 @@ PsychicGroup:
 	db -1 ; end
 
 PicnickerGroup:
-	; PICNICKER (1)
+	; PICNICKER (1) Route 32
 	db "LIZ@", TRAINERTYPE_NORMAL
-	db 12, NIDORAN_F
+	db 11, NIDORAN_F
 	db -1 ; end
 
-	; PICNICKER (2)
+	; PICNICKER (2) Route 34
 	db "GINA@", TRAINERTYPE_NORMAL
-	db  9, HOPPIP
-	db  9, HOPPIP
-	db 12, BULBASAUR
+	db 13, HOPPIP
+	db 13, HOPPIP
+	db 15, BULBASAUR
 	db -1 ; end
 
-	; PICNICKER (3)
-	db "BROOKE@", TRAINERTYPE_MOVES
-	db 16, PIKACHU,    THUNDERSHOCK, GROWL, QUICK_ATTACK, DOUBLE_TEAM
+	; PICNICKER (3) National Park
+	db "BROOKE@", TRAINERTYPE_NORMAL
+	db 19, PIKACHU
 	db -1 ; end
 
-	; PICNICKER (4)
+	; PICNICKER (4) Route 35
 	db "KIM@", TRAINERTYPE_NORMAL
-	db 15, VULPIX
+	db 18, VULPIX
 	db -1 ; end
 
 	; PICNICKER (5)
@@ -2922,27 +2924,27 @@ PicnickerGroup:
 	db -1 ; end
 
 CamperGroup:
-	; CAMPER (1)
+	; CAMPER (1) Route 32
 	db "ROLAND@", TRAINERTYPE_NORMAL
-	db 12, NIDORAN_M
+	db 11, NIDORAN_M
 	db -1 ; end
 
-	; CAMPER (2)
+	; CAMPER (2) Route 34
 	db "TODD@", TRAINERTYPE_NORMAL
-	db 14, PSYDUCK
+	db 17, PSYDUCK
 	db -1 ; end
 
-	; CAMPER (3)
+	; CAMPER (3) Route 35
 	db "IVAN@", TRAINERTYPE_NORMAL
-	db 10, DIGLETT
-	db 10, ZUBAT
 	db 14, DIGLETT
+	db 14, ZUBAT
+	db 17, DIGLETT
 	db -1 ; end
 
-	; CAMPER (4)
+	; CAMPER (4) Route 35
 	db "ELLIOT@", TRAINERTYPE_NORMAL
-	db 13, SANDSHREW
-	db 15, MARILL
+	db 16, SANDSHREW
+	db 18, MARILL
 	db -1 ; end
 
 	; CAMPER (5)
@@ -3219,9 +3221,9 @@ BoarderGroup:
 	db -1 ; end
 
 PokefanMGroup:
-	; POKEFANM (1)
+	; POKEFANM (1) National Park
 	db "WILLIAM@", TRAINERTYPE_ITEM
-	db 14, RAICHU,     BERRY
+	db 19, RAICHU,     BERRY
 	db -1 ; end
 
 	; POKEFANM (2)
@@ -3256,9 +3258,9 @@ PokefanMGroup:
 	db 33, PSYDUCK,    BERRY
 	db -1 ; end
 
-	; POKEFANM (7)
+	; POKEFANM (7) Route 34
 	db "BRANDON@", TRAINERTYPE_ITEM
-	db 13, SNUBBULL,   BERRY
+	db 17, SNUBBULL,   BERRY
 	db -1 ; end
 
 	; POKEFANM (8)
@@ -3334,10 +3336,10 @@ KimonoGirlGroup:
 	db -1 ; end
 
 TwinsGroup:
-	; TWINS (1)
+	; TWINS (1) Azaelea Gym
 	db "AMY & MAY@", TRAINERTYPE_NORMAL
-	db 15, SPINARAK
-	db 15, LEDYBA
+	db 14, SPINARAK
+	db 14, LEDYBA
 	db -1 ; end
 
 	; TWINS (2)
@@ -3395,9 +3397,9 @@ TwinsGroup:
 	db -1 ; end
 
 PokefanFGroup:
-	; POKEFANF (1)
+	; POKEFANF (1) National Park
 	db "BEVERLY@", TRAINERTYPE_ITEM
-	db 14, SNUBBULL,   BERRY
+	db 19, SNUBBULL,   BERRY
 	db -1 ; end
 
 	; POKEFANF (2)
@@ -3452,22 +3454,22 @@ BlueGroup:
 	db -1 ; end
 
 OfficerGroup:
-	; OFFICER (1)
+	; OFFICER (1) Route 34
 	db "KEITH@", TRAINERTYPE_NORMAL
+	db 20, GROWLITHE
+	db -1 ; end
+
+	; OFFICER (2) Route 35
+	db "DIRK@", TRAINERTYPE_NORMAL
+	db 17, GROWLITHE
 	db 17, GROWLITHE
 	db -1 ; end
 
-	; OFFICER (2)
-	db "DIRK@", TRAINERTYPE_NORMAL
-	db 14, GROWLITHE
-	db 14, GROWLITHE
-	db -1 ; end
-
 GruntFGroup:
-	; GRUNTF (1)
+	; GRUNTF (1) Slowpoke Well B1F
 	db "GRUNT@", TRAINERTYPE_NORMAL
 	db 12, ZUBAT
-	db 13, EKANS
+	db 12, EKANS
 	db -1 ; end
 
 	; GRUNTF (2)

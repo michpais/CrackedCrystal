@@ -94,7 +94,7 @@ Route34IlexForestGateTeacherText:
 	para "That's so cute!"
 	line "I'm jealous, but"
 
-	para "I think thiis TM"
+	para "I think this TM"
 	line "can help!"
 	done
 

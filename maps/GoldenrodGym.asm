@@ -348,14 +348,16 @@ BeautySamanthaSeenText:
 	done
 
 BeautySamanthaBeatenText:
-	text "No! Oh, MEOWTH,"
+	text "No! My #MON!"
 	line "I'm so sorry!"
 	done
 
 BeautySamanthaAfterBattleText:
-	text "I taught MEOWTH"
-	line "moves for taking"
-	cont "on any type…"
+	text "I tried to teach"
+	line "my #MON moves"
+	
+	para "for taking on any"
+	line "type…"
 	done
 
 GoldenrodGymGuideText:
@@ -363,12 +365,16 @@ GoldenrodGymGuideText:
 	line "making!"
 
 	para "This GYM is home"
-	line "to normal-type"
-	cont "#MON trainers."
+	line "to normal-type and"
+	
+	para "fairy-type #MON"
+	line "trainers."
 
 	para "I recommend you"
 	line "use fighting-type"
-	cont "#MON."
+
+	para "or poison-type"
+	line "#MON."
 	done
 
 GoldenrodGymGuideWinText:
