@@ -1533,12 +1533,22 @@ AI_Smart_Hex:
 	ret
 
 AI_Smart_Retaliation:
-; Greatly encourage this move if the AI has a status condition.
+; Greatly encourage this move if the AI is under half HP.
 
-	ld a, [wEnemyMonStatus]
-	and a
-	ret z
+	call AICheckEnemyHalfHP
+	ret c
+; greatly encourage this move if the enemy is slower than the player.
+	call AICompareSpeed ; Return carry if enemy is faster than player
+	jr nc, .greatly_encourage
+; If faster, 50% chance to encourage this move if enemy's HP is above 25%.
+	call AICheckEnemyQuarterHP
+	ret nc
+	call AI_50_50
+	ret c
 	dec [hl]
+	ret
+
+.greatly_encourage
 	dec [hl]
 	dec [hl]
 	ret
