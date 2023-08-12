@@ -182,6 +182,14 @@ ClearBattleRAM:
 	ld [hli], a
 	ld [hl], a
 
+	ld hl, wPlayerAbility
+	ld [hli], a
+	ld [hl], a
+
+	ld hl, wEnemyAbility
+	ld [hli], a
+	ld [hl], a
+
 ; Clear the entire BattleMons area
 	ld hl, wBattle
 	ld bc, wBattleEnd - wBattle

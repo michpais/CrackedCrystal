@@ -1298,7 +1298,8 @@ DebugRoomMenu_PokemonGet_Page2Values:
 	paged_value wDebugRoomMonSpclDefEV,     $00, $ff,         $00,            DebugRoom_BoxStructStrings.SpclDefEV, NULL,                       FALSE
 
 DebugRoomMenu_PokemonGet_Page3Values:
-	db 6
+	db 7
+	paged_value wDebugRoomMonAbility,       $00, $ff,         BASE_ABILITY,   DebugRoom_BoxStructStrings.Ablty,     NULL,                       FALSE
 	paged_value wDebugRoomMonDVs+0,         $00, $ff,         $00,            DebugRoom_BoxStructStrings.PowerRnd0, NULL,                       TRUE
 	paged_value wDebugRoomMonDVs+1,         $00, $ff,         $00,            DebugRoom_BoxStructStrings.PowerRnd1, NULL,                       TRUE
 	paged_value wDebugRoomMonPP+0,          $00, $ff,         $00,            DebugRoom_BoxStructStrings.PP1,       NULL,                       FALSE

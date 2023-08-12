@@ -6,7 +6,7 @@ GetBattleVar::
 
 GetBattleVarAddr::
 ; Get variable from pair a, depending on whose turn it is.
-; There are 21 variable pairs.
+; There are 22 variable pairs.
 	push bc
 
 	ld hl, BattleVarPairs

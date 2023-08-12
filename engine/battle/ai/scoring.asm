@@ -3198,9 +3198,13 @@ AI_Status:
 	cp EFFECT_POISON
 	jr z, .poisonimmunity
 	cp EFFECT_SLEEP
-	jr z, .typeimmunity
+	jr z, .sleepimmunity
 	cp EFFECT_PARALYZE
-	jr z, .typeimmunity
+	jr z, .paralyzeimmunity
+	cp EFFECT_CONFUSE
+	jr z, .confuseimmunity
+;	cp EFFECT_ATTRACT ; for when we implement oblivious
+;	jr z, .attractimmunity
 
 	ld a, [wEnemyMoveStruct + MOVE_POWER]
 	and a
@@ -3215,7 +3219,42 @@ AI_Status:
 	ld a, [wBattleMonType2]
 	cp POISON
 	jr z, .immune
+	ld a, [wBattleMonAbility]
+	cp IMMUNITY
+	jr z, .immune
 
+.sleepimmunity
+	ld a, [wBattleMonAbility]
+	cp VITAL_SPIRIT
+	jr z, .immune
+	cp INSOMNIA
+	jr z, .immune
+	jr .typeimmunity
+
+.paralyzeimmunity
+	ld a, [wBattleMonType1]
+	cp ELECTRIC
+	jr z, .immune
+	ld a, [wBattleMonType2]
+	cp ELECTRIC
+	jr z, .immune
+	ld a, [wBattleMonAbility]
+	cp LIMBER
+	jr z, .immune
+	jr .typeimmunity
+
+.confuseimmunity
+	ld a, [wBattleMonAbility]
+	cp OWN_TEMPO
+	jr z, .immune
+	jr .typeimmunity
+
+;.attractimmunity ; for when we implement oblivious
+;	ld a, [wBattleMonAbility]
+;	cp OBLIVIOUS
+;	jr z, .immune
+;	jr .typeimmunity
+;
 .typeimmunity
 	push hl
 	push bc
@@ -3229,11 +3268,11 @@ AI_Status:
 
 	ld a, [wTypeMatchup]
 	and a
-	jr nz, .checkmove
+	jp nz, .checkmove ;need to change to jp when implementing oblivious
 
 .immune
 	call AIDiscourageMove
-	jr .checkmove
+	jp .checkmove ;need to change to jp when implementing oblivious
 
 
 AI_Risky:

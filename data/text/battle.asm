@@ -952,6 +952,16 @@ ProtectedByText:
 	text "!"
 	prompt
 
+ProtectedByAbilityText:
+	text "<TARGET>'s"
+	line "protected by"
+	
+	para "its ability"
+	line "@"
+	text_ram wStringBuffer1
+	text "!"
+	prompt
+
 MirrorMoveFailedText:
 	text "The MIRROR MOVE"
 	next "failed!"

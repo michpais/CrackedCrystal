@@ -278,3 +278,13 @@ PushLYOverrides::
 	ld a, (wLYOverridesEnd - wLYOverrides) / LEN_2BPP_TILE
 	ld [wRequested2bppSize], a
 	ret
+
+GetOpponentAbility::
+	ld a, BATTLE_VARS_ABILITY_OPP
+	call GetBattleVar
+	ret
+
+GetUserAbility::
+	ld a, BATTLE_VARS_ABILITY
+	call GetBattleVar
+	ret

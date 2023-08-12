@@ -167,12 +167,20 @@ endr
 
 	; Initialize stat experience.
 	xor a
-	ld b, MON_DVS - MON_EVS
+	ld b, MON_ABILITY - MON_EVS
 .loop
 	ld [de], a
 	inc de
 	dec b
 	jr nz, .loop
+
+	; Initialize ability.
+	ld a, [wCurPartySpecies]
+	ld [wCurSpecies], a
+	call GetBaseData
+	ld a, [wBaseAbility]
+	ld [de], a
+	inc de
 
 	pop hl
 	push hl

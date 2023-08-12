@@ -42,6 +42,7 @@ DoBattle:
 	call EnemySwitch
 
 .wild
+	call ResetEnemyAbility
 	ld c, 40
 	call DelayFrames
 
@@ -3653,6 +3654,11 @@ endr
 	ld [wEnemyTurnsTaken], a
 	ld hl, wPlayerSubStatus5
 	res SUBSTATUS_CANT_RUN, [hl]
+ResetEnemyAbility:
+	ld a, [wTempEnemyMonSpecies]
+	call GetBaseData
+	ld a, [wBaseAbility]
+	ld [wEnemyAbility], a
 	ret
 
 ResetEnemyStatLevels:
@@ -4139,6 +4145,11 @@ endr
 	ld [wPlayerTurnsTaken], a
 	ld hl, wEnemySubStatus5
 	res SUBSTATUS_CANT_RUN, [hl]
+ResetPlayerAbility:
+	ld a, [wTempBattleMonSpecies]
+	call GetBaseData
+	ld a, [wBaseAbility]
+	ld [wPlayerAbility], a
 	ret
 
 BreakAttraction:
@@ -6564,6 +6575,15 @@ CheckSleepingTreeMon:
 	ld a, [wBattleType]
 	cp BATTLETYPE_TREE
 	jr nz, .NotSleeping
+
+; Don't do anything if the mon's ability is Insomnia/Vital Spirit
+	ld a, [wTempEnemyMonSpecies]
+	call GetBaseData
+	ld a, [wBaseAbility]
+	cp INSOMNIA
+	jr z, .NotSleeping
+	cp VITAL_SPIRIT
+	jr z, .NotSleeping
 
 ; Get list for the time of day
 	ld hl, AsleepTreeMonsMorn

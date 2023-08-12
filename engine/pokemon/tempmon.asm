@@ -20,7 +20,7 @@ CopyMonToTempMon:
 	jr z, .copywholestruct
 	ld bc, BOXMON_STRUCT_LENGTH
 	callfar CopyBoxmonToTempMon
-	jr .done
+	jr .copyability
 
 .copywholestruct
 	ld a, [wCurPartyMon]
@@ -28,6 +28,15 @@ CopyMonToTempMon:
 	ld de, wTempMon
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call CopyBytes
+
+.copyability
+	ld a, [wCurPartySpecies]
+	cp EGG
+	jr z, .done
+	ld [wCurSpecies], a
+	call GetBaseData
+	ld a, [wBaseAbility]
+	ld [wTempMonAbility], a
 
 .done
 	ret
