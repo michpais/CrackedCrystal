@@ -70,9 +70,9 @@ BattleCommandPointers:
 	dw BattleCommand_ConstantDamage
 	dw BattleCommand_Counter
 	dw BattleCommand_Encore
-	dw BattleCommand_PainSplit
+;	dw BattleCommand_PainSplit
 	dw BattleCommand_Snore
-	dw BattleCommand_Conversion2
+;	dw BattleCommand_Conversion2
 	dw BattleCommand_LockOn
 	dw BattleCommand_Sketch
 	dw BattleCommand_DefrostOpponent

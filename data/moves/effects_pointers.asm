@@ -92,9 +92,9 @@ MoveEffectsPointers:
 	dw Psywave
 	dw Counter
 	dw Encore
-	dw PainSplit
+;	dw PainSplit
 	dw Snore
-	dw Conversion2
+;	dw Conversion2
 	dw LockOn
 	dw Sketch
 	dw DefrostOpponent

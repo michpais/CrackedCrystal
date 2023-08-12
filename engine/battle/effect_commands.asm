@@ -1660,34 +1660,34 @@ BattleCommand_CheckHit:
 	and a
 	ret
 ;
-;.LockOn:
+.LockOn:
 ; Return nz if we are locked-on and aren't trying to use Earthquake,
 ; Fissure or Magnitude on a monster that is flying.
-;	ld a, BATTLE_VARS_SUBSTATUS5_OPP
-;	call GetBattleVarAddr
-;	bit SUBSTATUS_LOCK_ON, [hl]
-;	res SUBSTATUS_LOCK_ON, [hl]
-;	ret z
-;
-;	ld a, BATTLE_VARS_SUBSTATUS3_OPP
-;	call GetBattleVar
-;	bit SUBSTATUS_FLYING, a
-;	jr z, .LockedOn
-;
-;	ld a, BATTLE_VARS_MOVE_ANIM
-;	call GetBattleVar
-;
-;	cp EARTHQUAKE
-;	ret z
+	ld a, BATTLE_VARS_SUBSTATUS5_OPP
+	call GetBattleVarAddr
+	bit SUBSTATUS_LOCK_ON, [hl]
+	res SUBSTATUS_LOCK_ON, [hl]
+	ret z
+
+	ld a, BATTLE_VARS_SUBSTATUS3_OPP
+	call GetBattleVar
+	bit SUBSTATUS_FLYING, a
+	jr z, .LockedOn
+
+	ld a, BATTLE_VARS_MOVE_ANIM
+	call GetBattleVar
+
+	cp EARTHQUAKE
+	ret z
 ;	cp FISSURE
 ;	ret z
-;	cp MAGNITUDE
-;	ret z
-;
-;.LockedOn:
-;	ld a, 1
-;	and a
-;	ret
+	cp MAGNITUDE
+	ret z
+
+.LockedOn:
+	ld a, 1
+	and a
+	ret
 
 .DrainSub:
 ; Return z if using an HP drain move on a substitute.
@@ -3306,12 +3306,12 @@ INCLUDE "engine/battle/move_effects/counter.asm"
 
 INCLUDE "engine/battle/move_effects/encore.asm"
 
-INCLUDE "engine/battle/move_effects/pain_split.asm"
-
+;INCLUDE "engine/battle/move_effects/pain_split.asm"
+;
 INCLUDE "engine/battle/move_effects/snore.asm"
 
-INCLUDE "engine/battle/move_effects/conversion2.asm"
-
+;INCLUDE "engine/battle/move_effects/conversion2.asm"
+;
 INCLUDE "engine/battle/move_effects/lock_on.asm"
 
 INCLUDE "engine/battle/move_effects/sketch.asm"
@@ -3595,6 +3595,20 @@ BattleCommand_SleepTarget:
 	jr .fail
 
 .not_protected_by_item
+	call GetOpponentAbility
+	cp VITAL_SPIRIT
+	jr z, .protected_by_ability
+	cp INSOMNIA
+	jr nz, .not_protected_by_ability
+
+.protected_by_ability
+	ld [wNamedObjectIndex], a
+	call GetAbilityName
+	call AnimateFailedMove
+	ld hl, ProtectedByAbilityText
+	jp StdBattleTextbox
+
+.not_protected_by_ability
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
 	ld d, h
@@ -3662,6 +3676,9 @@ BattleCommand_PoisonTarget:
 	ret z
 	call CheckIfTargetIsPoisonType
 	ret z
+	call GetOpponentAbility
+	cp IMMUNITY
+	ret z
 	call GetOpponentItem
 	ld a, b
 	cp HELD_PREVENT_POISON
@@ -3702,12 +3719,22 @@ BattleCommand_Poison:
 	call GetOpponentItem
 	ld a, b
 	cp HELD_PREVENT_POISON
-	jr nz, .do_poison
+	jr nz, .check_ability_protection
 	ld a, [hl]
 	ld [wNamedObjectIndex], a
 	call GetItemName
 	ld hl, ProtectedByText
 	jr .failed
+
+.check_ability_protection
+	call GetOpponentAbility
+	cp IMMUNITY
+	jr nz, .do_poison
+	ld [wNamedObjectIndex], a
+	call GetAbilityName
+	call AnimateFailedMove
+	ld hl, ProtectedByAbilityText
+	jp StdBattleTextbox
 
 .do_poison
 	ld hl, DidntAffect1Text
@@ -3837,11 +3864,7 @@ BattleCommand_Burn:
 
 	ld a, [wPlayerSubStatus5]
 	bit SUBSTATUS_LOCK_ON, a
-	jr nz, .dont_sample_failure
-
-	call BattleRandom
-	cp 25 percent + 1 ; 25% chance AI fails
-	jr c, .failed
+	jr z, .failed
 
 .dont_sample_failure
 	ld hl, ProtectingItselfText
@@ -4126,6 +4149,9 @@ BattleCommand_ParalyzeTarget:
 	and $7f
 	ret z
 	call CheckIfTargetIsElectricType
+	ret z
+	call GetOpponentAbility
+	cp LIMBER
 	ret z
 	call GetOpponentItem
 	ld a, b
@@ -5428,6 +5454,10 @@ BattleCommand_FlinchTarget:
 	and a
 	ret nz
 
+	call GetOpponentAbility
+	cp INNER_FOCUS
+	ret z
+
 	; fallthrough
 
 FlinchTarget:
@@ -5458,6 +5488,10 @@ BattleCommand_HeldFlinch:
 	ld a, b
 	cp HELD_FLINCH
 	ret nz
+
+	call GetOpponentAbility
+	cp INNER_FOCUS
+	ret z
 
 	call CheckSubstituteOpp
 	ret nz
@@ -5793,6 +5827,9 @@ BattleCommand_ConfuseTarget:
 	ld a, [wEffectFailed]
 	and a
 	ret nz
+	call GetOpponentAbility
+	cp OWN_TEMPO
+	ret nz
 	call SafeCheckSafeguard
 	ret nz
 	call CheckSubstituteOpp
@@ -5816,6 +5853,16 @@ BattleCommand_Confuse:
 	jp StdBattleTextbox
 
 .no_item_protection
+	call GetOpponentAbility
+	cp OWN_TEMPO
+	jr nz, .no_ability_protection
+	ld [wNamedObjectIndex], a
+	call GetAbilityName
+	call AnimateFailedMove
+	ld hl, ProtectedByAbilityText
+	jp StdBattleTextbox
+
+.no_ability_protection
 	ld a, BATTLE_VARS_SUBSTATUS3_OPP
 	call GetBattleVarAddr
 	bit SUBSTATUS_CONFUSED, [hl]
@@ -5891,7 +5938,7 @@ BattleCommand_Paralyze:
 	jr nz, .paralyzed
 	ld a, [wTypeModifier]
 	and $7f
-	jr z, .didnt_affect
+	jp z, .didnt_affect
 	call CheckIfTargetIsElectricType
 	jp z, .didnt_affect
 	call GetOpponentItem
@@ -5906,6 +5953,16 @@ BattleCommand_Paralyze:
 	jp StdBattleTextbox
 
 .no_item_protection
+	call GetOpponentAbility
+	cp LIMBER
+	jr nz, .no_ability_protection
+	ld [wNamedObjectIndex], a
+	call GetAbilityName
+	call AnimateFailedMove
+	ld hl, ProtectedByAbilityText
+	jp StdBattleTextbox
+
+.no_ability_protection
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
 	and a

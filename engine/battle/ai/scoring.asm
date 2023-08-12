@@ -324,10 +324,10 @@ AI_Smart_EffectHandlers:
 	dbw EFFECT_TOXIC,            AI_Smart_Toxic
 	dbw EFFECT_LIGHT_SCREEN,     AI_Smart_LightScreen
 	dbw EFFECT_OHKO,             AI_Smart_Ohko
-	dbw EFFECT_RAZOR_WIND,       AI_Smart_RazorWind
+;	dbw EFFECT_RAZOR_WIND,       AI_Smart_RazorWind
 	dbw EFFECT_SUPER_FANG,       AI_Smart_SuperFang
 	dbw EFFECT_TRAP_TARGET,      AI_Smart_TrapTarget
-	dbw EFFECT_UNUSED_2B,        AI_Smart_Unused2B
+;	dbw EFFECT_UNUSED_2B,        AI_Smart_Unused2B
 	dbw EFFECT_CONFUSE,          AI_Smart_Confuse
 	dbw EFFECT_SP_DEF_UP_2,      AI_Smart_SpDefenseUp2
 	dbw EFFECT_REFLECT,          AI_Smart_Reflect
@@ -341,9 +341,9 @@ AI_Smart_EffectHandlers:
 	dbw EFFECT_DISABLE,          AI_Smart_Disable
 	dbw EFFECT_COUNTER,          AI_Smart_Counter
 	dbw EFFECT_ENCORE,           AI_Smart_Encore
-	dbw EFFECT_PAIN_SPLIT,       AI_Smart_PainSplit
+;	dbw EFFECT_PAIN_SPLIT,       AI_Smart_PainSplit
 	dbw EFFECT_SNORE,            AI_Smart_Snore
-	dbw EFFECT_CONVERSION2,      AI_Smart_Conversion2
+;	dbw EFFECT_CONVERSION2,      AI_Smart_Conversion2
 	dbw EFFECT_LOCK_ON,          AI_Smart_LockOn
 	dbw EFFECT_DEFROST_OPPONENT, AI_Smart_DefrostOpponent
 	dbw EFFECT_SLEEP_TALK,       AI_Smart_SleepTalk
@@ -354,7 +354,7 @@ AI_Smart_EffectHandlers:
 	dbw EFFECT_PRIORITY_HIT,     AI_Smart_PriorityHit
 	dbw EFFECT_THIEF,            AI_Smart_Thief
 	dbw EFFECT_MEAN_LOOK,        AI_Smart_MeanLook
-	dbw EFFECT_NIGHTMARE,        AI_Smart_Nightmare
+;	dbw EFFECT_NIGHTMARE,        AI_Smart_Nightmare
 	dbw EFFECT_FLAME_WHEEL,      AI_Smart_FlameWheel
 	dbw EFFECT_CURSE,            AI_Smart_Curse
 	dbw EFFECT_PROTECT,          AI_Smart_Protect
@@ -378,9 +378,9 @@ AI_Smart_EffectHandlers:
 	dbw EFFECT_RAIN_DANCE,       AI_Smart_RainDance
 	dbw EFFECT_SUNNY_DAY,        AI_Smart_SunnyDay
 	dbw EFFECT_BELLY_DRUM,       AI_Smart_BellyDrum
-	dbw EFFECT_PSYCH_UP,         AI_Smart_PsychUp
+;	dbw EFFECT_PSYCH_UP,         AI_Smart_PsychUp
 	dbw EFFECT_MIRROR_COAT,      AI_Smart_MirrorCoat
-	dbw EFFECT_SKULL_BASH,       AI_Smart_SkullBash
+;	dbw EFFECT_SKULL_BASH,       AI_Smart_SkullBash
 	dbw EFFECT_TWISTER,          AI_Smart_Twister
 	dbw EFFECT_EARTHQUAKE,       AI_Smart_Earthquake
 	dbw EFFECT_FUTURE_SIGHT,     AI_Smart_FutureSight
@@ -1040,59 +1040,59 @@ AI_Smart_TrapTarget:
 	dec [hl]
 	ret
 
-AI_Smart_RazorWind:
-AI_Smart_Unused2B:
-	ld a, [wEnemySubStatus1]
-	bit SUBSTATUS_PERISH, a
-	jr z, .no_perish_count
-
-	ld a, [wEnemyPerishCount]
-	cp 3
-	jr c, .discourage
-
-.no_perish_count
-	push hl
-	ld hl, wPlayerUsedMoves
-	ld c, NUM_MOVES
-
-.checkmove
-	ld a, [hli]
-	and a
-	jr z, .movesdone
-
-	call AIGetEnemyMove
-
-	ld a, [wEnemyMoveStruct + MOVE_EFFECT]
-	cp EFFECT_PROTECT
-	jr z, .dismiss
-	dec c
-	jr nz, .checkmove
-
-.movesdone
-	pop hl
-	ld a, [wEnemySubStatus3]
-	bit SUBSTATUS_CONFUSED, a
-	jr nz, .maybe_discourage
-
-	call AICheckEnemyHalfHP
-	ret c
-
-.maybe_discourage
-	call Random
-	cp 79 percent - 1
-	ret c
-
-.discourage
-	inc [hl]
-	ret
-
-.dismiss
-	pop hl
-	ld a, [hl]
-	add 6
-	ld [hl], a
-	ret
-
+;AI_Smart_RazorWind:
+;AI_Smart_Unused2B:
+;	ld a, [wEnemySubStatus1]
+;	bit SUBSTATUS_PERISH, a
+;	jr z, .no_perish_count
+;
+;	ld a, [wEnemyPerishCount]
+;	cp 3
+;	jr c, .discourage
+;
+;.no_perish_count
+;	push hl
+;	ld hl, wPlayerUsedMoves
+;	ld c, NUM_MOVES
+;
+;.checkmove
+;	ld a, [hli]
+;	and a
+;	jr z, .movesdone
+;
+;	call AIGetEnemyMove
+;
+;	ld a, [wEnemyMoveStruct + MOVE_EFFECT]
+;	cp EFFECT_PROTECT
+;	jr z, .dismiss
+;	dec c
+;	jr nz, .checkmove
+;
+;.movesdone
+;	pop hl
+;	ld a, [wEnemySubStatus3]
+;	bit SUBSTATUS_CONFUSED, a
+;	jr nz, .maybe_discourage
+;
+;	call AICheckEnemyHalfHP
+;	ret c
+;
+;.maybe_discourage
+;	call Random
+;	cp 79 percent - 1
+;	ret c
+;
+;.discourage
+;	inc [hl]
+;	ret
+;
+;.dismiss
+;	pop hl
+;	ld a, [hl]
+;	add 6
+;	ld [hl], a
+;	ret
+;
 AI_Smart_Confuse:
 ; 90% chance to discourage this move if player's HP is between 25% and 50%.
 	call AICheckPlayerHalfHP
@@ -1468,26 +1468,26 @@ AI_Smart_Encore:
 
 INCLUDE "data/battle/ai/encore_moves.asm"
 
-AI_Smart_PainSplit:
-; Discourage this move if [enemy's current HP * 2 > player's current HP].
-
-	push hl
-	ld hl, wEnemyMonHP
-	ld b, [hl]
-	inc hl
-	ld c, [hl]
-	sla c
-	rl b
-	ld hl, wBattleMonHP + 1
-	ld a, [hld]
-	cp c
-	ld a, [hl]
-	sbc b
-	pop hl
-	ret nc
-	inc [hl]
-	ret
-
+;AI_Smart_PainSplit:
+;; Discourage this move if [enemy's current HP * 2 > player's current HP].
+;
+;	push hl
+;	ld hl, wEnemyMonHP
+;	ld b, [hl]
+;	inc hl
+;	ld c, [hl]
+;	sla c
+;	rl b
+;	ld hl, wBattleMonHP + 1
+;	ld a, [hld]
+;	cp c
+;	ld a, [hl]
+;	sbc b
+;	pop hl
+;	ret nc
+;	inc [hl]
+;	ret
+;
 AI_Smart_Snore:
 AI_Smart_SleepTalk:
 ; Greatly encourage this move if enemy is fast asleep.
@@ -1614,7 +1614,7 @@ AI_Smart_Spite:
 
 AI_Smart_DestinyBond:
 AI_Smart_Reversal:
-AI_Smart_SkullBash:
+;AI_Smart_SkullBash:
 ; Discourage this move if enemy's HP is above 25%.
 
 	call AICheckEnemyQuarterHP
@@ -1718,46 +1718,46 @@ AI_Smart_Thief:
 	ld [hl], a
 	ret
 
-AI_Smart_Conversion2:
-; BUG: "Smart" AI discourages Conversion2 after the first turn (see docs/bugs_and_glitches.md)
-	ld a, [wLastPlayerMove]
-	and a
-	jr nz, .discourage
-
-	push hl
-	dec a
-	ld hl, Moves + MOVE_TYPE
-	ld bc, MOVE_LENGTH
-	call AddNTimes
-
-	ld a, BANK(Moves)
-	call GetFarByte
-	ld [wPlayerMoveStruct + MOVE_TYPE], a
-
-	xor a
-	ldh [hBattleTurn], a
-
-	callfar BattleCheckTypeMatchup
-
-	ld a, [wTypeMatchup]
-	cp EFFECTIVE
-	pop hl
-	jr c, .discourage
-	ret z
-
-	call AI_50_50
-	ret c
-
-	dec [hl]
-	ret
-
-.discourage
-	call Random
-	cp 10 percent
-	ret c
-	inc [hl]
-	ret
-
+;AI_Smart_Conversion2:
+;; BUG: "Smart" AI discourages Conversion2 after the first turn (see docs/bugs_and_glitches.md)
+;	ld a, [wLastPlayerMove]
+;	and a
+;	jr nz, .discourage
+;
+;	push hl
+;	dec a
+;	ld hl, Moves + MOVE_TYPE
+;	ld bc, MOVE_LENGTH
+;	call AddNTimes
+;
+;	ld a, BANK(Moves)
+;	call GetFarByte
+;	ld [wPlayerMoveStruct + MOVE_TYPE], a
+;
+;	xor a
+;	ldh [hBattleTurn], a
+;
+;	callfar BattleCheckTypeMatchup
+;
+;	ld a, [wTypeMatchup]
+;	cp EFFECTIVE
+;	pop hl
+;	jr c, .discourage
+;	ret z
+;
+;	call AI_50_50
+;	ret c
+;
+;	dec [hl]
+;	ret
+;
+;.discourage
+;	call Random
+;	cp 10 percent
+;	ret c
+;	inc [hl]
+;	ret
+;
 AI_Smart_Disable:
 	call AICompareSpeed
 	jr nc, .discourage
@@ -1855,15 +1855,15 @@ AICheckLastPlayerMon:
 
 	ret
 
-AI_Smart_Nightmare:
-; 50% chance to encourage this move.
-; The AI_Basic layer will make sure that
-; Dream Eater is only used against sleeping targets.
-
-	call AI_50_50
-	ret c
-	dec [hl]
-	ret
+;AI_Smart_Nightmare:
+;; 50% chance to encourage this move.
+;; The AI_Basic layer will make sure that
+;; Dream Eater is only used against sleeping targets.
+;
+;	call AI_50_50
+;	ret c
+;	dec [hl]
+;	ret
 
 AI_Smart_FlameWheel:
 ; Use this move if the enemy is frozen.
@@ -2546,62 +2546,62 @@ AI_Smart_BellyDrum:
 	ld [hl], a
 	ret
 
-AI_Smart_PsychUp:
-	push hl
-	ld hl, wEnemyAtkLevel
-	ld b, NUM_LEVEL_STATS
-	ld c, 100
-
-; Calculate the sum of all enemy's stat level modifiers. Add 100 first to prevent underflow.
-; Put the result in c. c will range between 58 and 142.
-.enemy_loop
-	ld a, [hli]
-	sub BASE_STAT_LEVEL
-	add c
-	ld c, a
-	dec b
-	jr nz, .enemy_loop
-
-; Calculate the sum of all player's stat level modifiers. Add 100 first to prevent underflow.
-; Put the result in d. d will range between 58 and 142.
-	ld hl, wPlayerAtkLevel
-	ld b, NUM_LEVEL_STATS
-	ld d, 100
-
-.player_loop
-	ld a, [hli]
-	sub BASE_STAT_LEVEL
-	add d
-	ld d, a
-	dec b
-	jr nz, .player_loop
-
-; Greatly discourage this move if enemy's stat levels are higher than player's (if c>=d).
-	ld a, c
-	sub d
-	pop hl
-	jr nc, .discourage
-
-; Else, 80% chance to encourage this move unless player's accuracy level is lower than -1...
-	ld a, [wPlayerAccLevel]
-	cp BASE_STAT_LEVEL - 1
-	ret c
-
-; ...or enemy's evasion level is higher than +0.
-	ld a, [wEnemyEvaLevel]
-	cp BASE_STAT_LEVEL + 1
-	ret nc
-
-	call AI_80_20
-	ret c
-
-	dec [hl]
-	ret
-
-.discourage
-	inc [hl]
-	inc [hl]
-	ret
+;AI_Smart_PsychUp:
+;	push hl
+;	ld hl, wEnemyAtkLevel
+;	ld b, NUM_LEVEL_STATS
+;	ld c, 100
+;
+;; Calculate the sum of all enemy's stat level modifiers. Add 100 first to prevent underflow.
+;; Put the result in c. c will range between 58 and 142.
+;.enemy_loop
+;	ld a, [hli]
+;	sub BASE_STAT_LEVEL
+;	add c
+;	ld c, a
+;	dec b
+;	jr nz, .enemy_loop
+;
+;; Calculate the sum of all player's stat level modifiers. Add 100 first to prevent underflow.
+;; Put the result in d. d will range between 58 and 142.
+;	ld hl, wPlayerAtkLevel
+;	ld b, NUM_LEVEL_STATS
+;	ld d, 100
+;
+;.player_loop
+;	ld a, [hli]
+;	sub BASE_STAT_LEVEL
+;	add d
+;	ld d, a
+;	dec b
+;	jr nz, .player_loop
+;
+;; Greatly discourage this move if enemy's stat levels are higher than player's (if c>=d).
+;	ld a, c
+;	sub d
+;	pop hl
+;	jr nc, .discourage
+;
+;; Else, 80% chance to encourage this move unless player's accuracy level is lower than -1...
+;	ld a, [wPlayerAccLevel]
+;	cp BASE_STAT_LEVEL - 1
+;	ret c
+;
+;; ...or enemy's evasion level is higher than +0.
+;	ld a, [wEnemyEvaLevel]
+;	cp BASE_STAT_LEVEL + 1
+;	ret nc
+;
+;	call AI_80_20
+;	ret c
+;
+;	dec [hl]
+;	ret
+;
+;.discourage
+;	inc [hl]
+;	inc [hl]
+;	ret
 
 AI_Smart_MirrorCoat:
 	push hl
@@ -3232,6 +3232,7 @@ AI_Status:
 	ld a, [wBattleMonAbility]
 	cp IMMUNITY
 	jr z, .immune
+	jr .typeimmunity
 
 .sleepimmunity
 	ld a, [wBattleMonAbility]

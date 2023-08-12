@@ -1298,14 +1298,14 @@ Encore:
 	encore
 	endmove
 
-PainSplit:
-	checkobedience
-	usedmovetext
-	doturn
-	checkhit
-	painsplit
-	endmove
-
+;PainSplit:
+;	checkobedience
+;	usedmovetext
+;	doturn
+;	checkhit
+;	painsplit
+;	endmove
+;
 Snore:
 	checkobedience
 	usedmovetext
@@ -1329,14 +1329,14 @@ Snore:
 	kingsrock
 	endmove
 
-Conversion2:
-	checkobedience
-	usedmovetext
-	doturn
-	checkhit
-	conversion2
-	endmove
-
+;Conversion2:
+;	checkobedience
+;	usedmovetext
+;	doturn
+;	checkhit
+;	conversion2
+;	endmove
+;
 LockOn:
 	checkobedience
 	usedmovetext
