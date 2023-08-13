@@ -3595,6 +3595,18 @@ BattleCommand_SleepTarget:
 	jr .fail
 
 .not_protected_by_item
+	ld a, BATTLE_VARS_STATUS_OPP
+	call GetBattleVarAddr
+	ld d, h
+	ld e, l
+	ld a, [de]
+	and SLP_MASK
+	ld hl, AlreadyAsleepText
+	jr nz, .fail
+	ld a, BATTLE_VARS_STATUS_OPP
+	call GetBattleVarAddr
+	and a
+	jr nz, .didntaffect
 	call GetOpponentAbility
 	cp VITAL_SPIRIT
 	jr z, .protected_by_ability
@@ -3609,15 +3621,6 @@ BattleCommand_SleepTarget:
 	jp StdBattleTextbox
 
 .not_protected_by_ability
-	ld a, BATTLE_VARS_STATUS_OPP
-	call GetBattleVarAddr
-	ld d, h
-	ld e, l
-	ld a, [de]
-	and SLP_MASK
-	ld hl, AlreadyAsleepText
-	jr nz, .fail
-
 	ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
@@ -3663,6 +3666,10 @@ BattleCommand_SleepTarget:
 	call AnimateFailedMove
 	pop hl
 	jp StdBattleTextbox
+
+.didntaffect
+	call AnimateFailedMove
+	jp PrintDoesntAffect
 
 BattleCommand_PoisonTarget:
 	call CheckSubstituteOpp
@@ -3719,14 +3726,22 @@ BattleCommand_Poison:
 	call GetOpponentItem
 	ld a, b
 	cp HELD_PREVENT_POISON
-	jr nz, .check_ability_protection
+	jr nz, .no_item_protection
 	ld a, [hl]
 	ld [wNamedObjectIndex], a
 	call GetItemName
 	ld hl, ProtectedByText
 	jr .failed
 
-.check_ability_protection
+.no_item_protection
+	ld hl, DidntAffect1Text
+	ld a, BATTLE_VARS_STATUS_OPP
+	call GetBattleVar
+	and a
+	jr nz, .failed
+	ld hl, ProtectingItselfText
+	call CheckSubstituteOpp
+	jr nz, .failed
 	call GetOpponentAbility
 	cp IMMUNITY
 	jr nz, .do_poison
@@ -3737,15 +3752,6 @@ BattleCommand_Poison:
 	jp StdBattleTextbox
 
 .do_poison
-	ld hl, DidntAffect1Text
-	ld a, BATTLE_VARS_STATUS_OPP
-	call GetBattleVar
-	and a
-	jr nz, .failed
-
-	ld hl, ProtectingItselfText
-	call CheckSubstituteOpp
-	jr nz, .failed
 	ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
@@ -5953,6 +5959,17 @@ BattleCommand_Paralyze:
 	jp StdBattleTextbox
 
 .no_item_protection
+	ld a, BATTLE_VARS_STATUS_OPP
+	call GetBattleVarAddr
+	and a
+	jr nz, .didnt_affect
+	ld hl, ProtectingItselfText
+	call CheckSubstituteOpp
+	jr nz, .failed
+	ld hl, EvadedText
+	ld a, [wAttackMissed]
+	and a
+	jr nz, .failed
 	call GetOpponentAbility
 	cp LIMBER
 	jr nz, .no_ability_protection
@@ -5963,17 +5980,6 @@ BattleCommand_Paralyze:
 	jp StdBattleTextbox
 
 .no_ability_protection
-	ld a, BATTLE_VARS_STATUS_OPP
-	call GetBattleVarAddr
-	and a
-	jr nz, .failed
-	ld hl, ProtectingItselfText
-	call CheckSubstituteOpp
-	jr nz, .failed
-	ld hl, EvadedText
-	ld a, [wAttackMissed]
-	and a
-	jr nz, .failed
 	ld c, 30
 	call DelayFrames
 	call AnimateCurrentMove
