@@ -3681,7 +3681,7 @@ BattleCommand_PoisonTarget:
 	ld a, [wTypeModifier]
 	and $7f
 	ret z
-	call CheckIfTargetIsPoisonType
+	farcall CheckIfTargetIsPoisonType
 	ret z
 	call GetOpponentAbility
 	cp IMMUNITY
@@ -3713,7 +3713,7 @@ BattleCommand_Poison:
 	and $7f
 	jp z, .failed
 
-	call CheckIfTargetIsPoisonType
+	farcall CheckIfTargetIsPoisonType
 	jp z, .failed
 
 	ld a, BATTLE_VARS_STATUS_OPP
@@ -3802,21 +3802,21 @@ BattleCommand_Poison:
 	cp EFFECT_TOXIC
 	ret
 
-CheckIfTargetIsPoisonType:
-	ld de, wEnemyMonType1
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .ok
-	ld de, wBattleMonType1
-.ok
-	ld a, [de]
-	inc de
-	cp POISON
-	ret z
-	ld a, [de]
-	cp POISON
-	ret
-
+;CheckIfTargetIsPoisonType:
+;	ld de, wEnemyMonType1
+;	ldh a, [hBattleTurn]
+;	and a
+;	jr z, .ok
+;	ld de, wBattleMonType1
+;.ok
+;	ld a, [de]
+;	inc de
+;	cp POISON
+;	ret z
+;	ld a, [de]
+;	cp POISON
+;	ret
+;
 PoisonOpponent:
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
@@ -3829,7 +3829,7 @@ BattleCommand_Burn:
 	and $7f
 	jp z, .failed
 
-	call CheckIfTargetIsFireType
+	farcall CheckIfTargetIsFireType
 	jp z, .failed
 
 	ld a, BATTLE_VARS_STATUS_OPP
@@ -3901,21 +3901,21 @@ BattleCommand_Burn:
 	call BurnOpponent
 	jp RefreshBattleHuds
 
-CheckIfTargetIsFireType:
-	ld de, wEnemyMonType1
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .ok
-	ld de, wBattleMonType1
-.ok
-	ld a, [de]
-	inc de
-	cp FIRE
-	ret z
-	ld a, [de]
-	cp FIRE
-	ret
-
+;CheckIfTargetIsFireType:
+;	ld de, wEnemyMonType1
+;	ldh a, [hBattleTurn]
+;	and a
+;	jr z, .ok
+;	ld de, wBattleMonType1
+;.ok
+;	ld a, [de]
+;	inc de
+;	cp FIRE
+;	ret z
+;	ld a, [de]
+;	cp FIRE
+;	ret
+;
 BurnOpponent:
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
@@ -4154,7 +4154,7 @@ BattleCommand_ParalyzeTarget:
 	ld a, [wTypeModifier]
 	and $7f
 	ret z
-	call CheckIfTargetIsElectricType
+	farcall CheckIfTargetIsElectricType
 	ret z
 	call GetOpponentAbility
 	cp LIMBER
@@ -4181,21 +4181,21 @@ BattleCommand_ParalyzeTarget:
 	ld hl, UseHeldStatusHealingItem
 	jp CallBattleCore
 
-CheckIfTargetIsElectricType:
-	ld de, wEnemyMonType1
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .ok
-	ld de, wBattleMonType1
-.ok
-	ld a, [de]
-	inc de
-	cp ELECTRIC
-	ret z
-	ld a, [de]
-	cp ELECTRIC
-	ret
-
+;CheckIfTargetIsElectricType:
+;	ld de, wEnemyMonType1
+;	ldh a, [hBattleTurn]
+;	and a
+;	jr z, .ok
+;	ld de, wBattleMonType1
+;.ok
+;	ld a, [de]
+;	inc de
+;	cp ELECTRIC
+;	ret z
+;	ld a, [de]
+;	cp ELECTRIC
+;	ret
+;
 BattleCommand_AttackUp:
 	ld b, ATTACK
 	jr BattleCommand_StatUp
@@ -5941,11 +5941,11 @@ BattleCommand_Paralyze:
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVar
 	bit PAR, a
-	jr nz, .paralyzed
+	jp nz, .paralyzed
 	ld a, [wTypeModifier]
 	and $7f
 	jp z, .didnt_affect
-	call CheckIfTargetIsElectricType
+	farcall CheckIfTargetIsElectricType
 	jp z, .didnt_affect
 	call GetOpponentItem
 	ld a, b

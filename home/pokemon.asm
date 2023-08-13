@@ -234,14 +234,6 @@ Print8BitNumLeftAlign::
 	ld b, PRINTNUM_LEFTALIGN | 1
 	jp PrintNum
 
-GetNthMove:: ; unreferenced
-	ld hl, wListMoves_MoveIndicesBuffer
-	ld c, a
-	ld b, 0
-	add hl, bc
-	ld a, [hl]
-	ret
-
 GetBaseData::
 	push bc
 	push de
@@ -286,17 +278,21 @@ GetBaseData::
 	pop bc
 	ret
 
-GetAbility::
-	push bc
-	push de
+GetAbility:: ;unreferenced
 	push hl
-	push af
-	ldh a, [hROMBank]
-	push af
+	;push af
 	ld a, BANK(BaseData)
-	rst Bankswitch
-	pop af
-	
+	;push af
+	;rst Bankswitch
+	;pop af
+	dec c
+	ld a, BASE_DATA_SIZE
+	ld hl, BaseData + BASE_ABILITY
+	call AddNTimes
+	ld a, c
+	pop hl
+	ld b, a
+	ret
 
 GetCurNickname::
 	ld a, [wCurPartyMon]

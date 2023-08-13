@@ -723,6 +723,11 @@ DreamEatenText:
 	line "dream was eaten!"
 	prompt
 
+AlreadyFrozenText:
+	text "<TARGET>'s"
+	line "already frozen!"
+	prompt
+
 AlreadyBurnedText:
 	text "<TARGET>'s"
 	line "already burned!"
@@ -957,6 +962,24 @@ ProtectedByAbilityText:
 	line "protected by"
 	
 	para "its ability"
+	line "@"
+	text_ram wStringBuffer1
+	text "!"
+	prompt
+
+TaregetAbilityTookEffect:
+	text "<TARGET>'s"
+	line "ability"
+
+	para "@"
+	text_ram wStringBuffer1
+	line "took effect!"
+
+BecameHealthyText:
+	text "<USER>"
+	line "cured itself"
+
+	para "using its ability"
 	line "@"
 	text_ram wStringBuffer1
 	text "!"
