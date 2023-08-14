@@ -82,8 +82,8 @@ ENDM
 	command falseswipe              ; 4b
 	command healbell                ; 4c
 	command kingsrock               ; 4d
-	command triplekick              ; 4e
-	command kickcounter             ; 4f
+;	command triplekick              ; 4e
+;	command kickcounter             ; 4f
 	command thief                   ; 50
 	command arenatrap               ; 51
 	command nightmare               ; 52
@@ -182,6 +182,7 @@ ENDM
 	command curl                    ; af
 	command starthail               ; b0
 	command retaliation             ; b1
+	command posthiteffects			; b2
 DEF NUM_EFFECT_COMMANDS EQU const_value - 1
 
 	const_def -1, -1

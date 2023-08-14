@@ -278,22 +278,22 @@ GetBaseData::
 	pop bc
 	ret
 
-GetAbility:: ;unreferenced
-	push hl
-	;push af
-	ld a, BANK(BaseData)
-	;push af
-	;rst Bankswitch
-	;pop af
-	dec c
-	ld a, BASE_DATA_SIZE
-	ld hl, BaseData + BASE_ABILITY
-	call AddNTimes
-	ld a, c
-	pop hl
-	ld b, a
-	ret
-
+;GetAbility:: ;unreferenced
+;	push hl
+;	;push af
+;	ld a, BANK(BaseData)
+;	;push af
+;	;rst Bankswitch
+;	;pop af
+;	dec c
+;	ld a, BASE_DATA_SIZE
+;	ld hl, BaseData + BASE_ABILITY
+;	call AddNTimes
+;	ld a, c
+;	pop hl
+;	ld b, a
+;	ret
+;
 GetCurNickname::
 	ld a, [wCurPartyMon]
 	ld hl, wPartyMonNicknames

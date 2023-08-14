@@ -1209,8 +1209,8 @@ INCLUDE "data/moves/critical_hit_moves.asm"
 
 INCLUDE "data/battle/critical_hit_chances.asm"
 
-INCLUDE "engine/battle/move_effects/triple_kick.asm"
-
+;INCLUDE "engine/battle/move_effects/triple_kick.asm"
+;
 BattleCommand_Stab:
 ; STAB = Same Type Attack Bonus
 	ld a, BATTLE_VARS_MOVE_ANIM
@@ -1982,12 +1982,12 @@ BattleCommand_MoveAnimNoSub:
 	jr z, .alternate_anim
 	cp EFFECT_POISON_MULTI_HIT
 	jr z, .alternate_anim
-	cp EFFECT_TRIPLE_KICK
-	jr z, .triplekick
+;	cp EFFECT_TRIPLE_KICK
+;	jr z, .triplekick
 	xor a
 	ld [wBattleAnimParam], a
-
-.triplekick
+;
+;.triplekick
 	ld a, BATTLE_VARS_MOVE_ANIM
 	call GetBattleVar
 	ld e, a
@@ -2421,8 +2421,8 @@ BattleCommand_CheckFaint:
 	jr z, .multiple_hit_raise_sub
 	cp EFFECT_POISON_MULTI_HIT
 	jr z, .multiple_hit_raise_sub
-	cp EFFECT_TRIPLE_KICK
-	jr z, .multiple_hit_raise_sub
+;	cp EFFECT_TRIPLE_KICK
+;	jr z, .multiple_hit_raise_sub
 	cp EFFECT_BEAT_UP
 	jr nz, .finish
 
@@ -2486,6 +2486,22 @@ BattleCommand_RageDamage:
 	ld a, l
 	ld [wCurDamage + 1], a
 	ret
+
+BattleCommand_PostHitEffects:
+	call CheckContactMove
+	ret nc
+	farcall RunContactAbilities
+	ret
+
+CheckContactMove:
+	ld a, BATTLE_VARS_MOVE
+	call GetBattleVar
+	ld de, 1
+	ld hl, ContactMoves
+	call IsInArray
+	ret
+
+INCLUDE "data/moves/contact_moves.asm"
 
 EndMoveEffect:
 	ld a, [wBattleScriptBufferAddress]
@@ -3555,8 +3571,8 @@ DoSubstituteDamage:
 	jr z, .ok
 	cp EFFECT_POISON_MULTI_HIT
 	jr z, .ok
-	cp EFFECT_TRIPLE_KICK
-	jr z, .ok
+;	cp EFFECT_TRIPLE_KICK
+;	jr z, .ok
 	cp EFFECT_BEAT_UP
 	jr z, .ok
 	xor a
@@ -3671,6 +3687,40 @@ BattleCommand_SleepTarget:
 	call AnimateFailedMove
 	jp PrintDoesntAffect
 
+SleepTarget:
+	ld de, ANIM_SLP
+	call PlayOpponentBattleAnim
+	ld a, BATTLE_VARS_STATUS_OPP
+	call GetBattleVarAddr
+	ld d, h
+	ld e, l
+	ld a, [de]
+	and SLP_MASK
+	ld b, SLP_MASK
+	ld a, [wInBattleTowerBattle]
+	and a
+	jr z, .random_loop
+	ld b, %011
+
+.random_loop
+	call BattleRandom
+	and b
+	jr z, .random_loop
+	cp SLP_MASK
+	jr z, .random_loop
+	inc a
+	ld [de], a
+	call UpdateOpponentInParty
+	call RefreshBattleHuds
+
+	ld hl, FellAsleepText
+	call StdBattleTextbox
+
+	farcall UseHeldStatusHealingItem
+
+	jp z, OpponentCantMove
+	ret
+
 BattleCommand_PoisonTarget:
 	call CheckSubstituteOpp
 	ret nz
@@ -3695,7 +3745,7 @@ BattleCommand_PoisonTarget:
 	ret nz
 	call SafeCheckSafeguard
 	ret nz
-
+PoisonTarget:
 	call PoisonOpponent
 	ld de, ANIM_PSN
 	call PlayOpponentBattleAnim
@@ -4050,6 +4100,7 @@ BattleCommand_BurnTarget:
 	ret nz
 	call SafeCheckSafeguard
 	ret nz
+BurnTarget:
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
 	set BRN, [hl]
@@ -4168,6 +4219,7 @@ BattleCommand_ParalyzeTarget:
 	ret nz
 	call SafeCheckSafeguard
 	ret nz
+ParalyzeTarget:
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
 	set PAR, [hl]
@@ -5318,17 +5370,18 @@ BattleCommand_EndLoop:
 	ld a, [hl]
 	cp EFFECT_BEAT_UP
 	jr z, .beat_up
-	cp EFFECT_TRIPLE_KICK
-	jr nz, .not_triple_kick
-.reject_triple_kick_sample
-	call BattleRandom
-	and $3
-	jr z, .reject_triple_kick_sample
-	dec a
-	jr nz, .double_hit
-	ld a, 1
-	ld [bc], a
-	jr .done_loop
+	jr .not_triple_kick
+;	cp EFFECT_TRIPLE_KICK
+;	jr nz, .not_triple_kick
+;.reject_triple_kick_sample
+;	call BattleRandom
+;	and $3
+;	jr z, .reject_triple_kick_sample
+;	dec a
+;	jr nz, .double_hit
+;	ld a, 1
+;	ld [bc], a
+;	jr .done_loop
 
 .beat_up
 	ldh a, [hBattleTurn]

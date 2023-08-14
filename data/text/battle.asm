@@ -935,8 +935,8 @@ DraggedOutText:
 
 ParalyzedText:
 	text "<TARGET>'s"
-	line "paralyzed! Maybe"
-	cont "it can't attack!"
+	line "paralyzed! It may"
+	cont "be unable to move!"
 	prompt
 
 FullyParalyzedText:
@@ -967,13 +967,15 @@ ProtectedByAbilityText:
 	text "!"
 	prompt
 
-TaregetAbilityTookEffect:
-	text "<TARGET>'s"
+TargetAbilityTookEffect:
+	text "<USER>'s"
 	line "ability"
 
 	para "@"
 	text_ram wStringBuffer1
+	text_start
 	line "took effect!"
+	prompt
 
 BecameHealthyText:
 	text "<USER>"

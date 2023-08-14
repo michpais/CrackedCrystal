@@ -271,13 +271,14 @@ RunContactAbilities:
 ; turn perspective is from the attacker
 ; Only works 30% of the time.
 	call BattleRandom
-	cp 30 percent
+	cp 1 + 30 percent
 	ret nc
-	call GetOpponentAbility
-	call SwitchTurnCore
+	farcall SwitchTurnCore
+	call GetUserAbility
 	ld hl, TargetContactAbilities
 	call AbilityJumptable
-	jmp SwitchTurnCore
+	farcall SwitchTurnCore
+	ret
 
 TargetContactAbilities:
 	dbw EFFECT_SPORE, EffectSporeAbility
@@ -288,7 +289,7 @@ TargetContactAbilities:
 	dbw -1, -1
 
 CuteCharmAbility:
-	call HasUserFainted
+	farcall HasUserFainted
 	ret z
 
 	; Only works if opponent isn't already attracted
@@ -296,11 +297,23 @@ CuteCharmAbility:
 	call GetBattleVarAddr
 	bit SUBSTATUS_IN_LOVE, [hl]
 	ret nz
-;	call DisableAnimations
+	farcall CheckOppositeGender
+	ret c
+	; Implement when we implement OBLIVIOUS
+	;call GetOpponentAbility
+	;cp OBLIVIOUS
+	;ret z
 	; this runs ShowAbilityActivation when relevant
-	farcall BattleCommand_Attract
-	jr PrintAbilityActivated
-;	jmp EnableAnimations
+	call PrintAbilityActivated
+	ld a, BATTLE_VARS_SUBSTATUS1_OPP
+	call GetBattleVarAddr
+	set SUBSTATUS_IN_LOVE, [hl]
+	ld de, ANIM_IN_LOVE
+	farcall PlayOpponentBattleAnim
+	; 'fell in love!'
+	ld hl, FellInLoveText
+	jp StdBattleTextbox
+	ret
 
 EffectSporeAbility:
 	call CheckIfTargetIsGrassType
@@ -321,76 +334,37 @@ EffectSporeAbility:
 	call CanSleepTarget2
 	cp 1
 	ret z 
-	farcall BattleCommand_SleepTarget
-	jr PrintAbilityActivated
+	call PrintAbilityActivated
+	farcall SleepTarget
+	ret
 	;jr AfflictStatusAbility
 FlameBodyAbility:
-	call CheckIfTargetIsFireType
-	ret z
 	call CanBurnTarget
 	cp 1
 	ret z
-	farcall BattleCommand_Burn
-	jr PrintAbilityActivated
+	call PrintAbilityActivated
+	farcall BurnTarget
+	ret
 PoisonPointAbility:
-	call CheckIfTargetIsPoisonType
-	ret z
-	call GetOpponentAbility
-	cp IMMUNITY
-	ret z
 	call CanPoisonTarget
 	cp 1
 	ret z
-	call BattleCommand_Poison
-	jr PrintAbilityActivated
+	call PrintAbilityActivated
+	farcall PoisonTarget
+	ret
 StaticAbility:
-	call CheckIfTargetIsElectricType
-	ret z
-	call GetOpponentAbility
-	cp LIMBER
-	ret z
 	call CanParalyzeTarget
 	cp 1
 	ret z
-	farcall BattleCommand_Paralyze
-	jr PrintAbilityActivated
+	call PrintAbilityActivated
+	farcall ParalyzeTarget ;BattleCommand_ParalyzeTarget
+	ret
 
-;AfflictStatusAbility:
-;	ld b, 1
-;	; Only works 30% of the time.
-;	ld a, 10
-;	call BattleRandomRange
-;	cp 3
-;	ret nc
-;
-;	call HasOpponentFainted
-;	ret z
-;
-;	ld a, BATTLE_VARS_STATUS_OPP
-;	call GetBattleVarAddr
-;	ld a, c
-;	cp SLP
-;	jr nz, .got_status
-;
-;	; sleep for 1-3 turns (+1 including wakeup turn)
-;	ld a, 3
-;	call RandomRange
-;	inc a
-;.got_status
-;	ld [hl], a
-;
-;	call DisableAnimations
-;	farcall DisplayStatusProblem
-;	call UpdateOpponentInParty
-;	call UpdateBattleHuds
-;	farcall PostStatusWithSynchronize
-;	jmp EnableAnimations
-;
 PrintAbilityActivated:
-	call GetOpponentAbility
+	call GetUserAbility
 	ld [wNamedObjectIndex], a
 	call GetAbilityName
-	ld hl, TaregetAbilityTookEffect
+	ld hl, TargetAbilityTookEffect
 	jp StdBattleTextbox
 
 ;CheckNullificationAbilities:
@@ -739,13 +713,14 @@ CanSleepTarget1:
 	lb bc, -1, -1
 	lb de, INSOMNIA, HELD_PREVENT_SLEEP
 	ld h, SLP_MASK
+	jr CanStatusTarget
 CanSleepTarget2:
 	ld a, b
 	lb bc, -1, -1
 	lb de, VITAL_SPIRIT, HELD_PREVENT_SLEEP
 	ld h, SLP_MASK
 CanStatusTarget:
-	push af
+;	push af
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
 	and a
@@ -760,9 +735,11 @@ CanStatusTarget:
 	ld a, c
 	call CheckIfTargetIsSomeType
 	jr z, .failed
-	call CheckSubstituteOpp
+	farcall SafeCheckSafeguard
 	jr nz, .failed
-	call GetOpponentItem
+	farcall CheckSubstituteOpp
+	jr nz, .failed
+	farcall GetOpponentItem
 	ld a, b
 	pop de
 	cp e
@@ -771,9 +748,11 @@ CanStatusTarget:
 	cp d
 	jr z, .failed
 	ld a, 0
+	ret
 
 .failed
 	ld a, 1
+	ret
 	
 CheckIfTargetIsGrassType::
 	ld a, GRASS
