@@ -176,18 +176,38 @@ GetGender:
 	ld a, BANK(sBox)
 	call z, OpenSRAM
 
+; Gender formula:
+; ~(Atk DV & 1) << 1 | (Def DV & 1) << 2 | ~(Spc DV & 1) << 3
+; Examples:
+; M:F
+; 7:1 : Female = Odd Atk, Even Def, and Odd Spc
+; 3:1 : Female = Even Def and Odd Spc
+; 1:1 : Female = Odd Spc
+; 1:3 : Female = Even Def or Odd Spc
 ; Attack DV
-	ld a, [hli]
-	and $f0
-	ld b, a
-; Speed DV
 	ld a, [hl]
-	and $f0
+	cpl
+	and $10
 	swap a
-
-; Put our DVs together.
+	add a
+	ld b, a   ; ~(Atk DV & 1) << 1
+; Defense DV
+	ld a, [hli]
+	and $1
+	add a
+	add a
 	or b
-	ld b, a
+	ld b, a   ; ~(Atk DV & 1) << 1 | (Def DV & 1) << 2
+; Special DV
+	ld a, [hl]
+	cpl
+	and $1
+	add a
+	add a
+	add a
+	or b
+	swap a
+	ld b, a   ; ~(Atk DV & 1) << 1 | (Def DV & 1) << 2 | ~(Spc DV & 1) << 3
 
 ; Close SRAM if we were dealing with a sBoxMon.
 	ld a, [wMonType]
