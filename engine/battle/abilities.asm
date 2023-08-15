@@ -232,41 +232,52 @@ HealAllStatusAbility:
 ;	call z, OwnTempoAbility
 ;	jmp SwitchTurn
 ;
-;RunEnemySynchronizeAbility:
-;	call SwitchTurn
-;	call GetTrueUserAbility
-;	cp SYNCHRONIZE
-;	call z, SynchronizeAbility
-;	jmp SwitchTurn
-;
-;SynchronizeAbility:
-;	ld a, BATTLE_VARS_STATUS
-;	call GetBattleVar
-;	and 1 << PAR | 1 << BRN | 1 << PSN
-;	ret z ; not statused or frozen/asleep (which doesn't proc Synchronize)
-;	call DisableAnimations
-;	call ShowAbilityActivation
-;	farcall ResetMiss
-;	ld a, BATTLE_VARS_STATUS
-;	call GetBattleVar
-;	cp 1 << PAR
-;	jr z, .is_par
-;	cp 1 << BRN
-;	jr z, .is_brn
-;	cp 1 << PSN
-;	jr z, .is_psn
-;	farcall BattleCommand_toxic
-;	jmp EnableAnimations
-;.is_psn
-;	farcall BattleCommand_poison
-;	jmp EnableAnimations
-;.is_par
-;	farcall BattleCommand_paralyze
-;	jmp EnableAnimations
-;.is_brn
-;	farcall BattleCommand_burn
-;	jmp EnableAnimations
-;
+RunEnemySynchronizeAbility:
+	farcall SwitchTurnCore
+	call GetUserAbility
+	cp SYNCHRONIZE
+	call z, SynchronizeAbility
+	farcall SwitchTurnCore
+	ret
+
+SynchronizeAbility:
+	ld a, BATTLE_VARS_STATUS
+	call GetBattleVar
+	and 1 << PAR | 1 << BRN | 1 << PSN
+	ret z ; not statused or frozen/asleep (which doesn't proc Synchronize)
+	;call ShowAbilityActivation
+	farcall ResetMiss
+	ld a, BATTLE_VARS_STATUS
+	call GetBattleVar
+	cp 1 << PAR
+	jr z, .is_par
+	cp 1 << BRN
+	jr z, .is_brn
+	;cp 1 << PSN
+	;jr z, .is_psn
+	;farcall BattleCommand_toxic
+.is_psn
+	call CanPoisonTarget
+	cp 1
+	ret z
+	call PrintAbilityActivated
+	farcall PoisonTarget
+	ret
+.is_par
+	call CanParalyzeTarget
+	cp 1
+	ret z
+	call PrintAbilityActivated
+	farcall ParalyzeTarget
+	ret
+.is_brn
+	call CanBurnTarget
+	cp 1
+	ret z
+	call PrintAbilityActivated
+	farcall BurnTarget
+	ret
+
 RunContactAbilities:
 ; turn perspective is from the attacker
 ; Only works 30% of the time.
@@ -530,7 +541,7 @@ PrintAbilityActivated:
 ;	jmp MultiplyAndDivide
 ;
 ;ApplyDamageAbilities:
-;	call GetTrueUserAbility
+;	call GetUserAbility
 ;	ld hl, OffensiveDamageAbilities
 ;	call AbilityJumptable
 ;	call GetOpponentAbility
@@ -579,10 +590,12 @@ PrintAbilityActivated:
 ;	call GetBattleVar
 ;	cp b
 ;	ret nz
-;	call CheckPinch
-;	ret nz
+;	;farcall GetThirdMaxHP
+;	;farcall CheckUserHasEnoughHP
+;	;ret nz
 ;	ln a, 3, 2 ; x1.5
-;	jmp MultiplyAndDivide
+;	call MultiplyAndDivide
+;	ret
 ;
 ;GutsAbility:
 ;; 150% physical attack if user is statused

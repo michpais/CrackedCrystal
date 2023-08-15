@@ -3754,6 +3754,7 @@ PoisonTarget:
 	ld hl, WasPoisonedText
 	call StdBattleTextbox
 
+	farcall RunEnemySynchronizeAbility
 	farcall UseHeldStatusHealingItem
 	ret
 
@@ -3824,6 +3825,7 @@ BattleCommand_Poison:
 	call StdBattleTextbox
 
 .finished
+	farcall RunEnemySynchronizeAbility
 	farcall UseHeldStatusHealingItem
 	ret
 
@@ -3937,6 +3939,7 @@ BattleCommand_Burn:
 	jr .finished
 
 .finished
+	farcall RunEnemySynchronizeAbility
 	farcall UseHeldStatusHealingItem
 	ret
 
@@ -3971,6 +3974,12 @@ BurnOpponent:
 	call GetBattleVarAddr
 	set BRN, [hl]
 	call UpdateOpponentInParty
+	call GetOpponentAbility
+	cp GUTS
+	jr z, .no_brn_effect
+	ld hl, ApplyBrnEffectOnAttack
+	call CallBattleCore
+.no_brn_effect
 	ld hl, ApplyBrnEffectOnAttack
 	jp CallBattleCore
 
@@ -4105,8 +4114,12 @@ BurnTarget:
 	call GetBattleVarAddr
 	set BRN, [hl]
 	call UpdateOpponentInParty
+	call GetOpponentAbility
+	cp GUTS
+	jr z, .no_brn_effect
 	ld hl, ApplyBrnEffectOnAttack
 	call CallBattleCore
+.no_brn_effect
 	ld de, ANIM_BRN
 	call PlayOpponentBattleAnim
 	call RefreshBattleHuds
@@ -4114,6 +4127,7 @@ BurnTarget:
 	ld hl, WasBurnedText
 	call StdBattleTextbox
 
+	farcall RunEnemySynchronizeAbility
 	farcall UseHeldStatusHealingItem
 	ret
 
@@ -4230,6 +4244,7 @@ ParalyzeTarget:
 	call PlayOpponentBattleAnim
 	call RefreshBattleHuds
 	call PrintParalyze
+	farcall RunEnemySynchronizeAbility
 	ld hl, UseHeldStatusHealingItem
 	jp CallBattleCore
 
@@ -6046,6 +6061,7 @@ BattleCommand_Paralyze:
 	call CallBattleCore
 	call UpdateBattleHuds
 	call PrintParalyze
+	farcall RunEnemySynchronizeAbility
 	ld hl, UseHeldStatusHealingItem
 	jp CallBattleCore
 
