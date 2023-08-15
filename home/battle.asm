@@ -312,3 +312,16 @@ GetUserAbility::
 	ld a, BATTLE_VARS_ABILITY
 	call GetBattleVar
 	ret
+
+ApplyPhysicalAttackDamageMod::
+	push bc
+	ld b, PHYSICAL
+	ld c, a
+	ld a, BATTLE_VARS_MOVE_TYPE
+	call GetBattleVar
+	and ~TYPE_MASK
+	cp b
+	ld a, c
+	pop bc
+	ret nz
+	jmp MultiplyAndDivide

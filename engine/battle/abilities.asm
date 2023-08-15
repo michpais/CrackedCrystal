@@ -540,84 +540,80 @@ PrintAbilityActivated:
 ;	ln a, 4, 5 ; x0.8
 ;	jmp MultiplyAndDivide
 ;
-;ApplyDamageAbilities:
-;	call GetUserAbility
-;	ld hl, OffensiveDamageAbilities
-;	call AbilityJumptable
-;	call GetOpponentAbility
-;	ld hl, DefensiveDamageAbilities
-;	jmp AbilityJumptable
-;
-;OffensiveDamageAbilities:
-;	dbw HUGE_POWER, HugePowerAbility
-;	dbw OVERGROW, OvergrowAbility
-;	dbw BLAZE, BlazeAbility
-;	dbw TORRENT, TorrentAbility
-;	dbw SWARM, SwarmAbility
-;	dbw GUTS, GutsAbility
-;	dbw -1, -1
-;
-;DefensiveDamageAbilities:
-;	dbw THICK_FAT, EnemyThickFatAbility
-;	dbw -1, -1
-;
-;TechnicianAbility:
-;	ld a, d
-;	cp 61
-;	ret nc
-;	ln a, 3, 2 ; x1.5
-;	jmp MultiplyAndDivide
-;
-;HugePowerAbility:
-;; Doubles physical attack
-;	ld a, $21
-;	jmp ApplyPhysicalAttackDamageMod
-;
-;OvergrowAbility:
-;	ld b, GRASS
-;	jr PinchAbility
-;BlazeAbility:
-;	ld b, FIRE
-;	jr PinchAbility
-;TorrentAbility:
-;	ld b, WATER
-;	jr PinchAbility
-;SwarmAbility:
-;	ld b, BUG
-;PinchAbility:
-;; 150% damage if the user is in a pinch (1/3HP or less) for given type
-;	ld a, BATTLE_VARS_MOVE_TYPE
-;	call GetBattleVar
-;	cp b
-;	ret nz
-;	;farcall GetThirdMaxHP
-;	;farcall CheckUserHasEnoughHP
-;	;ret nz
-;	ln a, 3, 2 ; x1.5
-;	call MultiplyAndDivide
-;	ret
-;
-;GutsAbility:
-;; 150% physical attack if user is statused
-;	ld a, BATTLE_VARS_STATUS
-;	call GetBattleVar
-;	and a
-;	ret z
-;	ld a, $32
-;	jmp ApplyPhysicalAttackDamageMod
-;
-;EnemyThickFatAbility:
-;; 50% damage for Fire and Ice-type moves
-;	ld a, BATTLE_VARS_MOVE_TYPE
-;	call GetBattleVar
-;	cp FIRE
-;	jr z, .ok
-;	cp ICE
-;	ret nz
-;.ok
-;	ln a, 1, 2 ; x0.5
-;	jmp MultiplyAndDivide
-;
+ApplyDamageAbilities:
+	call GetUserAbility
+	ld hl, OffensiveDamageAbilities
+	call AbilityJumptable
+	call GetOpponentAbility
+	ld hl, DefensiveDamageAbilities
+	call AbilityJumptable
+	ret
+
+OffensiveDamageAbilities:
+	dbw HUGE_POWER, HugePowerAbility
+	dbw OVERGROW, OvergrowAbility
+	dbw BLAZE, BlazeAbility
+	dbw TORRENT, TorrentAbility
+	dbw SWARM, SwarmAbility
+	dbw GUTS, GutsAbility
+	dbw -1, -1
+
+DefensiveDamageAbilities:
+	dbw THICK_FAT, EnemyThickFatAbility
+	dbw -1, -1
+
+HugePowerAbility:
+; Doubles physical attack
+	ld a, $21
+	jmp ApplyPhysicalAttackDamageMod
+
+OvergrowAbility:
+	ld b, GRASS
+	jr PinchAbility
+BlazeAbility:
+	ld b, FIRE
+	jr PinchAbility
+TorrentAbility:
+	ld b, WATER
+	jr PinchAbility
+SwarmAbility:
+	ld b, BUG
+PinchAbility:
+; 150% damage if the user is in a pinch (1/3HP or less) for given type
+	ld a, BATTLE_VARS_MOVE_TYPE
+	call GetBattleVar
+	and TYPE_MASK
+	cp b
+	ret nz
+	farcall GetThirdMaxHP
+	farcall CheckUserHasEnoughHP
+	ret nz
+	ln a, 3, 2 ; x1.5
+	call MultiplyAndDivide
+	ret
+
+GutsAbility:
+; 150% physical attack if user is statused
+	ld a, BATTLE_VARS_STATUS
+	call GetBattleVar
+	and a
+	ret z
+	ld a, $32
+	jmp ApplyPhysicalAttackDamageMod
+
+EnemyThickFatAbility:
+; 50% damage for Fire and Ice-type moves
+	ld a, BATTLE_VARS_MOVE_TYPE
+	call GetBattleVar
+	and TYPE_MASK
+	cp FIRE
+	jr z, .ok
+	cp ICE
+	ret nz
+.ok
+	ln a, 1, 2 ; x0.5
+	jmp MultiplyAndDivide
+
 ;RunSwitchAbilities:
 ;; abilities that activate when you switch out
 ;	call GetTrueUserAbility

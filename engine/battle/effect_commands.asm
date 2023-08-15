@@ -2999,7 +2999,13 @@ BattleCommand_DamageCalc:
 	ld [hl], b
 	call Multiply
 
+; Ability Modifiers
+	push bc
+	farcall ApplyDamageAbilities
+	pop bc
+
 ; / Defense
+	ld hl, hMultiplier
 	ld [hl], c
 	ld b, 4
 	call Divide
