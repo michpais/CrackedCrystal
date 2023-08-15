@@ -209,8 +209,8 @@ SynchronizeDescription:
     next "conditions to foe@"
    
 HugePowerDescription:
-    db   "Doubles ATTACK power"
-    next "@"
+    db   "Doubles physical"
+    next "ATTACK power@"
    
 SnowWarningDescription:
     db   "Summons a hail storm"
