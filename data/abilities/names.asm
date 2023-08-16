@@ -5,7 +5,7 @@ AbilityNames::
     li "TORRENT"
     li "SHIELD DUST"
     li "SHED SKIN"
-    li "COMPOUND EYES"
+    li "COMPOUNDEYES"
     li "SWARM"
     li "KEEN EYE"
     li "GUTS"

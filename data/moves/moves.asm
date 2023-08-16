@@ -255,7 +255,7 @@ Moves:
 	move TWISTER,      EFFECT_TWISTER,            40, DRAGON,       SPECIAL,  100, 20,  20
 	move RAIN_DANCE,   EFFECT_RAIN_DANCE,          0, WATER,        STATUS,    90,  5,   0
 	move SUNNY_DAY,    EFFECT_SUNNY_DAY,           0, FIRE,         STATUS,    90,  5,   0
-	move CRUNCH,       EFFECT_SP_DEF_DOWN_HIT,    80, DARK,         PHYSICAL, 100, 15,  20
+	move CRUNCH,       EFFECT_DEFENSE_DOWN_HIT,   80, DARK,         PHYSICAL, 100, 15,  20
 	move MIRROR_COAT,  EFFECT_MIRROR_COAT,         1, PSYCHIC_TYPE, SPECIAL,  100, 20,   0
 	move BULK_UP,      EFFECT_ATK_DEF_UP,          0, FIGHTING,     STATUS,   100, 20,   0
 	move EXTREMESPEED, EFFECT_PRIORITY_HIT,       80, NORMAL,       PHYSICAL, 100,  5,   0
@@ -266,6 +266,6 @@ Moves:
 	move WHIRLPOOL,    EFFECT_TRAP_TARGET,        15, WATER,        SPECIAL,   70, 15,   0
 	move BUG_BUZZ,     EFFECT_SP_DEF_DOWN_HIT,    90, BUG,          SPECIAL,  100, 10,  10
 	move PLAY_ROUGH,   EFFECT_ATTACK_DOWN_HIT,    90, FAIRY,        PHYSICAL,  90, 10,  10
-	move DRAIN_KISS,   EFFECT_LEECH_HIT,          50, FAIRY,        PHYSICAL, 100, 10,   0
+	move DRAIN_KISS,   EFFECT_LEECH_HIT,          50, FAIRY,        SPECIAL,  100, 10,   0
 	move MOONBLAST,    EFFECT_SP_ATK_DOWN_HIT,    95, FAIRY,        SPECIAL,  100, 15,  30
 	assert_table_length NUM_ATTACKS

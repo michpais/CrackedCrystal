@@ -508,38 +508,40 @@ PrintAbilityActivated:
 ;.apply_mod
 ;	jmp MultiplyAndDivide
 ;
-;ApplyAccuracyAbilities:
-;	call GetTrueUserAbility
-;	ld hl, UserAccuracyAbilities
-;	call AbilityJumptable
-;	call GetOpponentAbility
-;	ld hl, TargetAccuracyAbilities
-;	jmp AbilityJumptable
-;
-;UserAccuracyAbilities:
-;	dbw COMPOUND_EYES, CompoundEyesAbility
-;	dbw -1, -1
-;
-;TargetAccuracyAbilities:
-;	dbw SAND_VEIL, SandVeilAbility
-;	dbw -1, -1
-;
-;CompoundEyesAbility:
-;; Increase accuracy by 30%
-;	ln a, 13, 10 ; x1.3
-;	jmp MultiplyAndDivide
-;
-;SandVeilAbility:
-;	ld b, WEATHER_SANDSTORM
-;    ; fallthrough
-;WeatherAccAbility:
-;; Decrease target accuracy by 20% in relevant weather
-;	call GetWeatherAfterOpponentUmbrella
-;	cp b
-;	ret nz
-;	ln a, 4, 5 ; x0.8
-;	jmp MultiplyAndDivide
-;
+ApplyUserAccuracyAbilities:
+	call GetUserAbility
+	ld hl, UserAccuracyAbilities
+	jmp AbilityJumptable
+
+UserAccuracyAbilities:
+	dbw COMPOUND_EYES, CompoundEyesAbility
+	dbw -1, -1
+
+CompoundEyesAbility:
+; Increase accuracy by 30%
+	ln a, 13, 10 ; x1.3
+	jmp MultiplyAndDivide
+
+ApplyTargetAccuracyAbilities:
+	call GetOpponentAbility
+	ld hl, TargetAccuracyAbilities
+	jmp AbilityJumptable
+
+TargetAccuracyAbilities:
+	dbw SAND_VEIL, SandVeilAbility
+	dbw -1, -1
+
+SandVeilAbility:
+	ld b, WEATHER_SANDSTORM
+    ; fallthrough
+WeatherAccAbility:
+; Decrease target accuracy by 20% in relevant weather
+	call GetWeatherAfterCloudNine
+	cp b
+	ret nz
+	ln a, 4, 5 ; x0.8
+	jmp MultiplyAndDivide
+
 ApplyDamageAbilities:
 	call GetUserAbility
 	ld hl, OffensiveDamageAbilities

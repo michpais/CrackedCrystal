@@ -325,3 +325,15 @@ ApplyPhysicalAttackDamageMod::
 	pop bc
 	ret nz
 	jmp MultiplyAndDivide
+
+GetWeatherAfterCloudNine::
+; Returns 0 if a cloud nine user is on the field,
+; [wBattleWeather] otherwise.
+	ld a, [wPlayerAbility]
+	xor CLOUD_NINE
+	ret z
+	ld a, [wEnemyAbility]
+	xor CLOUD_NINE
+	ret z
+	ld a, [wBattleWeather]
+	ret

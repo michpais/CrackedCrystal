@@ -1731,6 +1731,15 @@ HandleWeather:
 	cp STEEL
 	ret z
 
+	ldh a, [hBattleTurn]
+	and a
+	ld a, [wPlayerAbility]
+	jr z, .checkability
+	ld a, [wEnemyAbility]
+.checkability
+	cp SAND_VEIL
+	ret z
+
 	call SwitchTurnCore
 	xor a
 	ld [wNumHits], a

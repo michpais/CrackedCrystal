@@ -1831,6 +1831,17 @@ BattleCommand_CheckHit:
 	ldh [hDivisor], a
 	ld b, 4
 	call Divide
+	; implement accuracy abilities
+	ld a, d ; check if we are modifying user accuracy or target evasion
+	cp 1
+	push bc
+	jr z, .target_acc_abilities
+	farcall ApplyUserAccuracyAbilities
+	jr .done_abilities
+.target_acc_abilities
+	farcall ApplyTargetAccuracyAbilities
+.done_abilities
+	pop bc
 	; minimum accuracy is $0001
 	ldh a, [hQuotient + 3]
 	ld b, a
