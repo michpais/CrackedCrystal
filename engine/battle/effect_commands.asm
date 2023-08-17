@@ -1877,16 +1877,39 @@ BattleCommand_EffectChance:
 	ld [wEffectFailed], a
 	call CheckSubstituteOpp
 	jr nz, .failed
+	call GetOpponentAbility
+	cp SHIELD_DUST
+	jr z, .failed
 
 	push hl
 	ld hl, wPlayerMoveStruct + MOVE_CHANCE
 	ldh a, [hBattleTurn]
 	and a
-	jr z, .got_move_chance
+	jr z, .check_serene_grace
 	ld hl, wEnemyMoveStruct + MOVE_CHANCE
+.check_serene_grace
+	call GetUserAbility
+	cp SERENE_GRACE
+	jr nz, .got_move_chance
+	; if SERENE_GRACE is true, check if effect would be over 100%
+	ld a, [hl]
+	sub 50 percent
+	jr nc, .guaranteed
+	; double move chance with SERENE_GRACE if not guaranteed
+	ld a, h
+	sla a; this doubles the high byte.
+	ld h, a
+	ld a, l
+	sla a ; this doubles the low byte.
+	ld l, a
 .got_move_chance
-; BUG: Moves with a 100% secondary effect chance will not trigger it in 1/256 uses (see docs/bugs_and_glitches.md)
-	call BattleRandom
+; BUG (fixed): Moves with a 100% secondary effect chance will not trigger it in 1/256 uses (see docs/bugs_and_glitches.md)
+	ld a, [hl]
+	sub 100 percent
+	; If chance was 100%, RNG won't be called (carry not set)
+	; Thus chance will be subtracted from 0, guaranteeing a carry
+	call c, BattleRandom
+.guaranteed
 	cp [hl]
 	pop hl
 	ret c
