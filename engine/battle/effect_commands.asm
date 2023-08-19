@@ -1022,16 +1022,23 @@ BattleCommand_DoTurn:
 	ldh a, [hBattleTurn]
 	and a
 	ld a, [wCurMoveNum]
-	jr z, .okay
+	jr z, .check_pressure
 	ld a, [wCurEnemyMoveNum]
 
-.okay
+.check_pressure
 	ld c, a
 	ld b, 0
 	add hl, bc
 	ld a, [hl]
 	and PP_MASK
 	jr z, .out_of_pp
+	cp 1
+	jr z, .no_pressure
+	call GetOpponentAbility
+	cp PRESSURE
+	jr nz, .no_pressure
+	dec [hl]
+.no_pressure
 	dec [hl]
 	ld b, 0
 	ret
@@ -4651,6 +4658,9 @@ CheckMist:
 	jr c, .dont_check_mist
 	cp EFFECT_EVASION_DOWN_HIT + 1
 	jr c, .check_mist
+	call GetUserAbility
+	cp INTIMIDATE
+	jr c, .check_mist
 .dont_check_mist
 	xor a
 	ret
@@ -5246,6 +5256,8 @@ BattleCommand_ForceSwitch:
 	call StdBattleTextbox
 
 	ld hl, SpikesDamage
+	call CallBattleCore
+	ld hl, RunActivationAbilitiesInner
 	jp CallBattleCore
 
 .switch_fail
@@ -5343,6 +5355,8 @@ BattleCommand_ForceSwitch:
 	call StdBattleTextbox
 
 	ld hl, SpikesDamage
+	call CallBattleCore
+	ld hl, RunActivationAbilitiesInner
 	jp CallBattleCore
 
 .fail
@@ -6565,8 +6579,8 @@ INCLUDE "engine/battle/move_effects/foresight.asm"
 
 INCLUDE "engine/battle/move_effects/perish_song.asm"
 
-INCLUDE "engine/battle/move_effects/sandstorm.asm"
-
+;INCLUDE "engine/battle/move_effects/sandstorm.asm"
+;
 INCLUDE "engine/battle/move_effects/rollout.asm"
 
 SandstormSpDefBoost: 
@@ -6748,9 +6762,11 @@ BattleCommand_TimeBasedHealContinue:
 
 INCLUDE "engine/battle/move_effects/hidden_power.asm"
 
-INCLUDE "engine/battle/move_effects/rain_dance.asm"
-
-INCLUDE "engine/battle/move_effects/sunny_day.asm"
+;INCLUDE "engine/battle/move_effects/rain_dance.asm"
+;
+;INCLUDE "engine/battle/move_effects/sunny_day.asm"
+;
+INCLUDE "engine/battle/move_effects/weather.asm"
 
 INCLUDE "engine/battle/move_effects/belly_drum.asm"
 
@@ -6790,8 +6806,8 @@ INCLUDE "engine/battle/move_effects/future_sight.asm"
 
 INCLUDE "engine/battle/move_effects/thunder.asm"
 
-INCLUDE "engine/battle/move_effects/hail.asm"
-
+;INCLUDE "engine/battle/move_effects/hail.asm"
+;
 CheckHiddenOpponent:
 ; BUG: Lock-On and Mind Reader don't always bypass Fly and Dig (see docs/bugs_and_glitches.md)
 	ld a, BATTLE_VARS_SUBSTATUS3_OPP

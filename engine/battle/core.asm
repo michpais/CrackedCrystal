@@ -111,10 +111,53 @@ DoBattle:
 	call SpikesDamage
 
 .not_linked_2
+	call RunBothActivationAbilities
 	jp BattleTurn
 
 .tutorial_debug
 	jp BattleMenu
+
+RunBothActivationAbilities:
+	; compare speeds to see who goes first
+	ld de, wBattleMonSpeed
+	ld hl, wEnemyMonSpeed
+	ld c, 2
+	call CompareBytes
+	jr z, .speed_tie
+	jp nc, .player_first
+	jp .enemy_first
+
+.speed_tie
+	call BattleRandom
+	cp 50 percent + 1
+	jp c, .player_first
+	jp .enemy_first
+
+.player_first
+	push af
+	farcall RunActivationAbilitiesInner
+	call SwitchTurnCore
+	farcall RunActivationAbilitiesInner
+	call SwitchTurnCore
+	pop af
+	ret
+.enemy_first
+	push af
+	call SwitchTurnCore
+	farcall RunActivationAbilitiesInner
+	call SwitchTurnCore
+	farcall RunActivationAbilitiesInner
+	pop af
+	ret
+
+RunActivationAbilities:
+; Only run activation ability if its not a double switch
+; aka, if register a is set to 0, it is not a double switch
+	ld a, [wDoubleSwitch]
+	or a
+	ret nz
+	farcall RunActivationAbilitiesInner
+	ret
 
 WildFled_EnemyFled_LinkBattleCanceled:
 	call SafeLoadTempTilemapToTilemap
@@ -472,6 +515,7 @@ DetermineMoveOrder:
 	callfar AI_Switch
 	call SetEnemyTurn
 	call SpikesDamage
+	farcall RunActivationAbilitiesInner ;no need to check for double switch here since player is making a move
 	jp .enemy_first
 
 .use_move
@@ -985,22 +1029,25 @@ EndUserDestinyBond:
 	res SUBSTATUS_DESTINY_BOND, [hl]
 	ret
 
-HasUserFainted:
-	ldh a, [hBattleTurn]
-	and a
-	jr z, HasPlayerFainted
-HasEnemyFainted:
-	ld hl, wEnemyMonHP
-	jr CheckIfHPIsZero
-
-HasPlayerFainted:
-	ld hl, wBattleMonHP
-
-CheckIfHPIsZero:
-	ld a, [hli]
-	or [hl]
-	ret
-
+;HasUserFainted:
+;	ldh a, [hBattleTurn]
+;	and a
+;	jr z, HasPlayerFainted
+;HasEnemyFainted:
+;	ld hl, wEnemyMonHP
+;	jr CheckIfHPIsZero
+;
+;HasOpponentFainted:
+;	ldh a, [hBattleTurn]
+;	and a
+;	jr z, HasEnemyFainted
+;HasPlayerFainted:
+;	ld hl, wBattleMonHP
+;CheckIfHPIsZero:
+;	ld a, [hli]
+;	or [hl]
+;	ret
+;
 ResidualDamage:
 ; Return z if the user fainted before
 ; or as a result of residual damage.
@@ -1669,11 +1716,23 @@ HandleWeather:
 	cp WEATHER_NONE
 	ret z
 
+	ld a, [wPlayerAbility]
+	cp CLOUD_NINE
+	jr z, .cloud_nine_user
+	ld a, [wEnemyAbility]
+	cp CLOUD_NINE
+	jr nz, .weather_continues
+.cloud_nine_user
+	ld hl, NotifyCloudNine
+	call StdBattleTextbox
+	jr .ended
+.weather_continues
 	ld hl, wWeatherCount
 	dec [hl]
 	jr nz, .continues
 
-; ended
+; does not continue
+.ended
 	ld hl, .WeatherEndedMessages
 	call .PrintWeatherMessage
 	xor a
@@ -2135,6 +2194,8 @@ HandleEnemyMonFaint:
 	ret
 
 DoubleSwitch:
+	ld a, 1
+	ld [wDoubleSwitch], a
 	ldh a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
 	jr z, .player_1
@@ -2159,8 +2220,10 @@ DoubleSwitch:
 	call PlayerPartyMonEntrance
 
 .done
+	call RunBothActivationAbilities
 	xor a ; BATTLEPLAYERACTION_USEMOVE
 	ld [wBattlePlayerAction], a
+	ld [wDoubleSwitch], a ; clear double switch
 	ret
 
 UpdateBattleStateAndExperienceAfterEnemyFaint:
@@ -2406,6 +2469,7 @@ EnemyPartyMonEntrance:
 	call ResetBattleParticipants
 	call SetEnemyTurn
 	call SpikesDamage
+	call RunActivationAbilities
 	xor a
 	ld [wEnemyMoveStruct + MOVE_ANIM], a
 	ld [wBattlePlayerAction], a
@@ -2842,6 +2906,7 @@ ForcePlayerMonChoice:
 	call LoadTilemapToTempTilemap
 	call SetPlayerTurn
 	call SpikesDamage
+	call RunActivationAbilities
 	ld a, $1
 	and a
 	ld c, a
@@ -2862,7 +2927,9 @@ PlayerPartyMonEntrance:
 	call EmptyBattleTextbox
 	call LoadTilemapToTempTilemap
 	call SetPlayerTurn
-	jp SpikesDamage
+	call SpikesDamage
+	call RunActivationAbilities
+	ret
 
 CheckMobileBattleError:
 	ld a, [wLinkMode]
@@ -5334,7 +5401,9 @@ PlayerSwitch:
 EnemyMonEntrance:
 	callfar AI_Switch
 	call SetEnemyTurn
-	jp SpikesDamage
+	call SpikesDamage
+	call RunActivationAbilities
+	ret
 
 BattleMonEntrance:
 	call WithdrawMonText
@@ -5368,6 +5437,7 @@ BattleMonEntrance:
 	call LoadTilemapToTempTilemap
 	call SetPlayerTurn
 	call SpikesDamage
+	call RunActivationAbilities
 	ld a, $2
 	ld [wMenuCursorY], a
 	ret
@@ -5391,7 +5461,9 @@ PassedBattleMonEntrance:
 	call EmptyBattleTextbox
 	call LoadTilemapToTempTilemap
 	call SetPlayerTurn
-	jp SpikesDamage
+	call SpikesDamage
+	call RunActivationAbilities
+	ret
 
 BattleMenu_Run:
 	call SafeLoadTempTilemapToTilemap
@@ -6254,7 +6326,7 @@ LoadEnemyMon:
 	inc de
 	ld a, [hl]
 	ld [de], a
-	jp .Happiness
+	jp .Ability
 
 .InitDVs:
 ; Trainer DVs
@@ -6338,7 +6410,7 @@ LoadEnemyMon:
 ; We've still got more to do if we're dealing with a wild monster
 	ld a, [wBattleMode]
 	dec a
-	jr nz, .Happiness
+	jr nz, .Ability
 
 ; Species-specfic:
 
@@ -6366,7 +6438,7 @@ LoadEnemyMon:
 ; since the largest possible Magikarp is 5'3", and $0503 = 1283 mm.
 	ld a, [wTempEnemyMonSpecies]
 	cp MAGIKARP
-	jr nz, .Happiness
+	jr nz, .Ability
 
 ; Get Magikarp's length
 ; BUG: Magikarp length limits have a unit conversion error (see docs/bugs_and_glitches.md)
@@ -6401,14 +6473,14 @@ LoadEnemyMon:
 ; BUG: Magikarp in Lake of Rage are shorter, not longer (see docs/bugs_and_glitches.md)
 	ld a, [wMapGroup]
 	cp GROUP_LAKE_OF_RAGE
-	jr z, .Happiness
+	jr z, .Ability
 	ld a, [wMapNumber]
 	cp MAP_LAKE_OF_RAGE
-	jr z, .Happiness
+	jr z, .Ability
 ; 40% chance of not flooring
 	call Random
 	cp 39 percent + 1
-	jr c, .Happiness
+	jr c, .Ability
 ; Try again if length < 1024 mm (i.e. if HIGH(length) < 3 feet)
 	ld a, [wMagikarpLength]
 	cp HIGH(1024)
@@ -6416,7 +6488,9 @@ LoadEnemyMon:
 
 ; Finally done with DVs
 
-.Happiness:
+.Ability:
+	ld a, [wBaseAbility]
+	ld [wEnemyAbility], a
 ; Set happiness
 	ld a, BASE_HAPPINESS
 	ld [wEnemyMonHappiness], a
@@ -8290,10 +8364,10 @@ StartBattle:
 	scf
 	ret
 
-CallDoBattle: ; unreferenced
-	call DoBattle
-	ret
-
+;CallDoBattle: ; unreferenced
+;	call DoBattle
+;	ret
+;
 BattleIntro:
 	farcall StubbedTrainerRankings_Battles ; mobile
 	call LoadTrainerOrWildMonPic

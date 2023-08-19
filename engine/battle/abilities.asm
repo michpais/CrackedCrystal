@@ -1,15 +1,15 @@
-;RunActivationAbilitiesInner:
-;	; Chain-triggering causes graphical glitches, so ensure animations
-;	; are re-enabled (which also takes care of existing ability slideouts)
-;	call EnableAnimations
-;	call HasUserFainted
-;	ret z
-;	call HasOpponentFainted
-;	ld hl, BattleEntryAbilities
-;	jr z, UserAbilityJumptable
-;	ld hl, BattleEntryAbilitiesNonfainted
-;	jr UserAbilityJumptable
-;
+RunActivationAbilitiesInner:
+	; Chain-triggering causes graphical glitches, so ensure animations
+	; are re-enabled (which also takes care of existing ability slideouts)
+	;call EnableAnimations
+	call HasUserFainted
+	ret z
+	call HasOpponentFainted
+	ld hl, BattleEntryAbilities
+	jr z, UserAbilityJumptable
+	ld hl, BattleEntryAbilitiesNonfainted
+	jr UserAbilityJumptable
+
 ;RunEnemyStatusHealAbilities:
 ;	call CallOpponentTurn
 ;RunStatusHealAbilities:
@@ -21,56 +21,48 @@ AbilityJumptable:
 	; For now it just jumps to the general jumptable function
 	jmp BattleJumptable
 
-;BattleEntryAbilitiesNonfainted:
-;	dbw INTIMIDATE, IntimidateAbility
-;BattleEntryAbilities:
-;	dbw DRIZZLE, DrizzleAbility
-;	dbw DROUGHT, DroughtAbility
-;	dbw SAND_STREAM, SandStreamAbility
-;	dbw SNOW_WARNING, SnowWarningAbility
-;	dbw CLOUD_NINE, CloudNineAbility
-;	dbw PRESSURE, PressureAbility
+BattleEntryAbilitiesNonfainted:
+	dbw INTIMIDATE, IntimidateAbility
+BattleEntryAbilities:
+	;dbw DRIZZLE, DrizzleAbility
+	;dbw DROUGHT, DroughtAbility
+	dbw SANDSTREAM, SandStreamAbility
+	dbw SNOW_WARNING, SnowWarningAbility
+	dbw CLOUD_NINE, CloudNineAbility
+	dbw PRESSURE, PressureAbility
 ;	; fallthrough
 ;StatusHealAbilities:
-; Status immunity abilities that autoproc if the user gets the status or the ability
+;	; Status immunity abilities that autoproc if the user gets the status or the ability
 ;	dbw LIMBER, LimberAbility
 ;	dbw IMMUNITY, ImmunityAbility
 ;	dbw INSOMNIA, InsomniaAbility
 ;	dbw VITAL_SPIRIT, VitalSpiritAbility
-;	dbw OWN_TEMPO, OwnTempoAbility
-;	dbw OBLIVIOUS, ObliviousAbility
-;	dbw -1, -1
-;
-;CloudNineAbility:
-;	ld hl, NotifyCloudNine
-;	jr NotificationAbilities
-;PressureAbility:
-;	ld hl, NotifyPressure
-;	jr NotificationAbilities
-;NotificationAbilities:
-;	push hl
-;	call DisableAnimations
-;	call ShowAbilityActivation
-;	pop hl
-;	call StdBattleTextbox
-;	jmp EnableAnimations
-;
+;	;dbw OWN_TEMPO, OwnTempoAbility
+;	;dbw OBLIVIOUS, ObliviousAbility
+	dbw -1, -1
+
+CloudNineAbility:
+	ld hl, NotifyCloudNine
+	jr NotificationAbilities
+PressureAbility:
+	ld hl, NotifyPressure
+NotificationAbilities:
+	call StdBattleTextbox
+	ret
+
 ;ImmunityAbility:
 ;	ld a, 1 << PSN
 ;	jr HealStatusAbility
 ;WaterVeilAbility:
 ;	ld a, 1 << BRN
 ;	jr HealStatusAbility
-;MagmaArmorAbility:
-;	ld a, 1 << FRZ
-;	jr HealStatusAbility
 ;LimberAbility:
 ;	ld a, 1 << PAR
 ;	jr HealStatusAbility
 ;InsomniaAbility:
 ;VitalSpiritAbility:
-;	ld a, SLP
-	; fallthrough
+;	ld a, SLP_MASK
+;	; fallthrough
 HealStatusAbility:
 	ld b, a
 	ld a, BATTLE_VARS_STATUS
@@ -133,7 +125,7 @@ EndturnAbilities:
 	ret z
 ;	call UserAbilityJumptable
 ;	ld hl, StatusHealAbilities
-	jr UserAbilityJumptable
+	jp UserAbilityJumptable
 
 EndturnAbilityTableA:
 	dbw SHED_SKIN, ShedSkinAbility
@@ -150,81 +142,93 @@ HealAllStatusAbility:
 	ld a, ALL_STATUS
 	jr HealStatusAbility
 
-;; Lasts 5 turns consistent with Generation VI.
+; Lasts 5 turns consistent with Generation VI.
 ;DrizzleAbility: ;may be added later
 ;	ld a, WEATHER_RAIN
 ;	jr WeatherAbility
 ;DroughtAbility: ;may be added later
 ;	ld a, WEATHER_SUN
 ;	jr WeatherAbility
-;SandStreamAbility:
-;	ld a, WEATHER_SANDSTORM
-;	jr WeatherAbility
-;SnowWarningAbility:
-;	ld a, WEATHER_HAIL
-;	; fallthrough
-;WeatherAbility:
-;	ld b, a
-;	ld a, [wBattleWeather]
-;	cp b
-;	ret z ; don't re-activate it
-;
-;	call DisableAnimations
-;	call ShowAbilityActivation
-;	; Disable running animations as part of Start(wWeather) commands. This will not block
-;	; Call_PlayBattleAnim that plays the animation manually.
-;	ld a, b
-;	cp WEATHER_RAIN
-;	jr z, .handlerain
-;	cp WEATHER_SUN
-;	jr z, .handlesun
-;	cp WEATHER_HAIL
-;	jr z, .handlehail
-;	; is sandstorm
-;	ld de, SANDSTORM
-;	farcall Call_PlayBattleAnim
-;	farcall BattleCommand_startsandstorm
-;	jmp EnableAnimations
-;.handlerain
-;	ld de, RAIN_DANCE
-;	farcall Call_PlayBattleAnim
-;	farcall BattleCommand_startrain
-;	jmp EnableAnimations
-;.handlesun
-;	ld de, SUNNY_DAY
-;	farcall Call_PlayBattleAnim
-;	farcall BattleCommand_startsun
-;	jmp EnableAnimations
-;.handlehail
-;	ld de, HAIL
-;	farcall Call_PlayBattleAnim
-;	farcall BattleCommand_starthail
-;	jmp EnableAnimations
-;
-;IntimidateAbility:
-;	; does not work against Inner Focus, Own Tempo, Oblivious (which may be added later)
-;	call GetOpponentAbility
-;	ld b, a
-;	push af
-;	farcall BufferAbility
-;	pop af
-;	ld hl, NoIntimidateAbilities
-;	call IsInByteArray
-;	jr nc, .intimidate_ok
-;	call DisableAnimations
-;	call ShowAbilityActivation
-;	call ShowEnemyAbilityActivation
-;	ld hl, BattleText_IntimidateResisted
-;	call StdBattleTextbox
-;	jmp EnableAnimations
-;
-;.intimidate_ok
-;	call DisableAnimations
-;	farcall BattleCommand_AttackDown
-;	jmp EnableAnimations
-;
-;INCLUDE "data/abilities/no_intimidate_abilities.asm"
-;
+SandStreamAbility:
+	ld a, WEATHER_SANDSTORM
+	jr WeatherAbility
+SnowWarningAbility:
+	ld a, WEATHER_HAIL
+	; fallthrough
+WeatherAbility:
+	ld b, a
+	ld a, [wBattleWeather]
+	cp b
+	ret z ; don't re-activate it
+
+	ld a, b
+	cp WEATHER_RAIN
+	jr z, .handlerain
+	cp WEATHER_SUN
+	jr z, .handlesun
+	cp WEATHER_HAIL
+	jr z, .handlehail
+	; is sandstorm
+	ld de, SANDSTORM
+	farcall Call_PlayBattleAnim
+	farcall BattleCommand_StartSandstorm
+	ret
+.handlerain
+	ld de, RAIN_DANCE
+	farcall Call_PlayBattleAnim
+	farcall BattleCommand_StartRain
+	ret
+.handlesun
+	ld de, SUNNY_DAY
+	farcall Call_PlayBattleAnim
+	farcall BattleCommand_StartSun
+	ret
+.handlehail
+	ld de, HAIL
+	farcall Call_PlayBattleAnim
+	farcall BattleCommand_StartHail
+	ret
+
+IntimidateAbility:
+	; does not work against Inner Focus, Own Tempo, Oblivious (which may be added later)
+	call GetOpponentAbility
+	ld b, a
+	;push af
+	;farcall BufferAbility
+	;pop af
+;	push de
+	ld de, 1
+	ld hl, NoIntimidateAbilities
+	call IsInArray ; was IsInByteArray
+	jr nc, .intimidate_ok
+;	pop de
+	ld [wNamedObjectIndex], a
+	call GetAbilityName
+	ld hl, BattleText_IntimidateResisted
+	jmp StdBattleTextbox
+
+.intimidate_ok
+	call PrintAbilityActivated
+	xor a
+	ld [wAttackMissed], a
+	ld [wEffectFailed], a
+	farcall BattleCommand_AttackDown
+	ld a, [wFailedMessage]
+	or a ; compares against a from AttackDown, which stores the failure message
+	jr nz, .failed
+;	push de
+	ld de, ANIM_ENEMY_STAT_DOWN
+	farcall Call_PlayBattleAnim
+;	pop de
+	farcall BattleCommand_StatDownMessage
+	ret
+.failed
+	farcall BattleCommand_StatDownFailText
+;	pop de
+	ret
+
+INCLUDE "data/abilities/no_intimidate_abilities.asm"
+
 ;RunEnemyOwnTempoAbility:
 ;	call SwitchTurn
 ;	call GetTrueUserAbility
@@ -731,7 +735,6 @@ CanSleepTarget2:
 	lb de, VITAL_SPIRIT, HELD_PREVENT_SLEEP
 	ld h, SLP_MASK
 CanStatusTarget:
-;	push af
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
 	and a

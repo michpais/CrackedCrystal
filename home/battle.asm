@@ -303,6 +303,25 @@ BattleJumptable::
 	pop bc
 	ret
 
+HasUserFainted::
+	ldh a, [hBattleTurn]
+	and a
+	jr z, HasPlayerFainted
+HasEnemyFainted::
+	ld hl, wEnemyMonHP
+	jr CheckIfHPIsZero
+
+HasOpponentFainted::
+	ldh a, [hBattleTurn]
+	and a
+	jr z, HasEnemyFainted
+HasPlayerFainted::
+	ld hl, wBattleMonHP
+CheckIfHPIsZero::
+	ld a, [hli]
+	or [hl]
+	ret
+
 GetOpponentAbility::
 	ld a, BATTLE_VARS_ABILITY_OPP
 	call GetBattleVar

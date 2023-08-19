@@ -987,6 +987,27 @@ BecameHealthyText:
 	text "!"
 	prompt
 
+BattleText_IntimidateResisted:
+	text "<TARGET>'s"
+	line "@"
+	text_ram wStringBuffer1
+	text_start
+
+	para "protects it from"
+	line "INTIMIDATE!"
+	prompt
+
+NotifyCloudNine:
+	text "The CLOUD NINE"
+	line "ability is suppre-"
+	cont "ssing the weather!"
+	prompt
+
+NotifyPressure:
+	text "<USER> is"
+	line "exerting pressure!"
+	prompt
+
 MirrorMoveFailedText:
 	text "The MIRROR MOVE"
 	next "failed!"
