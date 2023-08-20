@@ -3672,18 +3672,10 @@ BattleCommand_SleepTarget:
 	jr nz, .didntaffect
 	call GetOpponentAbility
 	cp VITAL_SPIRIT
-	jr z, .protected_by_ability
+	jp z, PrintProtectedByAbilityText
 	cp INSOMNIA
-	jr nz, .not_protected_by_ability
-
-.protected_by_ability
-	ld [wNamedObjectIndex], a
-	call GetAbilityName
-	call AnimateFailedMove
-	ld hl, ProtectedByAbilityText
-	jp StdBattleTextbox
-
-.not_protected_by_ability
+	jp z, PrintProtectedByAbilityText
+; not protected by ability
 	ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
@@ -3843,11 +3835,7 @@ BattleCommand_Poison:
 	call GetOpponentAbility
 	cp IMMUNITY
 	jr nz, .do_poison
-	ld [wNamedObjectIndex], a
-	call GetAbilityName
-	call AnimateFailedMove
-	ld hl, ProtectedByAbilityText
-	jp StdBattleTextbox
+	jp PrintProtectedByAbilityText
 
 .do_poison
 	ld hl, EvadedText
@@ -4557,6 +4545,15 @@ BattleCommand_StatDown:
 	call CheckMist
 	jp nz, .Mist
 
+	call CheckStatDownImmunity
+	jr nz, .not_immune
+	ld a, 3
+	ld [wFailedMessage], a
+	ld a, 1
+	ld [wAttackMissed], a
+	ret
+
+.not_immune
 	ld hl, wEnemyStatLevels
 	ldh a, [hBattleTurn]
 	and a
@@ -4624,7 +4621,7 @@ BattleCommand_StatDown:
 .CouldntLower:
 	inc [hl]
 .CantLower:
-	ld a, 3
+	ld a, 4
 	ld [wFailedMessage], a
 	ld a, 1
 	ld [wAttackMissed], a
@@ -4642,6 +4639,48 @@ BattleCommand_StatDown:
 	ld a, 1
 	ld [wAttackMissed], a
 	ret
+
+CheckStatDownImmunity:
+	call GetOpponentAbility ; gets jumptable ability
+	cp CLEAR_BODY
+	ret z
+	ld hl, .StatDownImmunityJumptable
+	call .Jumptable
+	ret nz
+	ld a, [wLoweredStat]
+	and $f
+	cp l
+	ret
+
+.Jumptable:
+; if the ability is in the jumptable, it will keep ability in b and return stat in L
+; if a an ABILITY is found, then it will set Z, otherwise it will set NZ
+	push bc
+	ld b, a
+.loop
+	ld a, [hli]
+	cp b
+	jr z, .found_target
+	inc hl
+	ld a, [hl]
+	cp -1
+	jr nz, .loop
+	jr .end
+.found_target
+	inc hl
+	ld l, [hl]
+	jr .end
+.set_nz_end
+	and $ff
+.end
+	pop bc
+	ret
+
+.StatDownImmunityJumptable:
+	dw CLEAR_BODY, 1
+	dw KEEN_EYE, ACCURACY
+	dw HYPER_CUTTER, ATTACK
+	dw -1, -1
 
 CheckMist:
 	ld a, BATTLE_VARS_MOVE_EFFECT
@@ -4803,6 +4842,8 @@ BattleCommand_StatDownFailText:
 	dec a
 	ld hl, ProtectedByMistText
 	jp z, StdBattleTextbox
+	dec a
+	jp z, .protected_by_ability
 	ld a, [wLoweredStat]
 	and $f
 	ld b, a
@@ -4810,6 +4851,10 @@ BattleCommand_StatDownFailText:
 	call GetStatName
 	ld hl, WontDropAnymoreText
 	jp StdBattleTextbox
+
+.protected_by_ability
+	call GetOpponentAbility
+	jp PrintProtectedByAbilityText
 
 GetStatName:
 	ld hl, StatNames
@@ -5825,9 +5870,9 @@ BattleCommand_Charge:
 	text_far _BattleDugText
 	text_end
 
-BattleCommand_Unused3C:
+;BattleCommand_Unused3C:
 ; effect0x3c
-	ret
+;	ret
 
 BattleCommand_TrapTarget:
 	ld a, [wAttackMissed]
@@ -5984,11 +6029,7 @@ BattleCommand_Confuse:
 	call GetOpponentAbility
 	cp OWN_TEMPO
 	jr nz, .no_ability_protection
-	ld [wNamedObjectIndex], a
-	call GetAbilityName
-	call AnimateFailedMove
-	ld hl, ProtectedByAbilityText
-	jp StdBattleTextbox
+	jp PrintProtectedByAbilityText
 
 .no_ability_protection
 	ld a, BATTLE_VARS_SUBSTATUS3_OPP
@@ -6095,11 +6136,7 @@ BattleCommand_Paralyze:
 	call GetOpponentAbility
 	cp LIMBER
 	jr nz, .no_ability_protection
-	ld [wNamedObjectIndex], a
-	call GetAbilityName
-	call AnimateFailedMove
-	ld hl, ProtectedByAbilityText
-	jp StdBattleTextbox
+	jp PrintProtectedByAbilityText
 
 .no_ability_protection
 	ld c, 30
@@ -6188,6 +6225,14 @@ INCLUDE "engine/battle/move_effects/rage.asm"
 INCLUDE "engine/battle/move_effects/hex.asm"
 
 INCLUDE "engine/battle/move_effects/retaliation.asm"
+
+PrintProtectedByAbilityText:
+; uses ability in a to print protected by text
+	ld [wNamedObjectIndex], a
+	call GetAbilityName
+	call AnimateFailedMove
+	ld hl, ProtectedByAbilityText
+	jp StdBattleTextbox
 
 BattleCommand_DoubleFlyingDamage:
 	ld a, BATTLE_VARS_SUBSTATUS3_OPP
@@ -6613,9 +6658,9 @@ SandstormSpDefBoost:
 	ld c, l
 	ret
 
-BattleCommand_Unused5D:
+;BattleCommand_Unused5D:
 ; effect0x5d
-	ret
+;	ret
 
 INCLUDE "engine/battle/move_effects/fury_cutter.asm"
 
