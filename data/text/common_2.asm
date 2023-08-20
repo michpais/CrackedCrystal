@@ -705,26 +705,26 @@ Text_BattleUser::
 	text "<USER>@"
 	text_end
 
-_BattleMadeWhirlwindText::
-	text_start
-	line "made a whirlwind!"
-	prompt
-
+;_BattleMadeWhirlwindText::
+;	text_start
+;	line "made a whirlwind!"
+;	prompt
+;
 _BattleTookSunlightText::
 	text_start
 	line "took in sunlight!"
 	prompt
 
-_BattleLoweredHeadText::
-	text_start
-	line "lowered its head!"
-	prompt
-
-_BattleGlowingText::
-	text_start
-	line "is glowing!"
-	prompt
-
+;_BattleLoweredHeadText::
+;	text_start
+;	line "lowered its head!"
+;	prompt
+;
+;_BattleGlowingText::
+;	text_start
+;	line "is glowing!"
+;	prompt
+;
 _BattleFlewText::
 	text_start
 	line "flew up high!"

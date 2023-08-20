@@ -40,7 +40,7 @@ MoveEffectsPointers:
 	dw TriAttack
 	dw NormalHit
 	dw OHKOHit
-	dw RazorWind
+;	dw RazorWind
 	dw SuperFang
 	dw StaticDamage
 	dw TrapTarget
@@ -76,7 +76,7 @@ MoveEffectsPointers:
 	dw SpecialDefenseDownHit
 	dw AccuracyDownHit
 	dw EvasionDownHit
-	dw SkyAttack
+;	dw SkyAttack
 	dw ConfuseHit
 	dw PoisonMultiHit
 	dw NormalHit
@@ -146,7 +146,7 @@ MoveEffectsPointers:
 	dw BellyDrum
 	dw PsychUp
 	dw MirrorCoat
-	dw SkullBash
+;	dw SkullBash
 	dw Twister
 	dw Earthquake
 	dw FutureSight
@@ -155,7 +155,7 @@ MoveEffectsPointers:
 	dw Solarbeam
 	dw Thunder
 	dw Teleport
-	dw BeatUp
+;	dw BeatUp
 	dw Fly
 	dw DefenseCurl
 	dw FreezeHit ; for Blizzard, purposefully with different EFFECT_* constant

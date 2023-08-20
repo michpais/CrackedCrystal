@@ -1095,31 +1095,31 @@ DoBurn:
 	burn
 	endmove
 
-SkyAttack:
-	checkcharge
-	checkobedience
-	doturn
-	charge
-	usedmovetext
-	critical
-	damagestats
-	damagecalc
-	stab
-	damagevariation
-	checkhit
-	effectchance
-	moveanim
-	failuretext
-	applydamage
-	criticaltext
-	supereffectivetext
-	checkfaint
-	buildopponentrage
-	flinchtarget
-	kingsrock
-	posthiteffects
-	endmove
-
+;SkyAttack:
+;	checkcharge
+;	checkobedience
+;	doturn
+;	charge
+;	usedmovetext
+;	critical
+;	damagestats
+;	damagecalc
+;	stab
+;	damagevariation
+;	checkhit
+;	effectchance
+;	moveanim
+;	failuretext
+;	applydamage
+;	criticaltext
+;	supereffectivetext
+;	checkfaint
+;	buildopponentrage
+;	flinchtarget
+;	kingsrock
+;	posthiteffects
+;	endmove
+;
 Substitute:
 	checkobedience
 	usedmovetext
@@ -1209,29 +1209,29 @@ Disable:
 	disable
 	endmove
 
-RazorWind:
-	checkcharge
-	checkobedience
-	doturn
-	charge
-	usedmovetext
-	critical
-	damagestats
-	damagecalc
-	stab
-	damagevariation
-	checkhit
-	moveanim
-	failuretext
-	applydamage
-	criticaltext
-	supereffectivetext
-	checkfaint
-	buildopponentrage
-	kingsrock
-	posthiteffects
-	endmove
-
+;RazorWind:
+;	checkcharge
+;	checkobedience
+;	doturn
+;	charge
+;	usedmovetext
+;	critical
+;	damagestats
+;	damagecalc
+;	stab
+;	damagevariation
+;	checkhit
+;	moveanim
+;	failuretext
+;	applydamage
+;	criticaltext
+;	supereffectivetext
+;	checkfaint
+;	buildopponentrage
+;	kingsrock
+;	posthiteffects
+;	endmove
+;
 Fly:
 	checkcharge
 	checkobedience
@@ -1922,32 +1922,32 @@ MirrorCoat:
 	posthiteffects
 	endmove
 
-SkullBash:
-	checkcharge
-	checkobedience
-	doturn
-	charge
-	usedmovetext
-	critical
-	damagestats
-	damagecalc
-	stab
-	damagevariation
-	checkhit
-	moveanim
-	failuretext
-	applydamage
-	criticaltext
-	supereffectivetext
-	checkfaint
-	buildopponentrage
-	kingsrock
-	endturn
-	defenseup
-	statupmessage
-	posthiteffects
-	endmove
-
+;SkullBash:
+;	checkcharge
+;	checkobedience
+;	doturn
+;	charge
+;	usedmovetext
+;	critical
+;	damagestats
+;	damagecalc
+;	stab
+;	damagevariation
+;	checkhit
+;	moveanim
+;	failuretext
+;	applydamage
+;	criticaltext
+;	supereffectivetext
+;	checkfaint
+;	buildopponentrage
+;	kingsrock
+;	endturn
+;	defenseup
+;	statupmessage
+;	posthiteffects
+;	endmove
+;
 Twister:
 	checkobedience
 	usedmovetext
@@ -2109,34 +2109,34 @@ Teleport:
 	teleport
 	endmove
 
-BeatUp:
-	checkobedience
-	usedmovetext
-	movedelay
-	doturn
-	startloop
-	lowersub
-	checkhit
-	critical
-	beatup
-	damagecalc
-	damagevariation
-	clearmissdamage
-	moveanimnosub
-	failuretext
-	applydamage
-	criticaltext
-	cleartext
-	supereffectivetext
-	checkfaint
-	buildopponentrage
-	endloop
-	beatupfailtext
-	raisesub
-	kingsrock
-	posthiteffects
-	endmove
-
+;BeatUp:
+;	checkobedience
+;	usedmovetext
+;	movedelay
+;	doturn
+;	startloop
+;	lowersub
+;	checkhit
+;	critical
+;	beatup
+;	damagecalc
+;	damagevariation
+;	clearmissdamage
+;	moveanimnosub
+;	failuretext
+;	applydamage
+;	criticaltext
+;	cleartext
+;	supereffectivetext
+;	checkfaint
+;	buildopponentrage
+;	endloop
+;	beatupfailtext
+;	raisesub
+;	kingsrock
+;	posthiteffects
+;	endmove
+;
 DefenseCurl:
 	checkobedience
 	usedmovetext

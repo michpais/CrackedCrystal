@@ -1135,6 +1135,10 @@ BattleCommand_Critical:
 	and a
 	ret z
 
+	call GetOpponentAbility
+	cp SHELL_ARMOR
+	ret z
+
 	ldh a, [hBattleTurn]
 	and a
 	ld hl, wEnemyMonItem
@@ -1940,12 +1944,12 @@ BattleCommand_LowerSub:
 
 	ld a, BATTLE_VARS_MOVE_EFFECT
 	call GetBattleVar
-	cp EFFECT_RAZOR_WIND
-	jr z, .charge_turn
-	cp EFFECT_SKY_ATTACK
-	jr z, .charge_turn
-	cp EFFECT_SKULL_BASH
-	jr z, .charge_turn
+;	cp EFFECT_RAZOR_WIND
+;	jr z, .charge_turn
+;	cp EFFECT_SKY_ATTACK
+;	jr z, .charge_turn
+;	cp EFFECT_SKULL_BASH
+;	jr z, .charge_turn
 	cp EFFECT_SOLARBEAM
 	jr z, .charge_turn
 	cp EFFECT_FLY
@@ -2461,11 +2465,11 @@ BattleCommand_CheckFaint:
 	cp EFFECT_DOUBLE_HIT
 	jr z, .multiple_hit_raise_sub
 	cp EFFECT_POISON_MULTI_HIT
-	jr z, .multiple_hit_raise_sub
+	jr nz, .finish
 ;	cp EFFECT_TRIPLE_KICK
 ;	jr z, .multiple_hit_raise_sub
-	cp EFFECT_BEAT_UP
-	jr nz, .finish
+;	cp EFFECT_BEAT_UP
+;	jr nz, .finish
 
 .multiple_hit_raise_sub
 	call BattleCommand_RaiseSub
@@ -2922,8 +2926,8 @@ EnemyAttackDamage:
 	and a
 	ret
 
-INCLUDE "engine/battle/move_effects/beat_up.asm"
-
+;INCLUDE "engine/battle/move_effects/beat_up.asm"
+;
 BattleCommand_ClearMissDamage:
 	ld a, [wAttackMissed]
 	and a
@@ -3187,6 +3191,23 @@ DEF DAMAGE_CAP EQU MAX_DAMAGE - MIN_DAMAGE
 	and a
 	ret z
 
+	call GetUserAbility
+	cp SNIPER
+	jr nz, .multiply_by_2
+; Multiply damage value by 3
+	ld a, [hQuotient + 2] 	; Load low byte of damage value into A
+	add a                  	; Double the value in A
+	add a					; Add value again to get tripled value
+	ldh [hQuotient + 2], a 	; Store doubled value back into low byte
+
+	ld a, [hQuotient + 3] 	; Load high byte of damage value into A
+	ld b, a					; store original value in b
+	rl a                  	; Multiply by 2
+	add a, b 				; Add original high byte to doubled high byte to get triple value
+	ldh [hQuotient + 3], a ; Store result back into high byte
+	jr .cap
+
+.multiply_by_2
 ; x2
 	ldh a, [hQuotient + 3]
 	add a
@@ -3196,6 +3217,7 @@ DEF DAMAGE_CAP EQU MAX_DAMAGE - MIN_DAMAGE
 	rl a
 	ldh [hQuotient + 2], a
 
+.cap
 ; Cap at $ffff.
 	ret nc
 
@@ -3620,8 +3642,8 @@ DoSubstituteDamage:
 	jr z, .ok
 ;	cp EFFECT_TRIPLE_KICK
 ;	jr z, .ok
-	cp EFFECT_BEAT_UP
-	jr z, .ok
+;	cp EFFECT_BEAT_UP
+;	jr z, .ok
 	xor a
 	ld [hl], a
 .ok
@@ -5481,9 +5503,9 @@ BattleCommand_EndLoop:
 	cp EFFECT_DOUBLE_HIT
 	ld a, 1
 	jr z, .double_hit
-	ld a, [hl]
-	cp EFFECT_BEAT_UP
-	jr z, .beat_up
+;	ld a, [hl]
+;	cp EFFECT_BEAT_UP
+;	jr z, .beat_up
 	jr .not_triple_kick
 ;	cp EFFECT_TRIPLE_KICK
 ;	jr nz, .not_triple_kick
@@ -5496,35 +5518,35 @@ BattleCommand_EndLoop:
 ;	ld a, 1
 ;	ld [bc], a
 ;	jr .done_loop
-
-.beat_up
-	ldh a, [hBattleTurn]
-	and a
-	jr nz, .check_ot_beat_up
-	ld a, [wPartyCount]
-	cp 1
-	jp z, .only_one_beatup
-	dec a
-	jr .double_hit
-
-.check_ot_beat_up
-	ld a, [wBattleMode]
-	cp WILD_BATTLE
-	jp z, .only_one_beatup
-	ld a, [wOTPartyCount]
-	cp 1
-	jp z, .only_one_beatup
-	dec a
-	jr .double_hit
-
-.only_one_beatup
-; BUG: Beat Up works incorrectly with only one Pokémon in the party (see docs/bugs_and_glitches.md)
-	ld a, BATTLE_VARS_SUBSTATUS3
-	call GetBattleVarAddr
-	res SUBSTATUS_IN_LOOP, [hl]
-	call BattleCommand_BeatUpFailText
-	jp EndMoveEffect
-
+;
+;.beat_up
+;	ldh a, [hBattleTurn]
+;	and a
+;	jr nz, .check_ot_beat_up
+;	ld a, [wPartyCount]
+;	cp 1
+;	jp z, .only_one_beatup
+;	dec a
+;	jr .double_hit
+;
+;.check_ot_beat_up
+;	ld a, [wBattleMode]
+;	cp WILD_BATTLE
+;	jp z, .only_one_beatup
+;	ld a, [wOTPartyCount]
+;	cp 1
+;	jp z, .only_one_beatup
+;	dec a
+;	jr .double_hit
+;
+;.only_one_beatup
+;; BUG: Beat Up works incorrectly with only one Pokémon in the party (see docs/bugs_and_glitches.md)
+;	ld a, BATTLE_VARS_SUBSTATUS3
+;	call GetBattleVarAddr
+;	res SUBSTATUS_IN_LOOP, [hl]
+;	call BattleCommand_BeatUpFailText
+;	jp EndMoveEffect
+;
 .not_triple_kick
 	call BattleRandom
 	and $3
@@ -5562,13 +5584,13 @@ BattleCommand_EndLoop:
 .got_hit_n_times_text
 
 	push bc
-	ld a, BATTLE_VARS_MOVE_EFFECT
-	call GetBattleVar
-	cp EFFECT_BEAT_UP
-	jr z, .beat_up_2
+;	ld a, BATTLE_VARS_MOVE_EFFECT
+;	call GetBattleVar
+;	cp EFFECT_BEAT_UP
+;	jr z, .beat_up_2
 	call StdBattleTextbox
-.beat_up_2
-
+;.beat_up_2
+;
 	pop bc
 	xor a
 	ld [bc], a
@@ -5808,11 +5830,11 @@ BattleCommand_Charge:
 	ld hl, .UsedText
 	call BattleTextbox
 
-	ld a, BATTLE_VARS_MOVE_EFFECT
-	call GetBattleVar
-	cp EFFECT_SKULL_BASH
+;	ld a, BATTLE_VARS_MOVE_EFFECT
+;	call GetBattleVar
+;	cp EFFECT_SKULL_BASH
 	ld b, endturn_command
-	jp z, SkipToBattleCommand
+;	jp z, SkipToBattleCommand
 	jp EndMoveEffect
 
 .UsedText:
@@ -5846,22 +5868,22 @@ BattleCommand_Charge:
 .done
 	ret
 
-.BattleMadeWhirlwindText:
-	text_far _BattleMadeWhirlwindText
-	text_end
-
+;.BattleMadeWhirlwindText:
+;	text_far _BattleMadeWhirlwindText
+;	text_end
+;
 .BattleTookSunlightText:
 	text_far _BattleTookSunlightText
 	text_end
 
-.BattleLoweredHeadText:
-	text_far _BattleLoweredHeadText
-	text_end
-
-.BattleGlowingText:
-	text_far _BattleGlowingText
-	text_end
-
+;.BattleLoweredHeadText:
+;	text_far _BattleLoweredHeadText
+;	text_end
+;
+;.BattleGlowingText:
+;	text_far _BattleGlowingText
+;	text_end
+;
 .BattleFlewText:
 	text_far _BattleFlewText
 	text_end

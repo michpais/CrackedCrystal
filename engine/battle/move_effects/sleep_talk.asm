@@ -127,12 +127,12 @@ BattleCommand_SleepTalk:
 	pop de
 	pop hl
 
-	cp EFFECT_SKULL_BASH
-	ret z
-	cp EFFECT_RAZOR_WIND
-	ret z
-	cp EFFECT_SKY_ATTACK
-	ret z
+;	cp EFFECT_SKULL_BASH
+;	ret z
+;	cp EFFECT_RAZOR_WIND
+;	ret z
+;	cp EFFECT_SKY_ATTACK
+;	ret z
 	cp EFFECT_SOLARBEAM
 	ret z
 	cp EFFECT_FLY
