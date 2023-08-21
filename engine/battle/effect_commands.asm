@@ -2166,14 +2166,26 @@ BattleCommand_ApplyDamage:
 	ld a, BATTLE_VARS_SUBSTATUS1_OPP
 	call GetBattleVar
 	bit SUBSTATUS_ENDURE, a
-	jr z, .focus_band
+	jr nz, .endure
 
+	call GetOpponentAbility
+	cp STURDY
+	jr nz, .focus_band
+	push bc
+	farcall SwitchTurnCore
+	call CheckFullHP
+	pop bc
+	jr nz, .switch_turn_focus_band
+	farcall SwitchTurnCore
+.endure
 	call BattleCommand_FalseSwipe
 	ld b, 0
 	jr nc, .damage
 	ld b, 1
 	jr .damage
 
+.switch_turn_focus_band
+	farcall SwitchTurnCore
 .focus_band
 	call GetOpponentItem
 	ld a, b
@@ -6255,6 +6267,26 @@ PrintProtectedByAbilityText:
 	call AnimateFailedMove
 	ld hl, ProtectedByAbilityText
 	jp StdBattleTextbox
+
+CheckFullHP:
+; check if the user has full HP
+; z: yes, nz: no
+	ld hl, wBattleMonHP
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .got_hp
+	ld hl, wEnemyMonHP
+.got_hp
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	cp b
+	ret nz
+	ld a, [hl]
+	cp c
+	ret
 
 BattleCommand_DoubleFlyingDamage:
 	ld a, BATTLE_VARS_SUBSTATUS3_OPP
