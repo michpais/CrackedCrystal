@@ -260,6 +260,8 @@ StatsScreen_CopyToTempMon:
 	ld de, wTempMon
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call CopyBytes
+	ld a, [wBaseAbility]
+	ld [wTempMonAbility], a
 	jr .done
 
 .not_tempmon
@@ -824,16 +826,8 @@ LoadOrangePage:
 	ld a, [wCurPartySpecies]
 	cp EGG
 	jr z, .egg
-;	keep for potential use of wtempmon intead
-;	which would be the preferred method
 	ld a, [wTempMonAbility]
 	ld [wNamedObjectIndex], a
-;	not needed anymore since this is hardcoded in tempmon.asm
-;	which is probably not the best way to do this.
-;;	ld [wCurSpecies], a
-;;	call GetBaseData
-;;	ld a, [wBaseAbility]
-;;	ld [wNamedObjectIndex], a
 	call GetAbilityName
 	ld b, e ; load ability into b for desc
 	jr .printabilitystring
