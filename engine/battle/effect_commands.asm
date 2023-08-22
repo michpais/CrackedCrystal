@@ -5965,6 +5965,10 @@ INCLUDE "engine/battle/move_effects/mist.asm"
 INCLUDE "engine/battle/move_effects/focus_energy.asm"
 
 BattleCommand_Recoil:
+	; Check to see if user has ROCK_HEAD
+	call GetUserAbility
+	cp ROCK_HEAD
+	ret z
 	ld hl, wBattleMonMaxHP
 	ldh a, [hBattleTurn]
 	and a
