@@ -17,6 +17,11 @@ BattleCommand_Thief:
 	and a
 	ret z
 
+; The enemy can't have STICKY_HOLD ability
+	call GetOpponentAbility
+	cp STICKY_HOLD
+	ret z
+
 ; Can't steal mail.
 
 	ld [wNamedObjectIndex], a
@@ -62,6 +67,11 @@ BattleCommand_Thief:
 	call .playeritem
 	ld a, [hl]
 	and a
+	ret z
+
+; The player can't have STICKY_HOLD ability
+	call GetOpponentAbility
+	cp STICKY_HOLD
 	ret z
 
 ; Can't steal mail!

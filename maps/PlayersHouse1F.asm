@@ -215,11 +215,18 @@ ElmsLookingForYouText:
 	line "neighbor, PROF."
 
 	para "ELM, was looking"
-	line "for you."
+	line "for you and asked"
 
-	para "He said he wanted"
-	line "you to do some-"
-	cont "thing for him."
+	para "if you could stop"
+	line "by his lab. You"
+	
+	para "should head over,"
+	line "it's right next"
+	cont "door. You're even"
+	
+	para "wearing the new"
+	line "RUNNING SHOES I"
+	cont "got you!"
 
 	para "Oh! I almost for-"
 	line "got! Your #MON"
