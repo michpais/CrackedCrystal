@@ -232,7 +232,7 @@ BurnedTower1FEusineIntroText:
 	cont "ELM's lab!"
 
 	para "Remember that"
-	line "#MONsdf named I"
+	line "#MON named I"
 	cont "mentioned then?"
 
 	para "Well, its actually"
