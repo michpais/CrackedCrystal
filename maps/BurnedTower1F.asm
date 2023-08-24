@@ -232,8 +232,8 @@ BurnedTower1FEusineIntroText:
 	cont "ELM's lab!"
 
 	para "Remember that"
-	line "#MON named I ment-"
-	cont "ioned back then?"
+	line "#MONsdf named I"
+	cont "mentioned then?"
 
 	para "Well, its actually"
 	line "a legendary"
