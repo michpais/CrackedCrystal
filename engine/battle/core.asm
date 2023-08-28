@@ -575,8 +575,12 @@ DetermineMoveOrder:
 	jr .speed_check
 
 .speed_check
-	ld de, wBattleMonSpeed
-	ld hl, wEnemyMonSpeed
+	xor a
+	farcall GetSpeedAfterAbilities ; get Battle Mon's speed
+	ld a, 1
+	farcall GetSpeedAfterAbilities ; get Enemy Mon's speed
+;	ld de, wBattleMonSpeed
+;	ld hl, wEnemyMonSpeed
 	ld c, 2
 	call CompareBytes
 	jr z, .speed_tie
@@ -5927,6 +5931,7 @@ MoveInfoBox:
 	jr z, .addfive
 	; reload the rounded number into a, make sure its not 0, and print
 	ld a, c
+.done_addition
 	cp 2
 	jr c, .no_acc
 	ld [wTextDecimalByte], a
@@ -5939,37 +5944,19 @@ MoveInfoBox:
 	ld a, c
 	ld b, 15
 	add b
-	cp 2
-	jr c, .no_acc
-	ld [wTextDecimalByte], a
-	ld de, wTextDecimalByte
-	lb bc, 1, 3
-	call PrintNum
-	ret
+	jr .done_addition
 .addten
 	; reload the rounded number into a, make sure its not 0, and print
 	ld a, c
 	ld b, 10
 	add b
-	cp 2
-	jr c, .no_acc
-	ld [wTextDecimalByte], a
-	ld de, wTextDecimalByte
-	lb bc, 1, 3
-	call PrintNum
-	ret
+	jr .done_addition
 .addfive
 	; reload the rounded number into a, make sure its not 0, and print
 	ld a, c
 	ld b, 5
 	add b
-	cp 2
-	jr c, .no_acc
-	ld [wTextDecimalByte], a
-	ld de, wTextDecimalByte
-	lb bc, 1, 3
-	call PrintNum
-	ret
+	jr .done_addition
 .no_acc
 	ld de, .NA
 	call PlaceString
@@ -8098,10 +8085,10 @@ GoodComeBackText:
 	text_far _GoodComeBackText
 	text_end
 
-TextJump_ComeBack: ; unreferenced
-	ld hl, ComeBackText
-	ret
-
+;TextJump_ComeBack: ; unreferenced
+;	ld hl, ComeBackText
+;	ret
+;
 ComeBackText:
 	text_far _ComeBackText
 	text_end

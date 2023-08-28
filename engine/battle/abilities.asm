@@ -491,27 +491,70 @@ PrintAbilityActivated:
 ;	ld hl, HPIsFullText
 ;	call StdBattleTextbox
 ;	jmp EnableAnimations
-;
-;ApplySpeedAbilities:
-;; Passive speed boost abilities
-;	call GetTrueUserAbility
-;	cp SWIFT_SWIM
-;	jr z, .swift_swim
-;	cp CHLOROPHYLL
-;	ret nz
-;	ld h, WEATHER_SUN
-;	jr .weather_ability
-;.swift_swim
-;	ld h, WEATHER_RAIN
-;	jr .weather_ability
-;.weather_ability
-;	call GetWeatherAfterUserUmbrella
-;	cp h
-;	ret nz
-;	ln a, 2, 1 ; x2
-;.apply_mod
-;	jmp MultiplyAndDivide
-;
+
+GetSpeedAfterAbilities:
+	; if a = 0, calculate Battle Mon's speed, otherwise Enemy Mon's speed
+	; take wBattle(/Enemy)MonSpeed and return bc speed after abilities
+	ld b, a
+	and a
+	ld hl, wBattleMonSpeed
+	jr z, .got_speed
+	ld hl, wEnemyMonSpeed
+.got_speed
+	xor a
+	ld [hMultiplicand + 0], a
+	ld a, [hli]
+	ld [hMultiplicand + 1], a
+	ld a, [hl]
+	ld [hMultiplicand + 2], a
+
+	call ApplySpeedAbilities
+
+	ld a, [hMultiplicand + 0]
+	and a
+	jr z, .not_capped
+	lb bc, $ff, $ff
+	ret
+
+.not_capped
+	ld a, b
+	and a
+	jr z, .player
+	ld a, [hMultiplicand + 1]
+	ld h, a
+	ld a, [hMultiplicand + 2]
+	ld l, a
+	ret
+.player
+	ld a, [hMultiplicand + 1]
+	ld d, a
+	ld a, [hMultiplicand + 2]
+	ld e, a
+	ret
+
+ApplySpeedAbilities:
+; Passive speed boost abilities
+	ld a, b
+	and a
+	ld a, [wPlayerAbility]
+	jr z, .got_ability
+	ld a, [wEnemyAbility]
+.got_ability
+	cp SWIFT_SWIM
+	jr z, .swift_swim
+	cp CHLOROPHYLL
+	ret nz
+	ld h, WEATHER_SUN
+	jr .weather_ability
+.swift_swim
+	ld h, WEATHER_RAIN
+.weather_ability
+	ld a, [wBattleWeather]
+	cp h
+	ret nz
+	ln a, 2, 1 ; x2
+	jmp MultiplyAndDivide
+
 ApplyUserAccuracyAbilities:
 	call GetUserAbility
 	ld hl, UserAccuracyAbilities

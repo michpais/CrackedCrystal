@@ -361,8 +361,8 @@ JohtoGrassWildMons:
 	db 13, HOOTHOOT
 	db 13, SPINARAK
 	db 13, HOOTHOOT
-	db 13, VENONAT
 	db 13, MURKROW
+	db 13, VENONAT
 	db 13, VENONAT
 	end_grass_wildmons
 
@@ -1271,7 +1271,7 @@ JohtoGrassWildMons:
 	db 1, SUNKERN
 	db 1, WEEDLE
 	db 1, HOPPIP
-	db 1, HOPPIP
+	db 1, IGGLYBUFF
 	; day
 	db 1, PIDGEY
 	db 1, CATERPIE
@@ -1299,7 +1299,7 @@ JohtoGrassWildMons:
 	db 2, PIDGEY
 	db 2, WEEDLE
 	db 2, HOPPIP
-	db 2, HOPPIP
+	db 2, IGGLYBUFF
 	; day
 	db 2, PIDGEY
 	db 2, CATERPIE
@@ -1339,10 +1339,10 @@ JohtoGrassWildMons:
 	; nite
 	db 6, WOOPER
 	db 6, RATTATA
-	db 7, BELLSPROUT
-	db 7, ZUBAT
 	db 7, HOOTHOOT
+	db 7, ZUBAT
 	db 7, GASTLY
+	db 7, MURKROW
 	db 7, MURKROW
 	end_grass_wildmons
 
@@ -1369,9 +1369,9 @@ JohtoGrassWildMons:
 	db 8, ZUBAT
 	db 9, GEODUDE
 	db 9, ZUBAT
-	db 9, RATTATA
-	db 9, RATTATA
-	db 9, RATTATA
+	db 9, EKANS
+	db 9, GASTLY
+	db 9, GASTLY
 	end_grass_wildmons
 
 	def_grass_wildmons ROUTE_34
