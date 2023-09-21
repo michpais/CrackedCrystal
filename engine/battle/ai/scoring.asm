@@ -2766,16 +2766,22 @@ AI_Smart_Thunder:
 AICompareSpeed:
 ; Return carry if enemy is faster than player.
 
+	ldh a, [hBattleTurn]
+	ld b, a
 	push bc
-	ld a, [wEnemyMonSpeed + 1]
-	ld b, a
-	ld a, [wBattleMonSpeed + 1]
-	cp b
-	ld a, [wEnemyMonSpeed]
-	ld b, a
-	ld a, [wBattleMonSpeed]
+	call SetPlayerTurn
+	farcall GetSpeedAfterAbilities ; get Battle Mon's speed in bc, put in de
+	ld d, b
+	ld e, c
+	call SetEnemyTurn
+	farcall GetSpeedAfterAbilities ; get Enemy Mon's speed in bc
+	ld a, e
+	cp c
+	ld a, d
 	sbc b
 	pop bc
+	ld a, b
+	ldh [hBattleTurn], a
 	ret
 
 AICheckPlayerMaxHP:

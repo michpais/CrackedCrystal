@@ -495,46 +495,40 @@ PrintAbilityActivated:
 GetSpeedAfterAbilities:
 	; if a = 0, calculate Battle Mon's speed, otherwise Enemy Mon's speed
 	; take wBattle(/Enemy)MonSpeed and return bc speed after abilities
-	ld b, a
+	push hl
+	ldh a, [hBattleTurn]
 	and a
 	ld hl, wBattleMonSpeed
 	jr z, .got_speed
 	ld hl, wEnemyMonSpeed
 .got_speed
 	xor a
-	ld [hMultiplicand + 0], a
+	ldh [hMultiplicand + 0], a
 	ld a, [hli]
-	ld [hMultiplicand + 1], a
+	ldh [hMultiplicand + 1], a
 	ld a, [hl]
-	ld [hMultiplicand + 2], a
+	ldh [hMultiplicand + 2], a
 
 	call ApplySpeedAbilities
 
-	ld a, [hMultiplicand + 0]
+	ldh a, [hMultiplicand + 0]
 	and a
 	jr z, .not_capped
 	lb bc, $ff, $ff
+	pop hl
 	ret
 
 .not_capped
-	ld a, b
-	and a
-	jr z, .player
-	ld a, [hMultiplicand + 1]
-	ld h, a
-	ld a, [hMultiplicand + 2]
-	ld l, a
-	ret
-.player
-	ld a, [hMultiplicand + 1]
-	ld d, a
-	ld a, [hMultiplicand + 2]
-	ld e, a
+	ldh a, [hMultiplicand + 1]
+	ld b, a
+	ldh a, [hMultiplicand + 2]
+	ld c, a
+	pop hl
 	ret
 
 ApplySpeedAbilities:
 ; Passive speed boost abilities
-	ld a, b
+	ldh a, [hBattleTurn]
 	and a
 	ld a, [wPlayerAbility]
 	jr z, .got_ability

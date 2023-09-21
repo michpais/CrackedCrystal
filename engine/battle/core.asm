@@ -575,19 +575,22 @@ DetermineMoveOrder:
 	jr .speed_check
 
 .speed_check
-	xor a
-	farcall GetSpeedAfterAbilities ; get Battle Mon's speed
-	ld a, 1
-	farcall GetSpeedAfterAbilities ; get Enemy Mon's speed
-;	ld de, wBattleMonSpeed
-;	ld hl, wEnemyMonSpeed
-	ld c, 2
-	call CompareBytes
-	jr z, .speed_tie
-	jp nc, .player_first
-	jp .enemy_first
+	call SetPlayerTurn
+	farcall GetSpeedAfterAbilities ; get Battle Mon's speed in bc, put in de
+	ld d, b
+	ld e, c
+	call SetEnemyTurn
+	farcall GetSpeedAfterAbilities ; get Enemy Mon's speed in bc
+	ld a, b
+	cp d
+	jr c, .player_first
+	jr nz, .enemy_first
+	ld a, c
+	cp e
+	jr c, .player_first
+	jr nz, .enemy_first
 
-.speed_tie
+; Speed is equal
 	ldh a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK
 	jr z, .player_2c
