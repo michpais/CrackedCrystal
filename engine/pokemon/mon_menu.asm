@@ -176,7 +176,7 @@ SwitchPartyMons:
 	call AddNTimes
 	ld [hl], "▷"
 	call WaitBGMap
-	call SetPalettes
+	call SetDefaultBGPAndOBP
 	call DelayFrame
 
 	farcall PartyMenuSelect
@@ -1154,7 +1154,7 @@ SetUpMoveList:
 	hlcoord 10, 4
 	predef ListMovePP
 	call WaitBGMap
-	call SetPalettes
+	call SetDefaultBGPAndOBP
 	ld a, [wNumMoves]
 	inc a
 	ld [w2DMenuNumRows], a
