@@ -308,13 +308,13 @@ CheckMapForSomethingToCut:
 	ret
 
 Script_CutFromMenu:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 
 Script_Cut:
 	callasm GetPartyNickname
 	writetext UseCutText
-	reloadmappart
+	refreshmap
 	callasm CutDownTreeOrGrass
 	closetext
 	end
@@ -415,7 +415,7 @@ UseFlash:
 	jp QueueScript
 
 Script_UseFlash:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 	writetext UseFlashTextScript
 	callasm BlindingFlash
@@ -732,7 +732,7 @@ FlyFunction:
 	ret
 
 .FlyScript:
-	reloadmappart
+	refreshmap
 	callasm HideSprites
 	special UpdateTimePals
 	callasm FlyFromAnim
@@ -794,7 +794,7 @@ CheckMapCanWaterfall:
 	ret
 
 Script_WaterfallFromMenu:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 
 Script_UsedWaterfall:
@@ -981,13 +981,13 @@ EscapeRopeOrDig:
 	text_end
 
 .UsedEscapeRopeScript:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 	writetext .UseEscapeRopeText
 	sjump .UsedDigOrEscapeRopeScript
 
 .UsedDigScript:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 	writetext .UseDigText
 
@@ -1073,11 +1073,11 @@ TeleportFunction:
 	text_end
 
 .TeleportScript:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 	writetext .TeleportReturnText
 	pause 60
-	reloadmappart
+	refreshmap
 	closetext
 	playsound SFX_WARP_TO
 	applymovement PLAYER, .TeleportFrom
@@ -1143,7 +1143,7 @@ SetStrengthFlag:
 	ret
 
 Script_StrengthFromMenu:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 
 Script_UsedStrength:
@@ -1318,13 +1318,13 @@ TryWhirlpoolMenu:
 	ret
 
 Script_WhirlpoolFromMenu:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 
 Script_UsedWhirlpool:
 	callasm GetPartyNickname
 	writetext UseWhirlpoolText
-	reloadmappart
+	refreshmap
 	callasm DisappearWhirlpool
 	closetext
 	end
@@ -1438,14 +1438,14 @@ HeadbuttNothingText:
 	text_end
 
 HeadbuttFromMenuScript:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 
 HeadbuttScript:
 	callasm GetPartyNickname
 	writetext UseHeadbuttText
 
-	reloadmappart
+	refreshmap
 	callasm ShakeHeadbuttTree
 
 	callasm TreeMonEncounter
@@ -1547,7 +1547,7 @@ GetFacingObject:
 	ret
 
 RockSmashFromMenuScript:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 
 RockSmashScript:
@@ -1789,7 +1789,7 @@ Fishing_CheckFacingUp:
 	ret
 
 Script_FishCastRod:
-	reloadmappart
+	refreshmap
 	loadmem hBGMapMode, $0
 	special UpdateTimePals
 	loademote EMOTE_ROD
@@ -1911,7 +1911,7 @@ BikeFunction:
 	ret
 
 Script_GetOnBike:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 	loadvar VAR_MOVEMENT, PLAYER_BIKE
 	writetext GotOnBikeText
@@ -1931,7 +1931,7 @@ Overworld_DummyFunction: ; unreferenced
 	ret
 
 Script_GetOffBike:
-	reloadmappart
+	refreshmap
 	special UpdateTimePals
 	loadvar VAR_MOVEMENT, PLAYER_NORMAL
 	writetext GotOffBikeText
