@@ -2535,7 +2535,7 @@ WinTrainerBattle:
 	ret nz
 
 	ld a, [wInBattleTowerBattle]
-	bit 0, a
+	bit IN_BATTLE_TOWER_BATTLE_F, a
 	jr nz, .battle_tower
 
 	call BattleWinSlideInEnemyTrainerFrontpic
@@ -3088,7 +3088,7 @@ LostBattle:
 	ld [wBattleEnded], a
 
 	ld a, [wInBattleTowerBattle]
-	bit 0, a
+	bit IN_BATTLE_TOWER_BATTLE_F, a
 	jr nz, .battle_tower
 
 	ld a, [wBattleType]
@@ -6295,9 +6295,9 @@ LoadEnemyMon:
 	and a
 	jp nz, InitEnemyMon
 
-; and also not in a BattleTower-Battle
+; and also not in a Battle Tower battle
 	ld a, [wInBattleTowerBattle]
-	bit 0, a
+	bit IN_BATTLE_TOWER_BATTLE_F, a
 	jp nz, InitEnemyMon
 
 ; Make sure everything knows what species we're working with
@@ -7323,7 +7323,7 @@ GiveExperiencePoints:
 	ret nz
 
 	ld a, [wInBattleTowerBattle]
-	bit 0, a
+	bit IN_BATTLE_TOWER_BATTLE_F, a
 	ret nz
 
 	call .EvenlyDivideExpAmongParticipants
@@ -8737,7 +8737,7 @@ CheckPayDay:
 	ld hl, BattleText_PlayerPickedUpPayDayMoney
 	call StdBattleTextbox
 	ld a, [wInBattleTowerBattle]
-	bit 0, a
+	bit IN_BATTLE_TOWER_BATTLE_F, a
 	ret z
 	call ClearTilemap
 	call ClearBGPalettes

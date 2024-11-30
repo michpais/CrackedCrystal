@@ -1297,7 +1297,7 @@ BattleCommand_Stab:
 	ld [wCurDamage + 1], a
 
 	ld hl, wTypeModifier
-	set 7, [hl] ; this is setting the stab flag in the wTypeModifier
+	set STAB_DAMAGE_F, [hl] ; this is setting the stab flag in the wTypeModifier
 
 .SkipStab:
 	ld a, BATTLE_VARS_MOVE_TYPE

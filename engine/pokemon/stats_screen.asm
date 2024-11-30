@@ -6,6 +6,10 @@
 DEF NUM_STAT_PAGES EQU const_value
 
 DEF STAT_PAGE_MASK EQU %00000011
+	const_def 4
+	const STATS_SCREEN_PLACE_FRONTPIC ; 4
+	const STATS_SCREEN_ANIMATE_MON    ; 5
+	const STATS_SCREEN_ANIMATE_EGG    ; 6
 
 BattleStatsScreenInit:
 	ld a, [wLinkMode]
@@ -107,9 +111,9 @@ StatsScreenPointerTable:
 
 StatsScreen_WaitAnim:
 	ld hl, wStatsScreenFlags
-	bit 6, [hl]
+	bit STATS_SCREEN_ANIMATE_EGG, [hl]
 	jr nz, .try_anim
-	bit 5, [hl]
+	bit STATS_SCREEN_ANIMATE_MON, [hl]
 	jr nz, .finish
 	call DelayFrame
 	ret
@@ -118,10 +122,10 @@ StatsScreen_WaitAnim:
 	farcall SetUpPokeAnim
 	jr nc, .finish
 	ld hl, wStatsScreenFlags
-	res 6, [hl]
+	res STATS_SCREEN_ANIMATE_EGG, [hl]
 .finish
 	ld hl, wStatsScreenFlags
-	res 5, [hl]
+	res STATS_SCREEN_ANIMATE_MON, [hl]
 	farcall HDMATransferTilemapToWRAMBank3
 	ret
 
@@ -139,7 +143,7 @@ StatsScreen_Exit:
 
 MonStatsInit:
 	ld hl, wStatsScreenFlags
-	res 6, [hl]
+	res STATS_SCREEN_ANIMATE_EGG, [hl]
 	call ClearBGPalettes
 	call ClearTilemap
 	farcall HDMATransferTilemapToWRAMBank3
@@ -149,7 +153,7 @@ MonStatsInit:
 	jr z, .egg
 	call StatsScreen_InitUpperHalf
 	ld hl, wStatsScreenFlags
-	set 4, [hl]
+	set STATS_SCREEN_PLACE_FRONTPIC, [hl]
 	ld h, 4
 	call StatsScreen_SetJumptableIndex
 	ret
@@ -209,7 +213,7 @@ if DEF(_DEBUG)
 	hlcoord 8, 17
 	call PlaceString
 	ld hl, wStatsScreenFlags
-	set 5, [hl]
+	set STATS_SCREEN_ANIMATE_MON, [hl]
 	pop hl
 	pop de
 	pop bc
@@ -224,7 +228,7 @@ endc
 StatsScreen_LoadPage:
 	call StatsScreen_LoadGFX
 	ld hl, wStatsScreenFlags
-	res 4, [hl]
+	res STATS_SCREEN_PLACE_FRONTPIC, [hl]
 	ld a, [wJumptableIndex]
 	inc a
 	ld [wJumptableIndex], a
@@ -531,7 +535,7 @@ StatsScreen_LoadGFX:
 	call .PageTilemap
 	call .LoadPals
 	ld hl, wStatsScreenFlags
-	bit 4, [hl]
+	bit STATS_SCREEN_PLACE_FRONTPIC, [hl]
 	jr nz, .place_frontpic
 	call SetDefaultBGPAndOBP
 	ret
@@ -557,7 +561,7 @@ StatsScreen_LoadGFX:
 	farcall LoadStatsScreenPals
 	call DelayFrame
 	ld hl, wStatsScreenFlags
-	set 5, [hl]
+	set STATS_SCREEN_ANIMATE_MON, [hl]
 	ret
 
 .PageTilemap:
@@ -876,7 +880,7 @@ StatsScreen_PlaceFrontpic:
 
 .AnimateMon:
 	ld hl, wStatsScreenFlags
-	set 5, [hl]
+	set STATS_SCREEN_ANIMATE_MON, [hl]
 	ld a, [wCurPartySpecies]
 	cp UNOWN
 	jr z, .unown
@@ -918,7 +922,7 @@ StatsScreen_PlaceFrontpic:
 	ld e, ANIM_MON_MENU
 	predef LoadMonAnimation
 	ld hl, wStatsScreenFlags
-	set 6, [hl]
+	set STATS_SCREEN_ANIMATE_EGG, [hl]
 	ret
 
 StatsScreen_GetAnimationParam:
@@ -1061,7 +1065,7 @@ endc
 	hlcoord 1, 9
 	call PlaceString
 	ld hl, wStatsScreenFlags
-	set 5, [hl]
+	set STATS_SCREEN_ANIMATE_MON, [hl]
 	call SetDefaultBGPAndOBP
 	call DelayFrame
 	hlcoord 0, 0
@@ -1127,7 +1131,7 @@ StatsScreen_AnimateEgg:
 	ld d, $0
 	predef LoadMonAnimation
 	ld hl, wStatsScreenFlags
-	set 6, [hl]
+	set STATS_SCREEN_ANIMATE_EGG, [hl]
 	ret
 
 StatsScreen_LoadPageIndicators:
