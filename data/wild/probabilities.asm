@@ -4,7 +4,7 @@ MACRO mon_prob
 ENDM
 
 GrassMonProbTable:
-	table_width 2, GrassMonProbTable
+	table_width 2
 	mon_prob 30,  0 ; 30% chance
 	mon_prob 55,  1 ; 25% chance
 	mon_prob 75,  2 ; 20% chance
@@ -15,7 +15,7 @@ GrassMonProbTable:
 	assert_table_length NUM_GRASSMON
 
 WaterMonProbTable:
-	table_width 2, WaterMonProbTable
+	table_width 2
 	mon_prob 60,  0 ; 60% chance
 	mon_prob 90,  1 ; 30% chance
 	mon_prob 100, 2 ; 10% chance
