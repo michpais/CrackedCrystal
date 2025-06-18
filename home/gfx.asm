@@ -103,6 +103,7 @@ LoadFontsExtra2: ; unreferenced
 	ret
 
 DecompressRequest2bpp::
+; Load compressed 2bpp at b:hl to occupy c tiles of de.
 	push de
 	ld a, BANK(sScratch)
 	call OpenSRAM
