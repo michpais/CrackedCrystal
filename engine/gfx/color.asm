@@ -1081,8 +1081,8 @@ PushSGBBorderPalsAndWait:
 	call _PushSGBPals
 	call SGBDelayCycles
 	ldh a, [rJOYP]
-	and $3
-	cp $3
+	and JOYP_SGB_MLT_REQ
+	cp JOYP_SGB_MLT_REQ
 	jr nz, .carry
 	ld a, JOYP_SGB_ZERO
 	ldh [rJOYP], a
@@ -1109,8 +1109,8 @@ endr
 	call SGBDelayCycles
 	call SGBDelayCycles
 	ldh a, [rJOYP]
-	and $3
-	cp $3
+	and JOYP_SGB_MLT_REQ
+	cp JOYP_SGB_MLT_REQ
 	jr nz, .carry
 	call .FinalPush
 	and a
