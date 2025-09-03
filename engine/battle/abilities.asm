@@ -161,6 +161,11 @@ WeatherAbility:
 	cp b
 	ret z ; don't re-activate it
 
+	call CloudNineOnField
+	jr nz, .start_weather
+	ret
+
+.start_weather
 	ld a, b
 	cp WEATHER_RAIN
 	jr z, .handlerain
@@ -382,115 +387,128 @@ PrintAbilityActivated:
 	ld hl, TargetAbilityTookEffect
 	jp StdBattleTextbox
 
-;CheckNullificationAbilities:
-;; Doesn't deal with the active effect of this, but just checking if they apply vs
-;; an opponent's used attack (not Overcoat vs powder which is checked with Grass)
-;	; Most abilities depends on types and can use a lookup table, but a few
-;	; don't. Check these first.
-;	call GetOpponentAbility
-;	ld b, a
-;	cp FLASH_FIRE
-;	jr z, .flash_fire
-;
-;	ld a, BATTLE_VARS_MOVE_CATEGORY
-;	call GetBattleVar
-;	cp STATUS
-;	ret z
-;
-;.check_others
-;	ld hl, TypeNullificationAbilities
-;.loop
-;	ld a, [hli]
-;	cp b
-;	jr z, .found_ability
-;	inc hl
-;	cp -1
-;	jr nz, .loop
-;	ret
-;
-;.found_ability
-;	ld a, [hl]
-;	ld b, a
-;	ld a, BATTLE_VARS_MOVE_TYPE
-;	call GetBattleVar
-;	cp b
-;	jr z, .ability_ok
-;	ret
-;
-;.flash_fire
-;	; Also affected by status moves and Will-O-Wisp
-;	ld a, BATTLE_VARS_MOVE_EFFECT
-;	call GetBattleVar
-;	cp EFFECT_BURN
-;	jr nz, .check_others
-;
-;.ability_ok
-;	ld a, ATKFAIL_ABILITY
-;	ld [wAttackMissed], a
-;	xor a ; kind of redundant, but helpful for the AI
-;	ld [wTypeMatchup], a
-;	ret
-;
-;INCLUDE "data/abilities/type_nullification_abilities.asm"
-;
-;RunEnemyNullificationAbilities:
-;; At this point, we are already certain that the ability will activate, so no additional
-;; checks are required.
-;	call CallOpponentTurn
+CheckNullificationAbilities:
+; Doesn't deal with the active effect of this, but just checking if they apply vs
+; an opponent's used attack (not Overcoat vs powder which is checked with Grass)
+	; Most abilities depends on types and can use a lookup table, but a few
+	; don't. Check these first.
+	call GetOpponentAbility
+	ld b, a
+	cp FLASH_FIRE
+	jr z, .flash_fire
+
+	ld a, BATTLE_VARS_MOVE_TYPE
+	call GetBattleVar
+	and ~TYPE_MASK
+	cp STATUS
+	ret z
+
+.check_others
+	ld hl, TypeNullificationAbilities
+.loop
+	ld a, [hli]
+	cp b
+	jr z, .found_ability
+	inc hl
+	cp -1
+	jr nz, .loop
+	ret
+
+.found_ability
+	ld a, [hl]
+	ld b, a
+	ld a, BATTLE_VARS_MOVE_TYPE
+	call GetBattleVar
+	and TYPE_MASK
+	cp b
+	jr z, .ability_ok
+	ret
+
+.flash_fire
+	; Also affected by status moves and Will-O-Wisp
+	ld a, BATTLE_VARS_MOVE_EFFECT
+	call GetBattleVar
+	cp EFFECT_BURN
+	jr nz, .check_others
+
+.ability_ok
+	ld a, 1
+	ld [wAttackMissed], a
+	ld a, 3
+	ld [wFailedMessage], a
+	ld a, NO_EFFECT ; kind of redundant, but helpful for the AI
+	ld [wTypeMatchup], a
+	ret
+
+INCLUDE "data/abilities/type_nullification_abilities.asm"
+
+RunEnemyNullificationAbilities:
+; At this point, we are already certain that the ability will activate, so no additional
+; checks are required.
+	; for all abilities, print that the opponent is protected
+	call GetOpponentAbility
+	ld b, a
+	farcall FarcallPrintProtectedByAbilityText
+	; change to opponents turn to check for additional nullification ability effects
+	call SwitchTurn ;CallOpponentTurn
+	
 ;.do_enemy_abilities
-;	ld hl, NullificationAbilities
-;	call UserAbilityJumptable
-;	ret nz
-;
-;	; For other abilities, don't do anything except print a message (for example Levitate)
-;	call DisableAnimations
-;	call ShowAbilityActivation
-;	call SwitchTurn
-;	ld hl, DoesntAffectText
-;	call StdBattleTextbox
-;	call EnableAnimations
-;	jmp SwitchTurn
-;
-;NullificationAbilities:
-;	dbw FLASH_FIRE, FlashFireAbility
-;	dbw VOLT_ABSORB, VoltAbsorbAbility
-;	dbw WATER_ABSORB, WaterAbsorbAbility
-;	dbw -1, -1
-;
-;FlashFireAbility:
-;	call DisableAnimations
-;	call ShowAbilityActivation
-;	ld a, BATTLE_VARS_SUBSTATUS1
-;	call GetBattleVarAddr
-;	ld a, [hl]
-;	and 1 << SUBSTATUS_FLASH_FIRE
-;	jr nz, .already_fired_up
-;	set SUBSTATUS_FLASH_FIRE, [hl]
-;	ld hl, FirePoweredUpText
-;	call StdBattleTextbox
-;	jmp EnableAnimations
-;.already_fired_up
-;	call SwitchTurn
-;	ld hl, DoesntAffectText
-;	call StdBattleTextbox
-;	call EnableAnimations
-;	jmp SwitchTurn
-;
-;VoltAbsorbAbility:
-;WaterAbsorbAbility:
-;	call DisableAnimations
-;	call ShowAbilityActivation
-;	farcall CheckFullHP
-;	jr z, .full_hp
-;	call GetQuarterMaxHP
-;	farcall RestoreHP
-;	ld hl, RegainedHealthText
-;	call StdBattleTextbox
-;	jmp EnableAnimations
-;.full_hp
-;	ld hl, HPIsFullText
-;	call StdBattleTextbox
-;	jmp EnableAnimations
+	ld hl, NullificationAbilities
+	call UserAbilityJumptable
+	ret nz
+
+	; For other abilities, don't do anything except print a message (for example Levitate)
+	;call DisableAnimations
+	;call ShowAbilityActivation
+	call SwitchTurn
+	ld hl, DoesntAffectText
+	jmp StdBattleTextbox
+	;call EnableAnimations
+
+NullificationAbilities:
+	dbw FLASH_FIRE, FlashFireAbility
+	dbw VOLT_ABSORB, VoltAbsorbAbility
+	dbw WATER_ABSORB, WaterAbsorbAbility
+	dbw -1, -1
+
+FlashFireAbility:
+	;call DisableAnimations
+	;call ShowAbilityActivation
+	ld a, BATTLE_VARS_SUBSTATUS4
+	call GetBattleVarAddr
+	bit SUBSTATUS_FLASH_FIRE, [hl]
+	jr nz, .already_fired_up
+	set SUBSTATUS_FLASH_FIRE, [hl]
+	ld de, FOCUS_ENERGY
+	farcall Call_PlayBattleAnim
+	ld hl, FirePoweredUpText
+	call StdBattleTextbox
+	call SwitchTurn
+	ret
+.already_fired_up
+	call SwitchTurn
+	ld hl, DoesntAffectText
+	jmp StdBattleTextbox
+	;call EnableAnimations
+
+VoltAbsorbAbility:
+WaterAbsorbAbility:
+	;call DisableAnimations
+	;call ShowAbilityActivation
+	farcall CheckFullHP
+	jr z, .full_hp
+	farcall GetQuarterMaxHP
+	call SwitchTurn
+	farcall RestoreHP ; i think this switches for some reason who restores hp, so probably switchturn before and after
+	call SwitchTurn
+	ld hl, RegainedHealthText
+	jmp StdBattleTextbox
+	;jmp EnableAnimations
+.full_hp
+	ld hl, HPIsFullText
+	call StdBattleTextbox
+	jmp SwitchTurn
+	;jmp EnableAnimations
 
 GetSpeedAfterAbilities:
 	; if a = 0, calculate Battle Mon's speed, otherwise Enemy Mon's speed

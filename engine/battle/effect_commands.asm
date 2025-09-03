@@ -1297,7 +1297,7 @@ BattleCommand_Stab:
 	ld [wCurDamage + 1], a
 
 	ld hl, wTypeModifier
-	set 7, [hl]
+	set 7, [hl] ; this is setting the stab flag in the wTypeModifier
 
 .SkipStab:
 	ld a, BATTLE_VARS_MOVE_TYPE
@@ -1337,16 +1337,16 @@ BattleCommand_Stab:
 	push bc
 	inc hl
 	ld a, [wTypeModifier]
-	and %10000000
+	and STAB_DAMAGE
 	ld b, a
 ; If the target is immune to the move, treat it as a miss and calculate the damage as 0
 	ld a, [hl]
 	and a
 	jr nz, .NotImmune
 	inc a
-	ld [wAttackMissed], a
+	ld [wAttackMissed], a ; load in miss due to immunity
 	xor a
-.NotImmune:
+.NotImmune: ; this calculates the damage value
 	ldh [hMultiplier], a
 	add b
 	ld [wTypeModifier], a
@@ -1403,7 +1403,7 @@ BattleCommand_Stab:
 	ld a, [wTypeMatchup]
 	ld b, a
 	ld a, [wTypeModifier]
-	and %10000000
+	and STAB_DAMAGE
 	or b
 	ld [wTypeModifier], a
 	ret
@@ -1424,33 +1424,33 @@ CheckTypeMatchup:
 	push de
 	push bc
 	and TYPE_MASK
-	ld d, a
-	ld b, [hl]
+	ld d, a ; loads move type to d
+	ld b, [hl] ; this moves the first mon type to b
 	inc hl
-	ld c, [hl]
+	ld c, [hl] ; second mon type to c
 	ld a, EFFECTIVE
-	ld [wTypeMatchup], a
+	ld [wTypeMatchup], a ; sets effective as default
 	ld hl, TypeMatchups
 .TypesLoop:
-	ld a, [hli]
+	ld a, [hli] ; check attacker type
 	cp -1
 	jr z, .End
 	cp -2
-	jr nz, .Next
-	ld a, BATTLE_VARS_SUBSTATUS1_OPP
+	jr nz, .Next ; check types if neither end or foresight check
+	ld a, BATTLE_VARS_SUBSTATUS1_OPP ; start check for foresight type matchups
 	call GetBattleVar
 	bit SUBSTATUS_IDENTIFIED, a
-	jr nz, .End
-	jr .TypesLoop
+	jr nz, .End ; if foresight flag is high, no more types to check, its the default "effective"
+	jr .TypesLoop ; continue looking
 
 .Next:
-	cp d
+	cp d ; check attacking type matches typematchup table
 	jr nz, .Nope
 	ld a, [hli]
 	cp b
-	jr z, .Yup
+	jr z, .Yup ; if type1 matches, calculate
 	cp c
-	jr z, .Yup
+	jr z, .Yup ; if type2 matches, calculate
 	jr .Nope2
 
 .Nope:
@@ -1459,27 +1459,36 @@ CheckTypeMatchup:
 	inc hl
 	jr .TypesLoop
 
-.Yup:
-	xor a
-	ldh [hDividend + 0], a
-	ldh [hMultiplicand + 0], a
-	ldh [hMultiplicand + 1], a
+.Yup: ; this calculates just the message (super effective, effective or not very effective)
+	; no need to continue if we encountered a 0x matchup:
 	ld a, [hli]
-	ldh [hMultiplicand + 2], a
+	and a ; cp NO_EFFECT
+	jr z, .Immune
+	cp SUPER_EFFECTIVE
+	jr z, .se
+	cp NOT_VERY_EFFECTIVE
+	jr z, .nve
+	jr .TypesLoop
+.se
 	ld a, [wTypeMatchup]
-	ldh [hMultiplier], a
-	call Multiply
-	ld a, 10
-	ldh [hDivisor], a
-	push bc
-	ld b, 4
-	call Divide
-	pop bc
-	ldh a, [hQuotient + 3]
+	add a ; multiply by 2 (SUPER_EFFECTIVE)
 	ld [wTypeMatchup], a
 	jr .TypesLoop
-
+.nve
+	ld a, [wTypeMatchup]
+	srl a ; divide by 2 (NOT_VERY_EFFECTIVE)
+	ld [wTypeMatchup], a
+	jr .TypesLoop
+.Immune:
+	xor a
+	ld [wTypeMatchup], a
+	;fallthrough
 .End:
+	ld a, [wTypeMatchup]
+	and a
+	jr z, .endability
+	farcall CheckNullificationAbilities
+.endability
 	pop bc
 	pop de
 	pop hl
@@ -2265,10 +2274,27 @@ BattleCommand_ApplyDamage:
 	ret
 
 GetFailureResultText:
+	; check if the move failed due to nullification ability.
+	; this won't run if the move missed without setting the
+	; ability nullification fail message
+	ld a, [wFailedMessage]
+	cp 3
+	jr nz, .not_ability_nullification
+	push hl
+	push de
+	push bc
+	farcall RunEnemyNullificationAbilities
+	pop bc
+	pop de
+	pop hl
+	xor a
+	ld [wFailedMessage], a
+	ret
+.not_ability_nullification
 	ld hl, DoesntAffectText
 	ld de, DoesntAffectText
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	jr z, .got_text
 	ld a, BATTLE_VARS_MOVE_EFFECT
 	call GetBattleVar
@@ -2293,7 +2319,7 @@ GetFailureResultText:
 	ret nz
 
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	ret z
 
 	ld hl, wCurDamage
@@ -2338,7 +2364,7 @@ BattleCommand_BideFailText:
 	ret z
 
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	jp z, PrintDoesntAffect
 	jp PrintButItFailed
 
@@ -2393,7 +2419,7 @@ BattleCommand_SuperEffectiveLoopText:
 
 BattleCommand_SuperEffectiveText:
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	cp EFFECTIVE
 	ret z
 	ld hl, SuperEffectiveText
@@ -3060,7 +3086,19 @@ BattleCommand_DamageCalc:
 	push bc
 	farcall ApplyDamageAbilities
 	pop bc
+	ld a, BATTLE_VARS_SUBSTATUS4
+	call GetBattleVarAddr
+	bit SUBSTATUS_FLASH_FIRE, [hl]
+	jr z, .no_flash_fire
+	ld a, BATTLE_VARS_MOVE_TYPE
+	call GetBattleVar
+	and TYPE_MASK
+	cp FIRE
+	jr nz, .no_flash_fire
+	ln a, 3, 2 ; x1.5
+	call MultiplyAndDivide
 
+.no_flash_fire
 ; / Defense
 	ld hl, hMultiplier
 	ld [hl], c
@@ -3802,7 +3840,7 @@ BattleCommand_PoisonTarget:
 	and a
 	ret nz
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	ret z
 	farcall CheckIfTargetIsPoisonType
 	ret z
@@ -3834,7 +3872,7 @@ PoisonTarget:
 BattleCommand_Poison:
 	ld hl, DoesntAffectText
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	jp z, .failed
 
 	farcall CheckIfTargetIsPoisonType
@@ -3945,9 +3983,26 @@ PoisonOpponent:
 	jp UpdateOpponentInParty
 
 BattleCommand_Burn:
+	; Check that the move is a fire type move
+	; e.g. scald can burn without being fire type.
+	; This won't run if the move missed without setting the
+	; ability nullification fail message
+	ld a, [wFailedMessage]
+	cp 3
+	jr nz, .not_flash_fire
+	push hl
+	push de
+	push bc
+	farcall RunEnemyNullificationAbilities
+	pop bc
+	pop de
+	pop hl
+	ret
+
+.not_flash_fire
 	ld hl, DoesntAffectText
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	jp z, .failed
 
 	farcall CheckIfTargetIsFireType
@@ -4165,7 +4220,7 @@ BattleCommand_BurnTarget:
 	and a
 	jp nz, Defrost
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	ret z
 	call CheckMoveTypeMatchesTarget ; Don't burn a Fire-type
 	ret z
@@ -4235,7 +4290,7 @@ BattleCommand_FreezeTarget:
 	and a
 	ret nz
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	ret z
 	ld a, [wBattleWeather]
 	cp WEATHER_SUN
@@ -4286,7 +4341,7 @@ BattleCommand_ParalyzeTarget:
 	and a
 	ret nz
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	ret z
 	farcall CheckIfTargetIsElectricType
 	ret z
@@ -5336,8 +5391,8 @@ BattleCommand_ForceSwitch:
 
 	ld hl, SpikesDamage
 	call CallBattleCore
-	ld hl, RunActivationAbilitiesInner
-	jp CallBattleCore
+	farcall RunActivationAbilitiesInner
+	ret
 
 .switch_fail
 	jp .fail
@@ -5435,8 +5490,8 @@ BattleCommand_ForceSwitch:
 
 	ld hl, SpikesDamage
 	call CallBattleCore
-	ld hl, RunActivationAbilitiesInner
-	jp CallBattleCore
+	farcall RunActivationAbilitiesInner
+	ret
 
 .fail
 	call BattleCommand_LowerSub
@@ -5719,7 +5774,7 @@ BattleCommand_HeldFlinch:
 BattleCommand_OHKO:
 	call ResetDamage
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	jr z, .no_effect
 	ld hl, wEnemyMonLevel
 	ld de, wBattleMonLevel
@@ -6144,7 +6199,7 @@ BattleCommand_Paralyze:
 	bit PAR, a
 	jp nz, .paralyzed
 	ld a, [wTypeModifier]
-	and $7f
+	and EFFECTIVENESS_MASK
 	jp z, .didnt_affect
 	farcall CheckIfTargetIsElectricType
 	jp z, .didnt_affect
@@ -6264,6 +6319,9 @@ INCLUDE "engine/battle/move_effects/hex.asm"
 
 INCLUDE "engine/battle/move_effects/retaliation.asm"
 
+FarcallPrintProtectedByAbilityText:
+	ld a, b
+	; fallthrough
 PrintProtectedByAbilityText:
 ; uses ability in a to print protected by text
 	ld [wNamedObjectIndex], a

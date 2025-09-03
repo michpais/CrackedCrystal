@@ -1723,16 +1723,12 @@ HandleWeather:
 	cp WEATHER_NONE
 	ret z
 
-	ld a, [wPlayerAbility]
-	cp CLOUD_NINE
-	jr z, .cloud_nine_user
-	ld a, [wEnemyAbility]
-	cp CLOUD_NINE
+	call CloudNineOnField
 	jr nz, .weather_continues
-.cloud_nine_user
+	call AnimateFailedMove
 	ld hl, NotifyCloudNine
 	call StdBattleTextbox
-	jr .ended
+	jr .ended_cloudnine
 .weather_continues
 	ld hl, wWeatherCount
 	dec [hl]
@@ -1742,6 +1738,7 @@ HandleWeather:
 .ended
 	ld hl, .WeatherEndedMessages
 	call .PrintWeatherMessage
+.ended_cloudnine
 	xor a
 	ld [wBattleWeather], a
 	ret

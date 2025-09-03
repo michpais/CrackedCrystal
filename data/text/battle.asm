@@ -977,6 +977,12 @@ TargetAbilityTookEffect:
 	line "took effect!"
 	prompt
 
+FirePoweredUpText:
+	text "<USER>'s"
+	line "Fire-type moves"
+	cont "were powered up!"
+	prompt
+
 BecameHealthyText:
 	text "<USER>"
 	line "cured itself"

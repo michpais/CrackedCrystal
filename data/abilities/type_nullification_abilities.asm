@@ -1,5 +1,6 @@
 TypeNullificationAbilities:
-    db VOLT_ABSORB
-    db WATER_ABSORB
-    db FLASH_FIRE
+    db VOLT_ABSORB,  ELECTRIC
+    db WATER_ABSORB, WATER
+    db FLASH_FIRE,   FIRE
+    db LEVITATE,     GROUND
     db -1

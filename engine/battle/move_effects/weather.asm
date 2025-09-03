@@ -18,9 +18,16 @@ StartWeather:
 	cp b
 	jmp z, BattleEffect_ButItFailed
 
+	call CloudNineOnField
+	jr z, .cloud_nine
+
 	ld a, b
 	ld [wBattleWeather], a
 	ld a, 5
 	ld [wWeatherCount], a
 	call AnimateCurrentMove
 	jmp StdBattleTextbox ; hl has text pointer already
+
+.cloud_nine
+	ld hl, NotifyCloudNine
+	jmp StdBattleTextbox
