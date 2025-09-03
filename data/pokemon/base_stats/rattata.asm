@@ -11,7 +11,7 @@
 	db GENDER_F50 ; gender ratio
 	db 15 ; step cycles to hatch
 	INCBIN "gfx/pokemon/rattata/front.dimensions"
-	db FLASH_FIRE
+	db GUTS
 	db GROWTH_MEDIUM_FAST ; growth rate
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 

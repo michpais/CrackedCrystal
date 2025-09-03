@@ -256,7 +256,7 @@ BeedrillEvosAttacks:
 PidgeyEvosAttacks:
 	db EVOLVE_LEVEL, 18, PIDGEOTTO
 	db 0 ; no more evolutions
-	db 1, EMBER
+	db 1, TACKLE
 	db 5, SAND_ATTACK
 	db 9, GUST
 	db 13, QUICK_ATTACK
@@ -2627,10 +2627,8 @@ MeganiumEvosAttacks:
 CyndaquilEvosAttacks:
 	db EVOLVE_LEVEL, 14, QUILAVA
 	db 0 ; no more evolutions
-	db 1, EMBER
-	db 1, THUNDERSHOCK
-	db 1, SUNNY_DAY
-	db 1, MUD_SHOT
+	db 1, TACKLE
+	db 1, LEER
 	db 6, SMOKESCREEN
 	db 10, EMBER
 	db 13, QUICK_ATTACK
@@ -2750,8 +2748,8 @@ FeraligatrEvosAttacks:
 SentretEvosAttacks:
 	db EVOLVE_LEVEL, 15, FURRET
 	db 0 ; no more evolutions
-	db 1, EMBER
-	;db 4, DEFENSE_CURL
+	db 1, TACKLE
+	db 4, DEFENSE_CURL
 	db 7, QUICK_ATTACK
 	db 13, FURY_SWIPES
 	db 16, CHARM
