@@ -33,6 +33,10 @@ gfx/pokemon/*/frames.asm
 *.py
 *.pyc
 *$py.class
+*.ipynb
+
+# supporting data
+*.csv
 
 # compare.sh
 baserom.txt

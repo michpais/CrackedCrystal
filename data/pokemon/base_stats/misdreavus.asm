@@ -1,7 +1,7 @@
 	db MISDREAVUS ; 200
 
 	db  60,  50,  65,  90,  95,  95
-	evs  0,   0,   0,   0,   0,   0
+	evs  0,   0,   0,   0,   0,   1
 	;   hp  atk  def  spd  sat  sdf
 
 	db GHOST, GHOST ; type
