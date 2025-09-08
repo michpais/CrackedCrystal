@@ -1059,7 +1059,7 @@ ProtectedItselfText:
 ProtectingItselfText:
 	text "<TARGET>'s"
 	line "PROTECTING itself!"
-	done
+	prompt
 
 SpikesText:
 	text "SPIKES scattered"

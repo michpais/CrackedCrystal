@@ -1343,7 +1343,7 @@ BattleCommand_Stab:
 	ld a, [hl]
 	and a
 	jr nz, .NotImmune
-	inc a
+	ld a, ATKFAIL_IMMUNE ;inc a
 	ld [wAttackMissed], a ; load in miss due to immunity
 	xor a
 .NotImmune: ; this calculates the damage value
@@ -1505,7 +1505,10 @@ BattleCommand_ResetTypeMatchup:
 	call ResetDamage
 	xor a
 	ld [wTypeModifier], a
-	inc a
+	ld a, [wAttackMissed] ; if the move already missed, don't do anything
+	and a
+	ret nz
+	ld a, ATKFAIL_IMMUNE
 	ld [wAttackMissed], a
 	ret
 
@@ -1568,14 +1571,20 @@ BattleCommand_DamageVariation:
 	ret
 
 BattleCommand_CheckHit:
+	ld a, [wAttackMissed]
+	and a
+	ret nz
+	
 	call .DreamEater
-	jp z, .Miss
+	ld a, ATKFAIL_IMMUNE
+	jp z, .Miss_skipset
 
 	call .Protect
-	jp nz, .Miss
+	ld a, ATKFAIL_PROTECT
+	jp nz, .Miss_skipset
 
 	call .DrainSub
-	jp z, .Miss
+	jp z, .Miss_skipset
 
 	call .FlyDigMoves
 	jp nz, .Miss
@@ -1634,16 +1643,15 @@ BattleCommand_CheckHit:
 	ret
 
 .Miss:
+	ld a, ATKFAIL_MISSED
+.Miss_skipset:
+; Used to set a special value to wAttackMissed for message customization
+	ld [wAttackMissed], a
 ; Keep the damage value intact if we're using (Hi) Jump Kick.
 	ld a, BATTLE_VARS_MOVE_EFFECT
 	call GetBattleVar
 	cp EFFECT_JUMP_KICK
-	jr z, .Missed
-	call ResetDamage
-
-.Missed:
-	ld a, 1
-	ld [wAttackMissed], a
+	call nz, ResetDamage
 	ret
 
 .DreamEater:
@@ -1666,16 +1674,16 @@ BattleCommand_CheckHit:
 	bit SUBSTATUS_PROTECT, a
 	ret z
 
-	ld c, 40
-	call DelayFrames
-
-; 'protecting itself!'
-	ld hl, ProtectingItselfText
-	call StdBattleTextbox
-
-	ld c, 40
-	call DelayFrames
-
+;	ld c, 40
+;	call DelayFrames
+;
+;; 'protecting itself!'
+;	ld hl, ProtectingItselfText
+;	call StdBattleTextbox
+;
+;	ld c, 40
+;	call DelayFrames
+;
 	ld a, 1
 	and a
 	ret
@@ -1723,7 +1731,7 @@ BattleCommand_CheckHit:
 	ret z
 
 .not_draining_sub
-	ld a, 1
+	ld a, ATKFAIL_GENERIC
 	and a
 	ret
 
@@ -2274,40 +2282,27 @@ BattleCommand_ApplyDamage:
 	ret
 
 GetFailureResultText:
-	; check if the move failed due to nullification ability.
-	; this won't run if the move missed without setting the
-	; ability nullification fail message
-	ld a, [wFailedMessage]
-	cp 3
-	jr nz, .not_ability_nullification
-	push hl
-	push de
-	push bc
-	farcall RunEnemyNullificationAbilities
-	pop bc
-	pop de
-	pop hl
-	xor a
-	ld [wFailedMessage], a
-	ret
-.not_ability_nullification
-	ld hl, DoesntAffectText
-	ld de, DoesntAffectText
-	ld a, [wTypeModifier]
-	and EFFECTIVENESS_MASK
-	jr z, .got_text
+;	ld hl, DoesntAffectText
+;	ld de, DoesntAffectText
+	;ld a, [wTypeModifier]
+	;and EFFECTIVENESS_MASK
+	;ld a, ATKFAIL_IMMUNE
+	;jr z, .got_new_failmsg
 	ld a, BATTLE_VARS_MOVE_EFFECT
 	call GetBattleVar
 	cp EFFECT_FUTURE_SIGHT
-	ld hl, ButItFailedText
-	ld de, ItFailedText
-	jr z, .got_text
-	ld hl, AttackMissedText
-	ld de, AttackMissed2Text
-	ld a, [wCriticalHit]
-	cp -1
 	jr nz, .got_text
-	ld hl, UnaffectedText
+	ld a, ATKFAIL_GENERIC
+;	ld hl, ButItFailedText
+;	ld de, ItFailedText
+;	ld hl, AttackMissedText
+;	ld de, AttackMissed2Text
+;	ld a, [wCriticalHit]
+;	cp -1
+;	jr nz, .got_text
+;	ld hl, UnaffectedText
+;;.got_new_failmsg
+	ld [wAttackMissed], a
 .got_text
 	call FailText_CheckOpponentProtect
 	xor a
@@ -2322,13 +2317,25 @@ GetFailureResultText:
 	and EFFECTIVENESS_MASK
 	ret z
 
+;	; (Hi) Jump Kick inflicts half damage on user if misses
+;   ; This doesn't work properly, but keeping it in case it 
+;	; ends up being implemented.
+;	call GetHalfMaxHP ; stores result in bc
+;	ld hl, wCurDamage
+;	ld a, b
+;	ld [hli], a
+;	ld [hl], c
+;
+	; get current damage output into hl
 	ld hl, wCurDamage
 	ld a, [hli]
 	ld b, [hl]
+	; divide by 8 (cut in half three times)
 rept 3
 	srl a
 	rr b
 endr
+	; load divided value into hl for crash damage
 	ld [hl], b
 	dec hl
 	ld [hli], a
@@ -2349,25 +2356,48 @@ endr
 	jp DoPlayerDamage
 
 FailText_CheckOpponentProtect:
-	ld a, BATTLE_VARS_SUBSTATUS1_OPP
-	call GetBattleVar
-	bit SUBSTATUS_PROTECT, a
-	jr z, .not_protected
-	ld h, d
-	ld l, e
-.not_protected
-	jp StdBattleTextbox
-
-BattleCommand_BideFailText:
 	ld a, [wAttackMissed]
 	and a
 	ret z
+	cp ATKFAIL_CUSTOM ; custom message
+	jr z, .printmsg
+	dec a
+	ld hl, AttackMissedText ; ATKFAIL_MISSED
+	jr z, .printmsg
+	dec a
+	ld hl, ProtectingItselfText ; ATKFAIL_PROTECT
+	jr z, .printmsg
+	dec a
+	jr z, .ability_immune ; ATKFAIL_ABILITY
+	dec a
+	ld hl, ButItFailedText ; ATKFAIL_GENERIC
+	jr z, .printmsg
+	dec a
+	ld hl, DoesntAffectText ; ATKFAIL_IMMUNE
+	jr z, .printmsg
+	dec a
+	ld hl, DidntAffect1Text ; ATKFAIL_NOEFFECT
+	jr z, .printmsg
+	dec a
+	ld hl, EvadedText
+	;fallthrough
+.printmsg
+	call AnimateFailedMove
+	jp StdBattleTextbox
+.ability_immune
+	farcall RunEnemyNullificationAbilities
+	ret
 
-	ld a, [wTypeModifier]
-	and EFFECTIVENESS_MASK
-	jp z, PrintDoesntAffect
-	jp PrintButItFailed
-
+;BattleCommand_BideFailText:
+;	ld a, [wAttackMissed]
+;	and a
+;	ret z
+;
+;	ld a, [wTypeModifier]
+;	and EFFECTIVENESS_MASK
+;	jp z, PrintDoesntAffect
+;	jp PrintButItFailed
+;
 BattleCommand_CriticalText:
 ; Prints the message for critical hits or one-hit KOs.
 
@@ -3870,12 +3900,24 @@ PoisonTarget:
 	ret
 
 BattleCommand_Poison:
-	ld hl, DoesntAffectText
+	; check if opponent protected
+	ld a, [wAttackMissed]
+	cp ATKFAIL_PROTECT
+	jp z, .failed
+	; no need to check for an ability, there is none
+	; for poison types. But will add here just in case
+	; it is added
+	cp ATKFAIL_ABILITY
+	jp z, .failed
+
+	; Check for doesn't affect
 	ld a, [wTypeModifier]
 	and EFFECTIVENESS_MASK
+	ld a, ATKFAIL_IMMUNE
 	jp z, .failed
 
 	farcall CheckIfTargetIsPoisonType
+	ld a, ATKFAIL_IMMUNE
 	jp z, .failed
 
 	ld a, BATTLE_VARS_STATUS_OPP
@@ -3883,6 +3925,7 @@ BattleCommand_Poison:
 	ld b, a
 	ld hl, AlreadyPoisonedText
 	and 1 << PSN
+	ld a, ATKFAIL_CUSTOM
 	jp nz, .failed
 
 	call GetOpponentItem
@@ -3893,26 +3936,32 @@ BattleCommand_Poison:
 	ld [wNamedObjectIndex], a
 	call GetItemName
 	ld hl, ProtectedByText
+	ld a, ATKFAIL_CUSTOM
 	jr .failed
 
 .no_item_protection
-	ld hl, DidntAffect1Text
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVar
 	and a
+	ld a, ATKFAIL_NOEFFECT
 	jr nz, .failed
-	ld hl, ProtectingItselfText
+
 	call CheckSubstituteOpp
+	ld a, ATKFAIL_GENERIC
 	jr nz, .failed
+
 	call GetOpponentAbility
 	cp IMMUNITY
 	jr nz, .do_poison
-	jp PrintProtectedByAbilityText
+	call PrintProtectedByAbilityText
+	ld a, ATKFAIL_IMMUNE
+	ld [wAttackMissed], a ; marked as miss for AI (is this how AI works?)
+	ret
 
 .do_poison
-	ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
+	ld a, ATKFAIL_EVADED
 	jr nz, .failed
 	call .check_toxic
 	jr z, .toxic
@@ -3937,10 +3986,8 @@ BattleCommand_Poison:
 	ret
 
 .failed
-	push hl
-	call AnimateFailedMove
-	pop hl
-	jp StdBattleTextbox
+	ld [wAttackMissed], a
+	jp FailText_CheckOpponentProtect
 
 .apply_poison
 	call AnimateCurrentMove
@@ -3983,29 +4030,20 @@ PoisonOpponent:
 	jp UpdateOpponentInParty
 
 BattleCommand_Burn:
-	; Check that the move is a fire type move
-	; e.g. scald can burn without being fire type.
-	; This won't run if the move missed without setting the
-	; ability nullification fail message
-	ld a, [wFailedMessage]
-	cp 3
-	jr nz, .not_flash_fire
-	push hl
-	push de
-	push bc
-	farcall RunEnemyNullificationAbilities
-	pop bc
-	pop de
-	pop hl
-	ret
+	; check if opponent protected and for nullification ability
+	ld a, [wAttackMissed]
+	cp ATKFAIL_PROTECT
+	jp z, .failed
+	cp ATKFAIL_ABILITY
+	jp z, .failed
 
-.not_flash_fire
-	ld hl, DoesntAffectText
 	ld a, [wTypeModifier]
 	and EFFECTIVENESS_MASK
+	ld a, ATKFAIL_IMMUNE
 	jp z, .failed
 
 	farcall CheckIfTargetIsFireType
+	ld a, ATKFAIL_IMMUNE
 	jp z, .failed
 
 	ld a, BATTLE_VARS_STATUS_OPP
@@ -4013,6 +4051,7 @@ BattleCommand_Burn:
 	ld b, a
 	ld hl, AlreadyBurnedText
 	and 1 << BRN
+	ld a, ATKFAIL_CUSTOM
 	jp nz, .failed
 
 	call GetOpponentItem
@@ -4023,13 +4062,15 @@ BattleCommand_Burn:
 	ld [wNamedObjectIndex], a
 	call GetItemName
 	ld hl, ProtectedByText
+	ld a, ATKFAIL_CUSTOM
 	jr .failed
 
 .do_burn
-	ld hl, DidntAffect1Text
+;	ld hl, DidntAffect1Text
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVar
 	and a
+	ld a, ATKFAIL_NOEFFECT
 	jr nz, .failed
 
 	ldh a, [hBattleTurn]
@@ -4049,12 +4090,14 @@ BattleCommand_Burn:
 	jr z, .failed
 
 .dont_sample_failure
-	ld hl, ProtectingItselfText
+;	ld hl, ProtectingItselfText
 	call CheckSubstituteOpp
+	ld a, ATKFAIL_GENERIC
 	jr nz, .failed
-	ld hl, EvadedText
+	;ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
+	ld a, ATKFAIL_EVADED
 	jr nz, .failed
 
 	call .apply_burn
@@ -4068,10 +4111,8 @@ BattleCommand_Burn:
 	ret
 
 .failed
-	push hl
-	call AnimateFailedMove
-	pop hl
-	jp StdBattleTextbox
+	ld [wAttackMissed], a
+	jp FailText_CheckOpponentProtect;jp StdBattleTextbox
 
 .apply_burn
 	call AnimateCurrentMove
@@ -4634,11 +4675,11 @@ BattleCommand_StatDown:
 	call CheckMist
 	jp nz, .Mist
 
-	call CheckStatDownImmunity
+	call CheckStatDownImmunity ; for abilities
 	jr nz, .not_immune
 	ld a, 3
 	ld [wFailedMessage], a
-	ld a, 1
+	ld a, ATKFAIL_IMMUNE
 	ld [wAttackMissed], a
 	ret
 
@@ -5696,7 +5737,7 @@ BattleCommand_FakeOut:
 	jr z, FlinchTarget
 
 .fail
-	ld a, 1
+	ld a, ATKFAIL_GENERIC ;1
 	ld [wAttackMissed], a
 	ret
 
@@ -5811,7 +5852,7 @@ BattleCommand_OHKO:
 .no_effect
 	ld a, $ff
 	ld [wCriticalHit], a
-	ld a, $1
+	ld a, ATKFAIL_IMMUNE ;$1
 	ld [wAttackMissed], a
 	ret
 
@@ -6107,38 +6148,75 @@ BattleCommand_ConfuseTarget:
 	jr BattleCommand_FinishConfusingTarget
 
 BattleCommand_Confuse:
+	; check if the opponent is protected
+	ld a, [wAttackMissed]
+	cp ATKFAIL_PROTECT
+	jr nz, .not_protect
+	call BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
+	jr nz, .failed_protect
+	ret
+
+.failed
+	ld [wAttackMissed], a
+.failed_protect
+	jp FailText_CheckOpponentProtect
+
+.not_protect
 	call GetOpponentItem
 	ld a, b
 	cp HELD_PREVENT_CONFUSE
 	jr nz, .no_item_protection
+	call BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
+	ret z
 	ld a, [hl]
 	ld [wNamedObjectIndex], a
 	call GetItemName
-	call AnimateFailedMove
+	;call AnimateFailedMove
 	ld hl, ProtectedByText
-	jp StdBattleTextbox
+	ld a, ATKFAIL_CUSTOM
+	jr .failed ;StdBattleTextbox
 
 .no_item_protection
 	call GetOpponentAbility
 	cp OWN_TEMPO
 	jr nz, .no_ability_protection
-	jp PrintProtectedByAbilityText
+	ld b, a
+	call BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
+	ret z
+	ld a, b
+	call PrintProtectedByAbilityText
+	ld a, ATKFAIL_IMMUNE
+	ld [wAttackMissed], a ; marked as miss for AI (is that how AI works?)
+	ret
 
 .no_ability_protection
 	ld a, BATTLE_VARS_SUBSTATUS3_OPP
 	call GetBattleVarAddr
 	bit SUBSTATUS_CONFUSED, [hl]
 	jr z, .not_already_confused
-	call AnimateFailedMove
+	call BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
+	ret z
 	ld hl, AlreadyConfusedText
-	jp StdBattleTextbox
+	ld a, ATKFAIL_CUSTOM
+	jr .failed; StdBattleTextbox
 
 .not_already_confused
 	call CheckSubstituteOpp
-	jr nz, BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
+	jr z, .not_substitute
+	call BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
+	ret z
+	ld a, ATKFAIL_GENERIC
+	jr .failed
+
+.not_substitute
 	ld a, [wAttackMissed]
 	and a
-	jr nz, BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
+	jr z, BattleCommand_FinishConfusingTarget
+	call BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit
+	ret z
+	ld a, ATKFAIL_EVADED
+	jr .failed
+	
 BattleCommand_FinishConfusingTarget:
 	ld bc, wEnemyConfuseCount
 	ldh a, [hBattleTurn]
@@ -6190,19 +6268,30 @@ BattleCommand_Confuse_CheckSnore_Swagger_ConfuseHit:
 	cp EFFECT_SNORE
 	ret z
 	cp EFFECT_SWAGGER
-	ret z
-	jp PrintDidntAffect2
+	ret; z
+	;jp FailText_CheckOpponentProtect;jp PrintDidntAffect2
 
 BattleCommand_Paralyze:
+	; check if opponent protected and for nullification ability
+	ld a, [wAttackMissed]
+	cp ATKFAIL_PROTECT
+	jp z, .failed
+	cp ATKFAIL_ABILITY
+	jp z, .failed
+	; check if already paralyzed
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVar
 	bit PAR, a
-	jp nz, .paralyzed
+	ld hl, AlreadyParalyzedText
+	ld a, ATKFAIL_CUSTOM
+	jp nz, .failed ; already paralyzed
 	ld a, [wTypeModifier]
 	and EFFECTIVENESS_MASK
-	jp z, .didnt_affect
+	ld a, ATKFAIL_IMMUNE
+	jp z, .failed ; doesn't effect
 	farcall CheckIfTargetIsElectricType
-	jp z, .didnt_affect
+	ld a, ATKFAIL_IMMUNE 
+	jp z, .failed ; doesn't effect
 	call GetOpponentItem
 	ld a, b
 	cp HELD_PREVENT_PARALYZE
@@ -6210,21 +6299,25 @@ BattleCommand_Paralyze:
 	ld a, [hl]
 	ld [wNamedObjectIndex], a
 	call GetItemName
-	call AnimateFailedMove
+	;call AnimateFailedMove
 	ld hl, ProtectedByText
-	jp StdBattleTextbox
+	ld a, ATKFAIL_CUSTOM
+	jp .failed ;jp StdBattleTextbox
 
 .no_item_protection
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
 	and a
-	jr nz, .didnt_affect
-	ld hl, ProtectingItselfText
-	call CheckSubstituteOpp
+	ld a, ATKFAIL_NOEFFECT
 	jr nz, .failed
-	ld hl, EvadedText
+	;ld hl, ProtectingItselfText
+	call CheckSubstituteOpp
+	ld a, ATKFAIL_NOEFFECT
+	jr nz, .failed
+	;ld hl, EvadedText
 	ld a, [wAttackMissed]
 	and a
+	ld a, ATKFAIL_EVADED
 	jr nz, .failed
 	call GetOpponentAbility
 	cp LIMBER
@@ -6249,18 +6342,19 @@ BattleCommand_Paralyze:
 	ld hl, UseHeldStatusHealingItem
 	jp CallBattleCore
 
-.paralyzed
-	call AnimateFailedMove
-	ld hl, AlreadyParalyzedText
-	jp StdBattleTextbox
-
+;.paralyzed
+;	call AnimateFailedMove
+;	ld hl, AlreadyParalyzedText
+;	jp StdBattleTextbox
+;
 .failed
-	jp PrintDidntAffect2
+	ld [wAttackMissed], a
+	jp FailText_CheckOpponentProtect;jp PrintDidntAffect2
 
-.didnt_affect
-	call AnimateFailedMove
-	jp PrintDoesntAffect
-
+;.didnt_affect
+;	call AnimateFailedMove
+;	jp PrintDoesntAffect
+;
 CheckMoveTypeMatchesTarget:
 ; Compare move type to opponent type.
 ; Return z if matching the opponent type,
@@ -6789,35 +6883,6 @@ INCLUDE "engine/battle/move_effects/present.asm"
 INCLUDE "engine/battle/move_effects/frustration.asm"
 
 INCLUDE "engine/battle/move_effects/safeguard.asm"
-
-SafeCheckSafeguard:
-	push hl
-	ld hl, wEnemyScreens
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .got_turn
-	ld hl, wPlayerScreens
-
-.got_turn
-	bit SCREENS_SAFEGUARD, [hl]
-	pop hl
-	ret
-
-BattleCommand_CheckSafeguard:
-	ld hl, wEnemyScreens
-	ldh a, [hBattleTurn]
-	and a
-	jr z, .got_turn
-	ld hl, wPlayerScreens
-.got_turn
-	bit SCREENS_SAFEGUARD, [hl]
-	ret z
-	ld a, 1
-	ld [wAttackMissed], a
-	call BattleCommand_MoveDelay
-	ld hl, SafeguardProtectText
-	call StdBattleTextbox
-	jp EndMoveEffect
 
 INCLUDE "engine/battle/move_effects/magnitude.asm"
 

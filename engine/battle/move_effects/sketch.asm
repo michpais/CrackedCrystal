@@ -113,4 +113,4 @@ BattleCommand_Sketch:
 
 .fail
 	call AnimateFailedMove
-	jp PrintDidntAffect
+	jp PrintButItFailed

@@ -115,4 +115,5 @@ BattleCommand_Encore:
 	jp StdBattleTextbox
 
 .failed
-	jp PrintDidntAffect2
+	call AnimateFailedMove
+	jp PrintButItFailed

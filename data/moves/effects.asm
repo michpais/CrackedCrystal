@@ -820,7 +820,7 @@ Bide:
 	resettypematchup
 	checkhit
 	moveanim
-	bidefailtext
+	failuretext;bidefailtext
 	applydamage
 	checkfaint
 	buildopponentrage

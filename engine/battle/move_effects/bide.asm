@@ -46,7 +46,7 @@ BattleCommand_StoreEnergy:
 .not_maxed
 	or b
 	jr nz, .built_up_something
-	ld a, 1
+	ld a, ATKFAIL_GENERIC
 	ld [wAttackMissed], a
 .built_up_something
 	xor a

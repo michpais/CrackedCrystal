@@ -81,4 +81,5 @@ BattleCommand_Spite:
 	jp StdBattleTextbox
 
 .failed
-	jp PrintDidntAffect2
+	call AnimateFailedMove
+	jp PrintButItFailed

@@ -377,7 +377,7 @@ StaticAbility:
 	cp 1
 	ret z
 	call PrintAbilityActivated
-	farcall ParalyzeTarget ;BattleCommand_ParalyzeTarget
+	farcall ParalyzeTarget
 	ret
 
 PrintAbilityActivated:
@@ -432,10 +432,8 @@ CheckNullificationAbilities:
 	jr nz, .check_others
 
 .ability_ok
-	ld a, 1
+	ld a, ATKFAIL_ABILITY
 	ld [wAttackMissed], a
-	ld a, 3
-	ld [wFailedMessage], a
 	ld a, NO_EFFECT ; kind of redundant, but helpful for the AI
 	ld [wTypeMatchup], a
 	ret

@@ -240,6 +240,17 @@ DEF ALL_STATUS EQU (1 << PSN) | (1 << BRN) | (1 << FRZ) | (1 << PAR) | SLP_MASK
 	const WEATHER_SANDSTORM_END
 	const WEATHER_HAIL_END
 
+; wAttackMissed (higher gives priority)
+	const_def 1
+	const ATKFAIL_MISSED    ; "<USER>'s attack missed!"
+	const ATKFAIL_PROTECT   ; "<TARGET> is protecting itself!"
+	const ATKFAIL_ABILITY   ; ability immunity, might have side effects
+	const ATKFAIL_GENERIC   ; "But it failed!"
+	const ATKFAIL_IMMUNE    ; "It doesn't affect <TARGET>!"
+	const ATKFAIL_NOEFFECT  ; "It didn't affect <TARGET>!"
+	const ATKFAIL_EVADED   ; missed from accuracy "Evaded the attack"
+	const ATKFAIL_CUSTOM    ; custom message
+
 ; wBattleAction
 	const_def
 	const BATTLEACTION_MOVE1
