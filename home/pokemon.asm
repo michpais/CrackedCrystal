@@ -234,6 +234,13 @@ Print8BitNumLeftAlign::
 	ld b, PRINTNUM_LEFTALIGN | 1
 	jp PrintNum
 
+Print8BitNumRightAlign::
+	ld [wTextDecimalByte], a
+	ld de, wTextDecimalByte
+	ld b, 1
+	;ld b, PRINTNUM_LEFTALIGN | 0
+	jp PrintNum
+
 GetBaseData::
 	push bc
 	push de

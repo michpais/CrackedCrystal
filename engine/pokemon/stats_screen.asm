@@ -760,7 +760,7 @@ LoadGreenPage:
 
 LoadBluePage:
 	call .PlaceOTInfo
-	hlcoord 10, 8
+	hlcoord 12, 8
 	ld de, SCREEN_WIDTH
 	ld b, 10
 	ld a, $31 ; vertical divider
@@ -769,19 +769,25 @@ LoadBluePage:
 	add hl, de
 	dec b
 	jr nz, .vertical_divider
-	hlcoord 11, 8
-	ld bc, 6
+	ld de, EVStatString
+	hlcoord 2, 11
+	call PlaceString
+	hlcoord 0, 12
+	ld bc, 1
+	predef PrintTempMonEVs
+	hlcoord 13, 8
+	ld bc, 4
 	predef PrintTempMonStats
 	ret
 
 .PlaceOTInfo:
 	ld de, IDNoString
-	hlcoord 0, 9
+	hlcoord 0, 8
 	call PlaceString
 	ld de, OTString
-	hlcoord 0, 12
+	hlcoord 0, 9
 	call PlaceString
-	hlcoord 2, 10
+	hlcoord 4, 8
 	lb bc, PRINTNUM_LEADINGZEROS | 2, 5
 	ld de, wTempMonID
 	call PrintNum
@@ -789,7 +795,7 @@ LoadBluePage:
 	call GetNicknamePointer
 	call CopyNickname
 	farcall CorrectNickErrors
-	hlcoord 2, 13
+	hlcoord 4, 9
 	call PlaceString
 	ld a, [wTempMonCaughtGender]
 	and a
@@ -801,7 +807,7 @@ LoadBluePage:
 	jr z, .got_gender
 	ld a, "♀"
 .got_gender
-	hlcoord 9, 13
+	hlcoord 11, 9
 	ld [hl], a
 .done
 	ret
@@ -812,11 +818,14 @@ LoadBluePage:
 	dw sBoxMonOTs
 	dw wBufferMonOT
 
+EVStatString:
+	db "EV STATS@"
+
 IDNoString:
 	db "<ID>№.@"
 
 OTString:
-	db "OT/@"
+	db "OT:@" ;/@"
 
 LoadOrangePage:
 	ld de, AbilityString

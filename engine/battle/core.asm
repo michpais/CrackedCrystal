@@ -7288,14 +7288,15 @@ GiveExperiencePoints:
 
 ; Give EVs
 ; e = 0 for no Pokérus, 1 for Pokérus
-	ld e, 0
 	ld hl, MON_POKERUS
 	add hl, bc
 	ld a, [hl]
 	and a
+	; if z, then a == 0 already
 	jr z, .no_pokerus
-	inc e
+	ld a, 1
 .no_pokerus
+	ld [wPokerusBuffer], a
 	ld hl, MON_EVS
 	add hl, bc
 	push bc
@@ -7309,6 +7310,8 @@ GiveExperiencePoints:
 	ld b, a
 	ld c, NUM_STATS ; six EVs
 .ev_loop
+	ld a, [wPokerusBuffer]
+	ld e, a
 	rlc b
 	rlc b
 	ld a, b
@@ -7368,7 +7371,7 @@ GiveExperiencePoints:
 	ld [hli], a
 	dec c
 	jr z, .evs_done
-; Use the second byte for Sp.Atk and Sp.Def
+	; Use the second byte for Sp.Atk and Sp.Def
 	ld a, c
 	cp 2 ; two stats left, Sp.Atk and Sp.Def
 	jr nz, .ev_loop

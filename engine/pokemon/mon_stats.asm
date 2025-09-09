@@ -116,8 +116,70 @@ PrintTempMonStats:
 .StatNames:
 	db   "ATTACK"
 	next "DEFENSE"
-	next "SPCL.ATK"
-	next "SPCL.DEF"
+	next "SP.ATK"
+	next "SP.DEF"
+	next "SPEED"
+	next "@"
+
+PrintTempMonEVs:
+	; Print wTempMon's EVs at hl with spacing bc
+	push bc
+	push hl
+	ld de, .EVStatNamesLeft
+	call PlaceString
+	pop hl
+	pop bc
+	push hl
+	push bc
+	add hl, bc ; shift right by bc
+	ld bc, SCREEN_WIDTH
+	add hl, bc ; shift down by one line
+	ld a, [wTempMonHPEV]
+	lb bc, 2, 3
+	call .PrintStatEV
+	ld a, [wTempMonAtkEV]
+	call .PrintStatEV
+	ld a, [wTempMonDefEV]
+	call Print8BitNumRightAlign
+	pop bc
+	pop hl
+	ld bc, 5
+	add hl, bc
+	push hl
+	ld de, .EVStatNamesRight
+	call PlaceString
+	pop hl
+	ld bc, 4
+	add hl, bc ; shift right by bc
+	ld bc, SCREEN_WIDTH
+	add hl, bc ; shift down by one line
+	ld a, [wTempMonSpclAtkEV]
+	lb bc, 2, 3
+	call .PrintStatEV
+	ld a, [wTempMonSpclDefEV]
+	call .PrintStatEV
+	ld a, [wTempMonSpdEV]
+	jp Print8BitNumRightAlign
+
+.PrintStatEV
+	push hl
+	push bc
+	call Print8BitNumRightAlign
+	pop bc
+	pop hl
+	ld de, SCREEN_WIDTH * 2
+	add hl, de
+	ret
+
+.EVStatNamesLeft:
+	db   "HP"
+	next "ATK"
+	next "DEF"
+	next "@"
+
+.EVStatNamesRight:
+	db   "SP.ATK"
+	next "SP.DEF"
 	next "SPEED"
 	next "@"
 
