@@ -1579,6 +1579,10 @@ BattleCommand_CheckHit:
 	ld a, ATKFAIL_IMMUNE
 	jp z, .Miss_skipset
 
+	call .Swagger
+	ld a, ATKFAIL_NOEFFECT
+	jp nz, .Miss_skipset
+
 	call .Protect
 	ld a, ATKFAIL_PROTECT
 	jp nz, .Miss_skipset
@@ -1665,6 +1669,13 @@ BattleCommand_CheckHit:
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVar
 	and SLP_MASK
+	ret
+
+.Swagger:
+; Return nz if we are already confused
+	ld a, BATTLE_VARS_SUBSTATUS3_OPP
+	call GetBattleVarAddr
+	bit SUBSTATUS_CONFUSED, [hl]
 	ret
 
 .Protect:
