@@ -242,11 +242,11 @@ INCLUDE "data/abilities/no_intimidate_abilities.asm"
 ;	jmp SwitchTurn
 ;
 RunEnemySynchronizeAbility:
-	farcall SwitchTurnCore
+	call SwitchTurn
 	call GetUserAbility
 	cp SYNCHRONIZE
 	call z, SynchronizeAbility
-	farcall SwitchTurnCore
+	call SwitchTurn
 	ret
 
 SynchronizeAbility:
@@ -267,21 +267,18 @@ SynchronizeAbility:
 	;farcall BattleCommand_toxic
 .is_psn
 	call CanPoisonTarget
-	cp 1
 	ret z
 	call PrintAbilityActivated
 	farcall PoisonTarget
 	ret
 .is_par
 	call CanParalyzeTarget
-	cp 1
 	ret z
 	call PrintAbilityActivated
 	farcall ParalyzeTarget
 	ret
 .is_brn
 	call CanBurnTarget
-	cp 1
 	ret z
 	call PrintAbilityActivated
 	farcall BurnTarget
@@ -293,11 +290,11 @@ RunContactAbilities:
 	call BattleRandom
 	cp 1 + 30 percent
 	ret nc
-	farcall SwitchTurnCore
+	call SwitchTurn
 	call GetUserAbility
 	ld hl, TargetContactAbilities
 	call AbilityJumptable
-	farcall SwitchTurnCore
+	call SwitchTurn
 	ret
 
 TargetContactAbilities:
@@ -349,10 +346,8 @@ EffectSporeAbility:
 	jr c, StaticAbility
 
 	call CanSleepTarget1
-	cp 1
 	ret z
 	call CanSleepTarget2
-	cp 1
 	ret z 
 	call PrintAbilityActivated
 	farcall SleepTarget
@@ -360,21 +355,18 @@ EffectSporeAbility:
 	;jr AfflictStatusAbility
 FlameBodyAbility:
 	call CanBurnTarget
-	cp 1
 	ret z
 	call PrintAbilityActivated
 	farcall BurnTarget
 	ret
 PoisonPointAbility:
 	call CanPoisonTarget
-	cp 1
 	ret z
 	call PrintAbilityActivated
 	farcall PoisonTarget
 	ret
 StaticAbility:
 	call CanParalyzeTarget
-	cp 1
 	ret z
 	call PrintAbilityActivated
 	farcall ParalyzeTarget
@@ -759,66 +751,67 @@ EnemyThickFatAbility:
 ;INCLUDE "engine/battle/ability_gfx.asm"
 
 CanPoisonTarget:
-	ld a, b
+	;ld a, b
 	lb bc, POISON, STEEL
 	lb de, IMMUNITY, HELD_PREVENT_POISON
-	ld h, 1 << PSN
+	;ld h, 1 << PSN
 	jr CanStatusTarget
 CanBurnTarget:
-	ld a, b
+	;ld a, b
 	lb bc, FIRE, FIRE
 	lb de, NO_ABILITY, HELD_PREVENT_BURN
-	ld h, 1 << BRN
+	;ld h, 1 << BRN
 	jr CanStatusTarget
 CanParalyzeTarget:
-	ld a, b
+	;ld a, b
 	lb bc, ELECTRIC, ELECTRIC
 	lb de, LIMBER, HELD_PREVENT_PARALYZE
-	ld h, 1 << PAR
+	;ld h, 1 << PAR
 	jr CanStatusTarget
 CanSleepTarget1:
-	ld a, b
+	;ld a, b
 	lb bc, -1, -1
 	lb de, INSOMNIA, HELD_PREVENT_SLEEP
-	ld h, SLP_MASK
+	;ld h, SLP_MASK
 	jr CanStatusTarget
 CanSleepTarget2:
-	ld a, b
+	;ld a, b
 	lb bc, -1, -1
 	lb de, VITAL_SPIRIT, HELD_PREVENT_SLEEP
-	ld h, SLP_MASK
+	;ld h, SLP_MASK
 CanStatusTarget:
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
 	and a
-	jr nz, .failed
+	ret nz
 
 	push de
 	push bc
 	ld a, b
 	call CheckIfTargetIsSomeType
 	pop bc
-	jr z, .failed
+	pop de
+	ret z ; failed
+	push de
 	ld a, c
 	call CheckIfTargetIsSomeType
-	jr z, .failed
+	pop de
+	ret z ; failed
 	farcall SafeCheckSafeguard
 	jr nz, .failed
 	farcall CheckSubstituteOpp
 	jr nz, .failed
 	farcall GetOpponentItem
 	ld a, b
-	pop de
 	cp e
-	jr z, .failed
+	ret z ; failed
 	call GetOpponentAbility
 	cp d
-	jr z, .failed
-	ld a, 0
 	ret
 
 .failed
-	ld a, 1
+	xor a
+	and a
 	ret
 	
 CheckIfTargetIsGrassType::
