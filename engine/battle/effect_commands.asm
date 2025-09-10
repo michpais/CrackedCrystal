@@ -1672,22 +1672,8 @@ BattleCommand_CheckHit:
 	ld a, BATTLE_VARS_SUBSTATUS1_OPP
 	call GetBattleVar
 	bit SUBSTATUS_PROTECT, a
-	ret z
-
-;	ld c, 40
-;	call DelayFrames
-;
-;; 'protecting itself!'
-;	ld hl, ProtectingItselfText
-;	call StdBattleTextbox
-;
-;	ld c, 40
-;	call DelayFrames
-;
-	ld a, 1
-	and a
 	ret
-;
+
 .LockOn:
 ; Return nz if we are locked-on and aren't trying to use Earthquake,
 ; Fissure or Magnitude on a monster that is flying.
@@ -6136,7 +6122,7 @@ BattleCommand_ConfuseTarget:
 	ret nz
 	call GetOpponentAbility
 	cp OWN_TEMPO
-	ret nz
+	ret z
 	call SafeCheckSafeguard
 	ret nz
 	call CheckSubstituteOpp
