@@ -1672,7 +1672,18 @@ BattleCommand_CheckHit:
 	ret
 
 .Swagger:
-; Return nz if we are already confused
+; Return nz if we are already confused and we
+; are using Swagger (acts as a confusehit so
+; it doesn't check this as e.g. confuse ray would)
+	ld a, BATTLE_VARS_MOVE_EFFECT
+	call GetBattleVar
+	cp EFFECT_SWAGGER
+	jr z, .is_swagger
+	xor a
+	and a
+	ret
+
+.is_swagger
 	ld a, BATTLE_VARS_SUBSTATUS3_OPP
 	call GetBattleVarAddr
 	bit SUBSTATUS_CONFUSED, [hl]
