@@ -783,7 +783,7 @@ CanStatusTarget:
 	ld a, BATTLE_VARS_STATUS_OPP
 	call GetBattleVarAddr
 	and a
-	ret nz
+	jr nz, .failed
 
 	push de
 	push bc

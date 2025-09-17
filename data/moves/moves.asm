@@ -64,7 +64,7 @@ Moves:
 	move SUPERSONIC,   EFFECT_CONFUSE,             0, NORMAL,       STATUS,    55, 20,   0
 	move SONICBOOM,    EFFECT_STATIC_DAMAGE,      20, NORMAL,       SPECIAL,   90, 20,   0
 	move DISABLE,      EFFECT_DISABLE,             0, NORMAL,       STATUS,    55, 20,   0
-	move ACID,         EFFECT_DEFENSE_DOWN_HIT,   40, POISON,       SPECIAL,  100, 30,  10
+	move ACID,         EFFECT_SP_DEF_DOWN_HIT,   40, POISON,       SPECIAL,  100, 30,  10
 	move EMBER,        EFFECT_BURN_HIT,           40, FIRE,         SPECIAL,  100, 25,  10
 	move FLAMETHROWER, EFFECT_BURN_HIT,           95, FIRE,         SPECIAL,  100, 15,  10
 	move MIST,         EFFECT_MIST,                0, ICE,          STATUS,   100, 30,   0
@@ -87,7 +87,7 @@ Moves:
 	move ABSORB,       EFFECT_LEECH_HIT,          20, GRASS,        SPECIAL,  100, 20,   0
 	move MEGA_DRAIN,   EFFECT_LEECH_HIT,          40, GRASS,        SPECIAL,  100, 10,   0
 	move LEECH_SEED,   EFFECT_LEECH_SEED,          0, GRASS,        STATUS,    90, 10,   0
-	move GROWTH,       EFFECT_SP_ATK_UP,           0, NORMAL,       STATUS,   100, 40,   0
+	move GROWTH,       EFFECT_ATK_SPATK_UP,        0, NORMAL,       STATUS,   100, 20,   0
 	move RAZOR_LEAF,   EFFECT_NORMAL_HIT,         55, GRASS,        SPECIAL,   95, 25,   0
 	move SOLARBEAM,    EFFECT_SOLARBEAM,         120, GRASS,        SPECIAL,  100, 10,   0
 	move POISONPOWDER, EFFECT_POISON,              0, POISON,       STATUS,    75, 35,   0

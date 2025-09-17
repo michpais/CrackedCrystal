@@ -2242,3 +2242,17 @@ AtkDefUp:
 	statupmessage
 	statupfailtext
 	endmove
+
+AtkSpatkUp:
+	checkobedience
+	usedmovetext
+	doturn
+	attackup
+	lowersub
+	statupanim
+	raisesub
+	statupmessage
+	specialattackup
+	statupmessage
+	statupfailtext
+	endmove
