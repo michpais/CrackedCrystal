@@ -2878,6 +2878,7 @@ ForcePlayerMonChoice:
 	call ClearSprites
 	call ClearBGPalettes
 	call _LoadHPBar
+	call _LoadStatusIcons
 	call ExitMenu
 	call LoadTilemapToTempTilemap
 	call WaitBGMap
@@ -2899,6 +2900,7 @@ ForcePlayerMonChoice:
 	call ClearPalettes
 	call DelayFrame
 	call _LoadHPBar
+	call _LoadStatusIcons
 	call CloseWindow
 	call GetMemSGBLayout
 	call SetPalettes
@@ -3645,6 +3647,7 @@ OfferSwitch:
 	call ClearPalettes
 	call DelayFrame
 	call _LoadHPBar
+	call _LoadStatusIcons
 	pop af
 	ld [wCurPartyMon], a
 	xor a
@@ -3657,6 +3660,7 @@ OfferSwitch:
 	call ClearPalettes
 	call DelayFrame
 	call _LoadHPBar
+	call _LoadStatusIcons
 
 .said_no
 	pop af
@@ -4792,6 +4796,13 @@ DrawPlayerHUD:
 	ld b, a
 	call FillInExpBar
 	pop de
+
+	; Status icon
+	farcall LoadPlayerStatusIcon
+	hlcoord 12, 8
+	ld a, $db ; corresponds to vTiles1 tile $5e
+	ld [hli], a
+	ld [hl], $dc ; corresponds to vTiles1 tile $5f
 	ret
 
 UpdatePlayerHPPal:
@@ -4869,13 +4880,13 @@ PrintPlayerHUD:
 	ld [hl], a
 	hlcoord 11, 8
 
-	push af ; back up gender
-	push hl
-	; print status condition
-	ld de, wBattleMonStatus
-	predef PlaceNonFaintStatus
-	pop hl
-	pop bc
+	;push af ; back up gender
+	;push hl
+	;; print status condition
+	;ld de, wBattleMonStatus
+	;predef PlaceNonFaintStatus
+	;pop hl
+	;pop bc
 
 	;print level
 	hlcoord 15, 8
@@ -4944,13 +4955,13 @@ DrawEnemyHUD:
 	ld [hl], a
 
 	; print pokemon status (if any)
-	hlcoord 2, 1
-	push af ;backup gender
-	push hl
-	ld de, wEnemyMonStatus
-	predef PlaceNonFaintStatus
-	pop hl
-	pop bc
+	;hlcoord 2, 1
+	;push af ;backup gender
+	;push hl
+	;ld de, wEnemyMonStatus
+	;predef PlaceNonFaintStatus
+	;pop hl
+	;pop bc
 
 	; print pokemon level
 	hlcoord 6, 1
@@ -5022,6 +5033,13 @@ DrawEnemyHUD:
 	hlcoord 2, 2
 	ld b, 0
 	call DrawBattleHPBar
+
+	farcall LoadEnemyStatusIcon
+	hlcoord 2, 1
+	ld a, $dd ; corresponds to vTiles1 tile $5d
+	ld [hli], a
+	ld [hl], $de ; corresponds to vTiles1 tile $5e
+	jmp FinishBattleAnim
 	ret
 
 UpdateEnemyHPPal:
@@ -5263,6 +5281,7 @@ BattleMenuPKMN_Loop:
 	call ClearPalettes
 	call DelayFrame
 	call _LoadHPBar
+	call _LoadStatusIcons
 	call CloseWindow
 	call LoadTilemapToTempTilemap
 	call GetMemSGBLayout
@@ -5350,6 +5369,7 @@ TryPlayerSwitch:
 	call DelayFrame
 	call ClearSprites
 	call _LoadHPBar
+	call _LoadStatusIcons
 	call CloseWindow
 	call GetMemSGBLayout
 	call SetPalettes
@@ -7132,6 +7152,9 @@ _LoadBattleFontsHPBar:
 _LoadHPBar:
 	callfar LoadHPBar
 	ret
+
+_LoadStatusIcons:
+	callfar LoadStatusIcons
 
 ;LoadHPExpBarGFX: ; unreferenced
 ;	ld de, EnemyHPBarBorderGFX
@@ -9232,7 +9255,7 @@ InitBattleDisplay:
 	ld b, 4
 	ld c, 18
 	call Textbox
-	farcall MobileTextBorder
+;	farcall MobileTextBorder ; removed, we aren't doing link battles
 	hlcoord 1, 5
 	lb bc, 3, 7
 	call ClearBox

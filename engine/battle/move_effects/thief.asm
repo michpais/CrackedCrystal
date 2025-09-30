@@ -3,6 +3,11 @@ BattleCommand_Thief:
 	and a
 	jr nz, .enemy
 
+; The enemy can't have STICKY_HOLD ability
+	call GetOpponentAbility
+	cp STICKY_HOLD
+	ret z
+
 ; The player needs to be able to steal an item.
 
 	call .playeritem
@@ -15,11 +20,6 @@ BattleCommand_Thief:
 	call .enemyitem
 	ld a, [hl]
 	and a
-	ret z
-
-; The enemy can't have STICKY_HOLD ability
-	call GetOpponentAbility
-	cp STICKY_HOLD
 	ret z
 
 ; Can't steal mail.
@@ -55,6 +55,11 @@ BattleCommand_Thief:
 
 .enemy
 
+; The player can't have STICKY_HOLD ability
+	call GetOpponentAbility
+	cp STICKY_HOLD
+	ret z
+
 ; The enemy can't already have an item.
 
 	call .enemyitem
@@ -67,11 +72,6 @@ BattleCommand_Thief:
 	call .playeritem
 	ld a, [hl]
 	and a
-	ret z
-
-; The player can't have STICKY_HOLD ability
-	call GetOpponentAbility
-	cp STICKY_HOLD
 	ret z
 
 ; Can't steal mail!
