@@ -371,6 +371,25 @@ ApplyHPBarPals:
 	call FillBoxCGB
 	ret
 
+LoadSummaryStatusIconPalette:
+	xor a
+	ld de, wTempMonStatus
+	call GetStatusConditionIndex
+	ld hl, StatusIconPals
+	ld c, a
+	ld b, 0
+	add hl, bc
+	add hl, bc
+	ld de, wBGPals1 palette 7 color 2 ; apply status palette
+	;ld de, wOBPals1 palette 5 color 2 ; apply status palette
+	ld bc, 2
+	ld a, BANK("GBC Video")
+	jp FarCopyWRAM
+	;; request palette update
+	;ld a, TRUE
+	;ldh [hCGBPalUpdate], a
+	;ret
+
 LoadPlayerStatusIconPalette:
 	ld de, wBattleMonStatus
 	call GetStatusConditionIndex

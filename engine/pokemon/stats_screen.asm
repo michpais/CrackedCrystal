@@ -441,6 +441,11 @@ StatsScreen_InitUpperHalf:
 	call StatsScreen_PlaceHorizontalDivider
 	call StatsScreen_PlacePageSwitchArrows
 	call StatsScreen_PlaceShinyIcon
+	callfar LoadSummaryStatusIcon
+	hlcoord 8, 6
+	ld a, $dd
+	ld [hli], a
+	ld [hl], $de
 	ret
 
 .PlaceHPBar:

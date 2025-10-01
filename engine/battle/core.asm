@@ -7155,6 +7155,7 @@ _LoadHPBar:
 
 _LoadStatusIcons:
 	callfar LoadStatusIcons
+	ret
 
 ;LoadHPExpBarGFX: ; unreferenced
 ;	ld de, EnemyHPBarBorderGFX

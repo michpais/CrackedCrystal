@@ -51,17 +51,19 @@ GetStatusConditionIndex::
 	jr nz, .brn
 	bit FRZ, b
 	jr nz, .frz
-	ret
+	;ret
 	; This should add FNT if we want to use it.
-	;inc de
-	;inc de ; now de is pointing at hp
-	;; check if hp is 0
-	;ld a, [de]
-	;ld b, a
-	;inc de
-	;ld a, [de]
-	;or b
-	;ret nz ; not fainted if not zero
+	inc de
+	inc de ; now de is pointing at hp
+	; check if hp is 0
+	ld a, [de]
+	ld b, a
+	inc de
+	ld a, [de]
+	or b
+	jr z, .fnt ; fainted if HP is zero
+	xor a ; clear a to return no status
+	ret
 
 ;.tox
 ;	inc a ; 7

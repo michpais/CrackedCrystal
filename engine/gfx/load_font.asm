@@ -143,6 +143,29 @@ LoadStatsScreenPageTilesGFX:
 	call Get2bppViaHDMA
 	ret
 
+LoadSummaryStatusIcon:
+	push de
+	xor a
+	ld de, wTempMonStatus
+	call GetStatusConditionIndex
+	ld hl, SummaryStatusIconGFX
+	ld bc, 2 tiles
+	call AddNTimes
+	ld d, h
+	ld e, l
+	;ld hl, vTiles0 tile $64 ; object tile
+	ld hl, vTiles1 tile $5d
+	lb bc, BANK(SummaryStatusIconGFX), 2
+	call Request2bpp
+	farcall LoadSummaryStatusIconPalette
+	;ld hl, wOBPals1
+	;ld de, wOBPals2
+	;ld bc, 8 palettes
+	;ld a, BANK("GBC Video")
+	;call FarCopyWRAM
+	pop de
+	ret
+
 LoadPlayerStatusIcon:
 	push de
 	ld de, wBattleMonStatus

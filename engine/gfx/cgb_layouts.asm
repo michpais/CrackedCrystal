@@ -237,6 +237,11 @@ _CGB_StatsScreenHPPals:
 	ld a, $2 ; exp palette
 	call ByteFill
 
+	hlcoord 8, 6, wAttrmap
+	lb bc, 1, 2
+	ld a, 7 ; palette for status page
+	call FillBoxCGB
+
 	hlcoord 11, 5, wAttrmap
 	lb bc, 2, 2
 	ld a, $3 ; pink page palette
