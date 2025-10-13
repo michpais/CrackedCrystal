@@ -4756,6 +4756,7 @@ UpdatePlayerHUD::
 	call DrawPlayerHUD
 	call UpdatePlayerHPPal
 	call CheckDanger
+	call FinishBattleAnim
 	pop bc
 	pop de
 	pop hl
@@ -4900,6 +4901,7 @@ UpdateEnemyHUD::
 	push bc
 	call DrawEnemyHUD
 	call UpdateEnemyHPPal
+	call FinishBattleAnim
 	pop bc
 	pop de
 	pop hl
@@ -5039,7 +5041,6 @@ DrawEnemyHUD:
 	ld a, $dd ; corresponds to vTiles1 tile $5d
 	ld [hli], a
 	ld [hl], $de ; corresponds to vTiles1 tile $5e
-	jmp FinishBattleAnim
 	ret
 
 UpdateEnemyHPPal:

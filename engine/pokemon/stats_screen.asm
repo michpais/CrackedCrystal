@@ -577,43 +577,29 @@ StatsScreen_LoadGFX:
 	assert_table_length NUM_STAT_PAGES
 
 LoadPinkPage:
-	hlcoord 0, 9
+	call .PlaceOTInfo
+	hlcoord 10, 9
 	ld b, $0
 	predef DrawPlayerHP
-	hlcoord 8, 9
+	hlcoord 18, 9
 	ld [hl], $41 ; right HP/exp bar end cap
-	ld de, .Status_Type
-	hlcoord 0, 12
+	ld de, .Type
+	hlcoord 0, 14
 	call PlaceString
 	ld a, [wTempMonPokerusStatus]
 	ld b, a
 	and $f
-	jr nz, .HasPokerus
+	jr z, .CheckPokerusImmunity
+	ld de, .PkrsStr
+	hlcoord 10, 8
+	call PlaceString
+.CheckPokerusImmunity
 	ld a, b
 	and $f0
 	jr z, .NotImmuneToPkrs
-	hlcoord 8, 8
+	hlcoord 19, 8
 	ld [hl], "." ; Pokérus immunity dot
-.NotImmuneToPkrs:
-	ld a, [wMonType]
-	cp BOXMON
-	jr z, .StatusOK
-	hlcoord 6, 13
-	push hl
-	ld de, wTempMonStatus
-	predef PlaceStatusString
-	pop hl
-	jr nz, .done_status
-	jr .StatusOK
-.HasPokerus:
-	ld de, .PkrsStr
-	hlcoord 1, 13
-	call PlaceString
-	jr .done_status
-.StatusOK:
-	ld de, .OK_str
-	call PlaceString
-.done_status
+.NotImmuneToPkrs
 	hlcoord 1, 15
 	predef PrintMonTypes
 	hlcoord 9, 8
@@ -626,24 +612,24 @@ LoadPinkPage:
 	dec b
 	jr nz, .vertical_divider
 	ld de, .ExpPointStr
-	hlcoord 10, 9
+	hlcoord 10, 12
 	call PlaceString
-	hlcoord 17, 14
+	hlcoord 13, 14
 	call .PrintNextLevel
-	hlcoord 13, 10
+	hlcoord 13, 13
 	lb bc, 3, 7
 	ld de, wTempMonExp
 	call PrintNum
 	call .CalcExpToNextLevel
-	hlcoord 13, 13
+	hlcoord 13, 15
 	lb bc, 3, 7
 	ld de, wExpToNextLevel
 	call PrintNum
-	ld de, .LevelUpStr
-	hlcoord 10, 12
-	call PlaceString
+	;ld de, .LevelUpStr
+	;hlcoord 10, 12
+	;call PlaceString
 	ld de, .ToStr
-	hlcoord 14, 14
+	hlcoord 10, 14
 	call PlaceString
 	hlcoord 11, 16
 	ld a, [wTempMonLevel]
@@ -699,9 +685,8 @@ LoadPinkPage:
 	ld [hl], a
 	ret
 
-.Status_Type:
-	db   "STATUS/"
-	next "TYPE/@"
+.Type:
+	db "TYPE/@"
 
 .OK_str:
 	db "OK @"
@@ -709,14 +694,58 @@ LoadPinkPage:
 .ExpPointStr:
 	db "EXP POINTS@"
 
-.LevelUpStr:
-	db "LEVEL UP@"
-
+;.LevelUpStr:
+;	db "LEVEL UP@"
+;
 .ToStr:
 	db "TO@"
 
 .PkrsStr:
 	db "#RUS@"
+
+.PlaceOTInfo:
+	ld de, IDNoString
+	hlcoord 0, 12
+	call PlaceString
+	ld de, OTString
+	hlcoord 0, 9
+	call PlaceString
+	hlcoord 4, 12
+	lb bc, PRINTNUM_LEADINGZEROS | 2, 5
+	ld de, wTempMonID
+	call PrintNum
+	ld hl, .OTNamePointers
+	call GetNicknamePointer
+	call CopyNickname
+	farcall CorrectNickErrors
+	hlcoord 1, 10
+	call PlaceString
+	ld a, [wTempMonCaughtGender]
+	and a
+	jr z, .done
+	cp $7f
+	jr z, .done
+	and CAUGHT_GENDER_MASK
+	ld a, "♂"
+	jr z, .got_gender
+	ld a, "♀"
+.got_gender
+	hlcoord 8, 10
+	ld [hl], a
+.done
+	ret
+
+.OTNamePointers:
+	dw wPartyMonOTs
+	dw wOTPartyMonOTs
+	dw sBoxMonOTs
+	dw wBufferMonOT
+
+IDNoString:
+	db "<ID>№.@"
+
+OTString:
+	db "OT/@"
 
 LoadGreenPage:
 	ld de, .Item
@@ -764,7 +793,6 @@ LoadGreenPage:
 	db "MOVE@"
 
 LoadBluePage:
-	call .PlaceOTInfo
 	hlcoord 12, 8
 	ld de, SCREEN_WIDTH
 	ld b, 10
@@ -775,9 +803,9 @@ LoadBluePage:
 	dec b
 	jr nz, .vertical_divider
 	ld de, EVStatString
-	hlcoord 2, 11
+	hlcoord 2, 9
 	call PlaceString
-	hlcoord 0, 12
+	hlcoord 0, 11
 	ld bc, 1
 	predef PrintTempMonEVs
 	hlcoord 13, 8
@@ -785,52 +813,8 @@ LoadBluePage:
 	predef PrintTempMonStats
 	ret
 
-.PlaceOTInfo:
-	ld de, IDNoString
-	hlcoord 0, 8
-	call PlaceString
-	ld de, OTString
-	hlcoord 0, 9
-	call PlaceString
-	hlcoord 4, 8
-	lb bc, PRINTNUM_LEADINGZEROS | 2, 5
-	ld de, wTempMonID
-	call PrintNum
-	ld hl, .OTNamePointers
-	call GetNicknamePointer
-	call CopyNickname
-	farcall CorrectNickErrors
-	hlcoord 4, 9
-	call PlaceString
-	ld a, [wTempMonCaughtGender]
-	and a
-	jr z, .done
-	cp $7f
-	jr z, .done
-	and CAUGHT_GENDER_MASK
-	ld a, "♂"
-	jr z, .got_gender
-	ld a, "♀"
-.got_gender
-	hlcoord 11, 9
-	ld [hl], a
-.done
-	ret
-
-.OTNamePointers:
-	dw wPartyMonOTs
-	dw wOTPartyMonOTs
-	dw sBoxMonOTs
-	dw wBufferMonOT
-
 EVStatString:
 	db "EV STATS@"
-
-IDNoString:
-	db "<ID>№.@"
-
-OTString:
-	db "OT:@" ;/@"
 
 LoadOrangePage:
 	ld de, AbilityString

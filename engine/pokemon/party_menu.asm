@@ -271,25 +271,40 @@ PlacePartyMonStatus:
 	ld b, 0
 	hlcoord 5, 2
 .loop
-	push bc
-	push hl
-	call PartyMenuCheckEgg
-	jr z, .next
-	push hl
 	ld a, b
+	ld [wTempB], a ; place party mon slot in wTempB
+	push hl
+	push bc
+	call PartyMenuCheckEgg
+	jr z, .nextbc
+	push hl
+	ld a, b ; load party mon slot back into a
 	ld bc, PARTYMON_STRUCT_LENGTH
 	ld hl, wPartyMon1Status
 	call AddNTimes
 	ld e, l
 	ld d, h
+	callfar LoadSummaryStatusIconPartyMenu
 	pop hl
-	call PlaceStatusString
-
+	pop bc ; restore tracker to bc b=slot, c=countdown
+	xor a ; clear a
+	ld a, b ; set a to slot number
+	add a ; double slot number
+	cp 5
+	jr c, .first_tile_row
+	add $0a ; move to second row of tileset
+.first_tile_row
+	add $c7 ; add to base tileset
+	ld [hli], a
+	add 1
+	ld [hl], a
+	jr .next
+.nextbc
+	pop bc
 .next
 	pop hl
 	ld de, SCREEN_WIDTH * 2
 	add hl, de
-	pop bc
 	inc b
 	dec c
 	jr nz, .loop

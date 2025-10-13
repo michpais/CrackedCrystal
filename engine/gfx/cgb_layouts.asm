@@ -185,6 +185,38 @@ InitPartyMenuBGPal0:
 	call FarCopyWRAM
 	ret
 
+InitPartyMenuStatusIcons:
+	hlcoord 5, 2, wAttrmap
+	lb bc, 1, 2
+	ld a, 4 ; palette for 1st slot
+	call FillBoxCGB
+
+	hlcoord 5, 4, wAttrmap
+	lb bc, 1, 2
+	ld a, 4 ; palette for 2nd slot
+	call FillBoxCGB
+
+	hlcoord 5, 6, wAttrmap
+	lb bc, 1, 2
+	ld a, 5 ; palette for 3rd slot
+	call FillBoxCGB
+
+	hlcoord 5, 8, wAttrmap
+	lb bc, 1, 2
+	ld a, 5 ; palette for 4th slot
+	call FillBoxCGB
+
+	hlcoord 5, 10, wAttrmap
+	lb bc, 1, 2
+	ld a, 6 ; palette for 5th slot
+	call FillBoxCGB
+
+	hlcoord 5, 12, wAttrmap
+	lb bc, 1, 2
+	ld a, 6 ; palette for 6th slot
+	call FillBoxCGB
+	ret
+
 _CGB_PokegearPals:
 	ld a, [wPlayerGender]
 	bit PLAYERGENDER_FEMALE_F, a
@@ -550,6 +582,7 @@ _CGB_PartyMenu:
 	call InitPartyMenuBGPal0
 	call InitPartyMenuBGPal7
 	call InitPartyMenuOBPals
+	call InitPartyMenuStatusIcons
 	call ApplyAttrmap
 	ret
 

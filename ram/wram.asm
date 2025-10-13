@@ -2262,7 +2262,7 @@ wStringBuffer5:: ds STRING_BUFFER_LENGTH
 
 wBattleMenuCursorPosition:: db
 
-	ds 1
+wTempB:: db
 
 wCurBattleMon::
 ; index of the player's mon currently in battle (0-5)

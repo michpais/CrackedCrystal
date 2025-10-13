@@ -3,18 +3,18 @@ INCLUDE "gfx/font.asm"
 EnableHDMAForGraphics:
 	db FALSE
 
-Get1bppOptionalHDMA: ; unreferenced
-	ld a, [EnableHDMAForGraphics]
-	and a
-	jp nz, Get1bppViaHDMA
-	jp Get1bpp
-
-Get2bppOptionalHDMA: ; unreferenced
-	ld a, [EnableHDMAForGraphics]
-	and a
-	jp nz, Get2bppViaHDMA
-	jp Get2bpp
-
+;Get1bppOptionalHDMA: ; unreferenced
+;	ld a, [EnableHDMAForGraphics]
+;	and a
+;	jp nz, Get1bppViaHDMA
+;	jp Get1bpp
+;
+;Get2bppOptionalHDMA: ; unreferenced
+;	ld a, [EnableHDMAForGraphics]
+;	and a
+;	jp nz, Get2bppViaHDMA
+;	jp Get2bpp
+;
 _LoadStandardFont::
 	ld de, Font
 	ld hl, vTiles1
@@ -143,6 +143,59 @@ LoadStatsScreenPageTilesGFX:
 	call Get2bppViaHDMA
 	ret
 
+LoadSummaryStatusIconPartyMenu:
+	push bc
+	push de
+	; check if we're even
+	ld a, [wTempB]
+	bit 0, a
+	jr z, .even
+	ld hl, PartyStatusIconGFXOdd
+	jr .picked_icon
+.even
+	ld hl, PartyStatusIconGFXEven
+.picked_icon
+	call GetStatusConditionIndex
+	ld bc, 2 tiles
+	call AddNTimes
+	ld d, h
+	ld e, l
+	; here, we basically need to copy the
+	; ld hl, vTiles tile [tile value]
+	; where the tile value is dynamic. However, we can't
+	; use a in the [tile value] since that doesn't fit syntax.
+	; Thus we do this block since 
+	; vTiles = $80 * TILE_SIZE, tile = "+ TILE_SIZE *", TILE_SIZE = 16 bytes
+	ld a, [wTempB]
+	add a
+	cp 5
+	jr c, .first_tile_row
+	add $0a
+.first_tile_row
+	add $47
+	ld hl, vTiles1 ; hl = $8000
+	ld b, 0
+	ld c, a
+	; each sla multiplies by 2. Each rl b ensures overflow goes into b
+	sla c ; multiply a by 16 (tile_length = $10)
+	sla c ; 
+	rl b
+	sla c
+	rl b
+	sla c
+	rl b
+	add hl, bc               ; hl = vTiles1 + tile_length * a
+	; end hl calculation block
+	; don't need to determine odd/even since always in same bank
+	lb bc, BANK(PartyStatusIconGFXOdd), 2 
+	call Request2bpp
+	pop de ; keep correct wPartyMon status
+	push de ; and then re-save it
+	farcall LoadSummaryStatusIconPartyMenuPalette
+	pop de
+	pop bc
+	ret
+
 LoadSummaryStatusIcon:
 	push de
 	xor a
@@ -153,16 +206,10 @@ LoadSummaryStatusIcon:
 	call AddNTimes
 	ld d, h
 	ld e, l
-	;ld hl, vTiles0 tile $64 ; object tile
 	ld hl, vTiles1 tile $5d
 	lb bc, BANK(SummaryStatusIconGFX), 2
 	call Request2bpp
 	farcall LoadSummaryStatusIconPalette
-	;ld hl, wOBPals1
-	;ld de, wOBPals2
-	;ld bc, 8 palettes
-	;ld a, BANK("GBC Video")
-	;call FarCopyWRAM
 	pop de
 	ret
 
@@ -185,7 +232,6 @@ LoadPlayerStatusIcon:
 LoadStatusIcons:
 	call LoadPlayerStatusIcon
 	; fallthrough
-
 LoadEnemyStatusIcon:
 	push de
 	ld de, wEnemyMonStatus

@@ -371,6 +371,52 @@ ApplyHPBarPals:
 	call FillBoxCGB
 	ret
 
+LoadSummaryStatusIconPartyMenuPalette:
+	call GetStatusConditionIndex
+	ld hl, StatusIconPals
+	ld c, a
+	ld b, 0
+	add hl, bc
+	add hl, bc
+	; we need to callculate the palette dynamically. Thus, we
+	; need to do the similar thing as in LoadSummaryStatusIconPartyMenu
+	; to put the right palette in the right location.
+	; PALETTE_SIZE = 8, PAL_COLOR_SIZE = 2
+	ld a, [wTempB] ; get pokemon party slot number from wTempB
+	ld b, a
+	ld a, PALETTE_SIZE
+	sla a ; palette 2
+	sla a ; palette 4
+	; Note: to choose palette number: 1xx=6th pal, 01x=5th pal, else 4th pal
+	bit 2, b ; check if 6th palette
+	jr z, .check_pal_5
+	add PALETTE_SIZE
+	add PALETTE_SIZE
+	jr .check_color
+.check_pal_5
+	bit 1, b ; check if 5th palette
+	jr z, .check_color
+	add PALETTE_SIZE
+.check_color
+	bit 0, b ; check for even or odd
+	jr z, .even
+	add 4 ; if odd, color 2 of palette (2 bytes per palette = 4 total)
+	jr .done
+.even
+	add 2 ; if even, color 1 of palette (2 bytes)
+.done
+	ld b, 0
+	ld c, a
+	push hl
+	ld hl, wBGPals1
+	add hl, bc ; equivalent to wBGPals1 palette X color Y (X/Y dynamically set)
+	ld d, h
+	ld e, l
+	pop hl
+	ld bc, 2
+	ld a, BANK("GBC Video")
+	jp FarCopyWRAM
+
 LoadSummaryStatusIconPalette:
 	xor a
 	ld de, wTempMonStatus
