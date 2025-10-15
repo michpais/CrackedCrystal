@@ -4788,6 +4788,8 @@ UpdatePlayerHUD::
 	call DrawPlayerHUD
 	call UpdatePlayerHPPal
 	call CheckDanger
+	; calling FinishBattleAnim not needed here for some reason- works properly for player
+	; where it didn't work properly for UpdateEnemyHUD
 	pop bc
 	pop de
 	pop hl
@@ -4910,7 +4912,6 @@ PrintPlayerHUD:
 	; print gender
 	hlcoord 18, 8
 	ld [hl], a
-	hlcoord 11, 8
 
 	;push af ; back up gender
 	;push hl
@@ -4932,6 +4933,10 @@ UpdateEnemyHUD::
 	push bc
 	call DrawEnemyHUD
 	call UpdateEnemyHPPal
+	; even though UpdateEnemyHPPal -> call UpdateHPPal ends in FinishBattleAnim,
+	; the additional FinishBattleAnim is needed here or else the enemy PKMN's
+	; status doesn't show up until the whole HUD is remade.
+	call FinishBattleAnim
 	pop bc
 	pop de
 	pop hl
