@@ -154,10 +154,10 @@ ItemEffects:
 	dw RestoreHPEffect     ; BERRY_JUICE
 	dw NoEffect            ; SCOPE_LENS
 	dw EvoStoneEffect      ; METAL_COAT
-	dw EvoStoneEffect      ; DRAGON_FANG
+	dw NoEffect            ; DRAGON_FANG
 	dw NoEffect            ; LEFTOVERS
 	dw RestorePPEffect     ; MYSTERYBERRY
-	dw NoEffect            ; DRAGON_SCALE
+	dw EvoStoneEffect      ; DRAGON_SCALE
 	dw NoEffect            ; BERSERK_GENE
 	dw SacredAshEffect     ; SACRED_ASH
 	dw PokeBallEffect      ; HEAVY_BALL

@@ -135,7 +135,7 @@ MartGoldenrod3F2:
 	db SUN_STONE
 	db METAL_COAT
 	db KINGS_ROCK
-	db DRAGON_FANG ;get rid of after testing
+	db DRAGON_SCALE ;get rid of after testing
 	db UP_GRADE ; get rid of after testing
 	db -1 ; end
 
