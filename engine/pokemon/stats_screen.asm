@@ -418,9 +418,9 @@ StatsScreen_InitUpperHalf:
 	ld [wTextDecimalByte], a
 	ld [wCurSpecies], a
 	hlcoord 8, 0
-	ld [hl], "№"
+	ld [hl], '№'
 	inc hl
-	ld [hl], "."
+	ld [hl], '.'
 	inc hl
 	hlcoord 10, 0
 	lb bc, PRINTNUM_LEADINGZEROS | 1, 3
@@ -436,7 +436,7 @@ StatsScreen_InitUpperHalf:
 	hlcoord 18, 0
 	call .PlaceGenderChar
 	hlcoord 9, 4
-	ld a, "/"
+	ld a, '/'
 	ld [hli], a
 	ld a, [wBaseDexNo]
 	ld [wNamedObjectIndex], a
@@ -474,9 +474,9 @@ StatsScreen_InitUpperHalf:
 	farcall GetGender
 	pop hl
 	ret c
-	ld a, "♂"
+	ld a, '♂'
 	jr nz, .got_gender
-	ld a, "♀"
+	ld a, '♀'
 .got_gender
 	ld [hl], a
 	ret
@@ -512,9 +512,9 @@ StatsScreen_PlaceHorizontalDivider:
 
 StatsScreen_PlacePageSwitchArrows:
 	hlcoord 10, 6
-	ld [hl], "◀"
+	ld [hl], '◀'
 	hlcoord 19, 6
-	ld [hl], "▶"
+	ld [hl], '▶'
 	ret
 
 StatsScreen_PlaceShinyIcon:
@@ -522,7 +522,7 @@ StatsScreen_PlaceShinyIcon:
 	farcall CheckShininess
 	ret nc
 	hlcoord 19, 0
-	ld [hl], "⁂"
+	ld [hl], '⁂'
 	ret
 
 StatsScreen_LoadGFX:
@@ -602,7 +602,7 @@ LoadPinkPage:
 	and $f0
 	jr z, .NotImmuneToPkrs
 	hlcoord 19, 8
-	ld [hl], "." ; Pokérus immunity dot
+	ld [hl], '.' ; Pokérus immunity dot
 .NotImmuneToPkrs
 	hlcoord 1, 15
 	predef PrintMonTypes
@@ -1003,7 +1003,7 @@ StatsScreen_LoadTextboxSpaceGFX:
 	ldh [rVBK], a
 	ld de, TextboxSpaceGFX
 	lb bc, BANK(TextboxSpaceGFX), 1
-	ld hl, vTiles2 tile " "
+	ld hl, vTiles2 tile ' '
 	call Get2bpp
 	pop af
 	ldh [rVBK], a
