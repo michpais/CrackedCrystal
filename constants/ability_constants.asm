@@ -46,4 +46,4 @@
     const SUCTION_CUPS
     const SNIPER
     const SANDSTREAM
-NUM_ABILITIES EQU const_value - 1
+DEF NUM_ABILITIES EQU const_value - 1
