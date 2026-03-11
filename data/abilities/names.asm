@@ -1,5 +1,5 @@
 AbilityNames::
-    list_start AbilityNames
+    list_start
     li "OVERGROW"
     li "BLAZE"
     li "TORRENT"

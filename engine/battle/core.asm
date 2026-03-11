@@ -5935,7 +5935,7 @@ MoveInfoBox:
 
 	ld h, b
 	ld l, c
-	ld [hl], "/"
+	ld [hl], '/'
 
 	ld a, [wPlayerMoveStruct + MOVE_ANIM]
 	ld b, a
@@ -6036,7 +6036,7 @@ MoveInfoBox:
 
 .PrintPP:
 	hlcoord 2, 11
-	ld a, "<PP>"
+	ld a, '<PP>'
 	ld [hli], a
 	ld [hli], a
 	inc hl

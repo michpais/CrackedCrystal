@@ -730,9 +730,9 @@ LoadPinkPage:
 	cp $7f
 	jr z, .done
 	and CAUGHT_GENDER_MASK
-	ld a, "♂"
+	ld a, '♂'
 	jr z, .got_gender
-	ld a, "♀"
+	ld a, '♀'
 .got_gender
 	hlcoord 8, 10
 	ld [hl], a
