@@ -285,7 +285,7 @@ BattleAnimations::
 	dw BattleAnim_InHail
 	assert_table_length NUM_BATTLE_ANIMS + 1
 
-BattleAnim_0:
+BattleAnim_Dummy:
 BattleAnim_MirrorMove:
 	anim_ret
 
