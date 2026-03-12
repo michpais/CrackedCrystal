@@ -175,6 +175,7 @@ AI_TryItem:
 	ld b, h
 	ld c, l
 	ld hl, AI_Items
+; BUG: AI might use its base reward value as an item (see docs/bugs_and_glitches.md)
 	ld de, wEnemyTrainerItem1
 .loop
 	ld a, [hl]
@@ -724,6 +725,7 @@ EnemyUsedFullHealRed: ; unreferenced
 
 AI_HealStatus:
 ; BUG (fixed): AI use of Full Heal or Full Restore does not cure Nightmare status (see docs/bugs_and_glitches.md)
+; BUG: AI use of Full Heal or Full Restore does not cure Attack or Speed drops from burn or paralysis (see docs/bugs_and_glitches.md)
 	ld a, [wCurOTMon]
 	ld hl, wOTPartyMon1Status
 	ld bc, PARTYMON_STRUCT_LENGTH

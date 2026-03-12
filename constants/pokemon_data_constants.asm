@@ -78,7 +78,7 @@ rsreset
 DEF MON_SPECIES            rb
 DEF MON_ITEM               rb
 DEF MON_MOVES              rb NUM_MOVES
-DEF MON_ID                 rw
+DEF MON_OT_ID              rw
 DEF MON_EXP                rb 3
 DEF MON_EVS                rb NUM_STATS
 rsset MON_EVS
@@ -144,9 +144,16 @@ DEF PARTY_LENGTH EQU 6
 
 ; boxes
 DEF MONS_PER_BOX EQU 20
+DEF MONS_PER_BOX_JP EQU 30
 ; box: count, species, mons, OTs, nicknames, padding
 DEF BOX_LENGTH EQU 1 + MONS_PER_BOX + 1 + (BOXMON_STRUCT_LENGTH + NAME_LENGTH + MON_NAME_LENGTH) * MONS_PER_BOX + 2 ; $450
 DEF NUM_BOXES EQU 14
+
+rsreset
+DEF BOXLIST_SPECIES rb
+DEF BOXLIST_BOXNUM  rb
+DEF BOXLIST_INDEX   rb
+DEF BOXLIST_SIZE EQU _RS
 
 ; hall of fame
 ; hof_mon: species, id, dvs, level, nicknames
@@ -189,7 +196,7 @@ DEF NUM_ROAMMON_MAPS EQU 16 ; RoamMaps table size (see data/wild/roammon_maps.as
 ; treemon sets
 ; TreeMons indexes (see data/wild/treemons.asm)
 	const_def
-	const TREEMON_SET_CITY
+	const TREEMON_SET_NONE
 	const TREEMON_SET_CANYON
 	const TREEMON_SET_TOWN
 	const TREEMON_SET_ROUTE

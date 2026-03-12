@@ -43,7 +43,7 @@ DoNextFrameForAllSprites:
 	ld b, h
 	push hl
 	push de
-	call DoAnimFrame ; Uses a massive dw
+	call DoSpriteAnimFrame ; Uses a massive dw
 	call UpdateAnimFrame
 	pop de
 	pop hl
@@ -82,7 +82,7 @@ DoNextFrameForFirst16Sprites:
 	ld b, h
 	push hl
 	push de
-	call DoAnimFrame ; Uses a massive dw
+	call DoSpriteAnimFrame ; Uses a massive dw
 	call UpdateAnimFrame
 	pop de
 	pop hl
@@ -145,11 +145,11 @@ _InitSpriteAnimStruct::
 	inc [hl]
 .nonzero
 
-; Get row a of SpriteAnimSeqData, copy the pointer into de
+; Get row a of SpriteAnimObjects, copy the pointer into de
 	pop af
 	ld e, a
 	ld d, 0
-	ld hl, SpriteAnimSeqData
+	ld hl, SpriteAnimObjects
 	add hl, de
 	add hl, de
 	add hl, de
@@ -322,7 +322,7 @@ AddOrSubtractY:
 	push hl
 	ld a, [hl]
 	ld hl, wCurSpriteOAMFlags
-	bit OAM_Y_FLIP, [hl]
+	bit B_OAM_YFLIP, [hl]
 	jr z, .ok
 	; -8 - a
 	add 8
@@ -337,7 +337,7 @@ AddOrSubtractX:
 	push hl
 	ld a, [hl]
 	ld hl, wCurSpriteOAMFlags
-	bit OAM_X_FLIP, [hl]
+	bit B_OAM_XFLIP, [hl]
 	jr z, .ok
 	; -8 - a
 	add 8
@@ -353,10 +353,10 @@ GetSpriteOAMAttr:
 	ld b, a
 	ld a, [hl]
 	xor b
-	and PRIORITY | Y_FLIP | X_FLIP
+	and OAM_PRIO | OAM_YFLIP | OAM_XFLIP
 	ld b, a
 	ld a, [hl]
-	and ~(PRIORITY | Y_FLIP | X_FLIP)
+	and ~(OAM_PRIO | OAM_YFLIP | OAM_XFLIP)
 	or b
 	ret
 
@@ -441,7 +441,7 @@ GetSpriteAnimFrame:
 	push af
 	ld a, [hl]
 	push hl
-	and ~(Y_FLIP << 1 | X_FLIP << 1)
+	and ~(OAM_YFLIP << 1 | OAM_XFLIP << 1)
 	ld hl, SPRITEANIMSTRUCT_DURATIONOFFSET
 	add hl, bc
 	add [hl]
@@ -451,7 +451,7 @@ GetSpriteAnimFrame:
 	pop hl
 .okay
 	ld a, [hl]
-	and Y_FLIP << 1 | X_FLIP << 1 ; The << 1 is compensated in the "oamframe" macro
+	and OAM_YFLIP << 1 | OAM_XFLIP << 1 ; The << 1 is compensated in the "oamframe" macro
 	srl a
 	ld [wCurSpriteOAMFlags], a
 	pop af
@@ -530,9 +530,9 @@ UnusedLoadSpriteAnimGFX: ; unreferenced
 	pop bc
 	ret
 
-INCLUDE "data/sprite_anims/sequences.asm"
+INCLUDE "data/sprite_anims/objects.asm"
 
-INCLUDE "engine/gfx/sprite_anims.asm"
+INCLUDE "engine/sprite_anims/functions.asm"
 
 INCLUDE "data/sprite_anims/framesets.asm"
 

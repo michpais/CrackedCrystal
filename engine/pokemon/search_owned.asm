@@ -201,7 +201,7 @@ CheckOwnMon:
 ; wScriptVar should contain the species we're looking for
 
 ; outputs:
-; sets carry if monster matches species, ID, and OT name.
+; sets carry if monster matches species, Trainer ID, and OT name.
 
 	push bc
 	push hl
@@ -216,9 +216,9 @@ CheckOwnMon:
 	cp b
 	jr nz, .notfound
 
-	; check ID number
+	; check Trainer ID number
 
-	ld bc, MON_ID
+	ld bc, MON_OT_ID
 	add hl, bc
 	ld a, [wPlayerID]
 	cp [hl]
@@ -237,7 +237,7 @@ rept PLAYER_NAME_LENGTH - 2
 	ld a, [de]
 	cp [hl]
 	jr nz, .notfound
-	cp "@"
+	cp '@'
 	jr z, .found
 	inc hl
 	inc de
@@ -262,7 +262,7 @@ endr
 	ret
 
 SearchBoxAddressTable:
-	table_width 3, SearchBoxAddressTable
+	table_width 3
 for n, 1, NUM_BOXES + 1
 	dba sBox{d:n}
 endr

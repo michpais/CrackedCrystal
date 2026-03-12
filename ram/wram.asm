@@ -28,7 +28,7 @@ wCurNoteDuration:: db ; used in MusicE0 and LoadNote
 wCurMusicByte:: db
 wCurChannel:: db
 wVolume::
-; corresponds to rNR50
+; corresponds to rAUDVOL
 ; Channel control / ON-OFF / Volume (R/W)
 ;   bit 7 - Vin->SO2 ON/OFF
 ;   bit 6-4 - SO2 output level (volume) (# 0-7)
@@ -36,12 +36,12 @@ wVolume::
 ;   bit 2-0 - SO1 output level (volume) (# 0-7)
 	db
 wSoundOutput::
-; corresponds to rNR51
+; corresponds to rAUDTERM
 ; bit 4-7: ch1-4 so2 on/off
 ; bit 0-3: ch1-4 so1 on/off
 	db
 wPitchSweep::
-; corresponds to rNR10
+; corresponds to rAUD1SWEEP
 ; bit 7:   unused
 ; bit 4-6: sweep time
 ; bit 3:   sweep direction
@@ -203,7 +203,7 @@ wSpriteAnimData::
 
 wSpriteAnimDict::
 ; wSpriteAnimDict pairs keys with values
-; keys: SPRITE_ANIM_DICT_* indexes (taken from SpriteAnimSeqData)
+; keys: SPRITE_ANIM_DICT_* indexes (taken from SpriteAnimObjects)
 ; values: vTiles0 offsets
 	ds NUM_SPRITEANIMDICT_ENTRIES * 2
 
@@ -211,7 +211,7 @@ wSpriteAnimationStructs::
 ; wSpriteAnim1 - wSpriteAnim10
 for n, 1, NUM_SPRITE_ANIM_STRUCTS + 1
 ; field  0:   index
-; fields 1-3: loaded from SpriteAnimSeqData
+; fields 1-3: loaded from SpriteAnimObjects
 wSpriteAnim{d:n}:: sprite_anim_struct wSpriteAnim{d:n}
 endr
 wSpriteAnimationStructsEnd::
@@ -302,7 +302,7 @@ SECTION "Sprites", WRAM0
 
 wShadowOAM::
 ; wShadowOAMSprite00 - wShadowOAMSprite39
-for n, NUM_SPRITE_OAM_STRUCTS
+for n, OAM_COUNT
 wShadowOAMSprite{02d:n}:: sprite_oam_struct wShadowOAMSprite{02d:n}
 endr
 wShadowOAMEnd::
@@ -312,7 +312,7 @@ SECTION "Tilemap", WRAM0
 
 wTilemap::
 ; 20x18 grid of 8x8 tiles
-	ds SCREEN_WIDTH * SCREEN_HEIGHT
+	ds SCREEN_AREA
 wTilemapEnd::
 
 
@@ -518,6 +518,7 @@ wAlreadyFailed:: db
 wBattleParticipantsIncludingFainted:: db
 wBattleLowHealthAlarm:: db
 wPlayerMinimized:: db
+
 wPlayerScreens::
 ; bit
 ; 0 spikes
@@ -812,12 +813,10 @@ wSlotsEnd::
 
 NEXTU
 ; card flip
-wDeck:: ds 4 * 6
-wDeckEnd::
+wDeck:: ds CARDFLIP_DECK_SIZE
 wCardFlipNumCardsPlayed:: db
 wCardFlipFaceUpCard:: db
-wDiscardPile:: ds 4 * 6
-wDiscardPileEnd::
+wDiscardPile:: ds CARDFLIP_DECK_SIZE
 
 ; beta poker game
 wBetaPokerSGBPals:: dw
@@ -912,7 +911,7 @@ wPrinterSendByteOffset:: dw
 wPrinterSendByteCounter:: dw
 
 ; tilemap backup?
-wPrinterTilemapBuffer:: ds SCREEN_HEIGHT * SCREEN_WIDTH
+wPrinterTilemapBuffer:: ds SCREEN_AREA
 wPrinterStatus:: db
 	ds 1
 ; High nibble is for margin before the image, low nibble is for after.
@@ -926,9 +925,7 @@ SECTION UNION "Overworld Map", WRAM0
 
 ; bill's pc data
 wBillsPCData::
-wBillsPCPokemonList::
-; (species, box number, list index) x30
-	ds 3 * 30
+wBillsPCPokemonList:: ds BOXLIST_SIZE * MONS_PER_BOX_JP
 	ds 720
 wBillsPC_ScrollPosition:: db
 wBillsPC_CursorPosition:: db
@@ -1307,8 +1304,8 @@ SECTION "Video", WRAM0
 
 UNION
 ; bg map
-wBGMapBuffer::    ds 40
-wBGMapPalBuffer:: ds 40
+wBGMapBuffer::    ds 2 * SCREEN_WIDTH
+wBGMapPalBuffer:: ds 2 * SCREEN_WIDTH
 wBGMapBufferPointers:: ds 20 * 2
 wBGMapBufferEnd::
 
@@ -1476,7 +1473,7 @@ wAttrmap::
 ;		bit 4: pal # (non-cgb)
 ;		bit 3: vram bank (cgb only)
 ;		bit 2-0: pal # (cgb only)
-	ds SCREEN_WIDTH * SCREEN_HEIGHT
+	ds SCREEN_AREA
 wAttrmapEnd::
 
 UNION
@@ -1766,10 +1763,7 @@ wJoypadDisable::
 
 	ds 1
 
-wInBattleTowerBattle::
-; 0 not in BattleTower-Battle
-; 1 BattleTower-Battle
-	db
+wInBattleTowerBattle:: db
 
 	ds 1
 
@@ -1785,7 +1779,7 @@ wBGP:: db
 wOBP0:: db
 wOBP1:: db
 
-wNumHits:: db
+wBattleAfterAnim:: db
 
 	ds 1
 
@@ -2198,7 +2192,7 @@ wMartType:: db
 wMartPointerBank:: db
 wMartPointer:: dw
 wMartJumptableIndex:: db
-wBargainShopFlags:: db
+wBargainShopFlags:: dw
 
 NEXTU
 ; player movement data
@@ -2212,7 +2206,7 @@ wWalkingDirection:: db
 wFacingDirection:: db
 wWalkingX:: db
 wWalkingY:: db
-wWalkingTile:: db
+wWalkingTileCollision:: db
 	ds 6
 wPlayerTurningDirection:: db
 
@@ -2310,12 +2304,11 @@ wBattlePlayerAction::
 wSolvedUnownPuzzle::
 	db
 
-wVramState::
+wStateFlags::
 ; bit 0: overworld sprite updating on/off
-; bit 1: something to do with sprite updates
-; bit 6: something to do with text
-; bit 7: on when surf initiates
-;        flickers when climbing waterfall
+; bit 1: last 12 sprite OAM structs reserved
+; bit 6: in text state
+; bit 7: in scripted movement
 	db
 
 wBattleResult::
@@ -2813,10 +2806,11 @@ wMapStatus:: db
 wMapEventStatus:: db
 
 wScriptFlags::
+; bit 2: running script
 ; bit 3: run deferred script
 	db
 	ds 1
-wScriptFlags2::
+wEnabledPlayerEvents::
 ; bit 0: count steps
 ; bit 1: coord events
 ; bit 2: warps and connections
@@ -2883,15 +2877,15 @@ wPlayerGender::
 ;	0 male
 ;	1 female
 	db
-wd473:: ds 1
-wd474:: ds 1
-wd475:: ds 1
-wd476:: ds 1
-wd477:: ds 1
-wd478:: ds 1
+; mobile profile
+wPlayerAge:: ds 1
+wPlayerPrefecture:: ds 1
+wPlayerPostalCode:: ds 4
 wCrystalDataEnd::
 
-wd479:: ds 2
+wCrystalFlags::
+; flags related to mobile profile
+	flag_array 16
 
 wGameData::
 wPlayerData::
@@ -2961,7 +2955,7 @@ wObjectMasks:: ds NUM_OBJECTS
 
 wVariableSprites:: ds $100 - SPRITE_VARS
 
-wEnteredMapFromContinue:: db
+wMapNameSignFlags:: db
 	ds 2
 wTimeOfDayPal:: db
 	ds 4
@@ -2989,7 +2983,7 @@ wStatusFlags2::
 ; bit 2: bug contest timer
 ; bit 3: unused
 ; bit 4: bike shop call
-; bit 5: can use sweet scent
+; bit 5: unused
 ; bit 6: reached goldenrod
 ; bit 7: rockets in mahogany
 	db
@@ -3193,8 +3187,8 @@ wBikeFlags::
 wCurMapSceneScriptPointer:: dw
 
 wCurCaller:: dw
-wCurMapWarpCount:: db
-wCurMapWarpsPointer:: dw
+wCurMapWarpEventCount:: db
+wCurMapWarpEventsPointer:: dw
 wCurMapCoordEventCount:: db
 wCurMapCoordEventsPointer:: dw
 wCurMapBGEventCount:: db
@@ -3227,7 +3221,8 @@ wDailyResetTimer:: dw
 wDailyFlags1:: db
 wDailyFlags2:: db
 wSwarmFlags:: db
-	ds 2
+wUnusedDailyFlag:: db
+	ds 1
 wTimerEventStartDay:: db
 	ds 3
 
@@ -3412,7 +3407,7 @@ SECTION "Pic Animations", WRAMX
 
 wTempTilemap::
 ; 20x18 grid of 8x8 tiles
-	ds SCREEN_WIDTH * SCREEN_HEIGHT
+	ds SCREEN_AREA
 
 ; PokeAnim data
 wPokeAnimStruct::
@@ -3475,7 +3470,7 @@ w3_d742:: battle_tower_struct w3_d742
 
 NEXTU
 	ds $be
-w3_d800:: ds BG_MAP_WIDTH * SCREEN_HEIGHT
+w3_d800:: ds TILEMAP_WIDTH * SCREEN_HEIGHT
 
 NEXTU
 	ds $be
@@ -3504,9 +3499,9 @@ ENDU
 
 	ds $1c0
 
-w3_dc00:: ds SCREEN_WIDTH * SCREEN_HEIGHT
+w3_dc00:: ds SCREEN_AREA
 UNION
-w3_dd68:: ds SCREEN_WIDTH * SCREEN_HEIGHT
+w3_dd68:: ds SCREEN_AREA
 
 	ds $11c
 
@@ -3556,13 +3551,13 @@ SECTION "Battle Animations", WRAMX
 
 wBattleAnimTileDict::
 ; wBattleAnimTileDict pairs keys with values
-; keys: ANIM_GFX_* indexes (taken from anim_*gfx arguments)
+; keys: BATTLE_ANIM_GFX_* indexes (taken from anim_*gfx arguments)
 ; values: vTiles0 offsets
 	ds NUM_BATTLEANIMTILEDICT_ENTRIES * 2
 
 wActiveAnimObjects::
 ; wAnimObject1 - wAnimObject10
-for n, 1, NUM_ANIM_OBJECTS + 1
+for n, 1, NUM_BATTLE_ANIM_STRUCTS + 1
 wAnimObject{d:n}:: battle_anim_struct wAnimObject{d:n}
 endr
 
@@ -3647,8 +3642,8 @@ w5_MobileOpponentBattleLossMessage:: ds $c
 SECTION "Scratch RAM", WRAMX
 
 UNION
-wScratchTilemap:: ds BG_MAP_WIDTH * BG_MAP_HEIGHT
-wScratchAttrmap:: ds BG_MAP_WIDTH * BG_MAP_HEIGHT
+wScratchTilemap:: ds TILEMAP_AREA
+wScratchAttrmap:: ds TILEMAP_AREA
 
 NEXTU
 wDecompressScratch:: ds $80 tiles
@@ -3670,3 +3665,5 @@ SECTION "Stack RAM", WRAMX
 
 wWindowStack:: ds $1000 - 1
 wWindowStackBottom:: ds 1
+
+ENDSECTION

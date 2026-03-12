@@ -156,15 +156,15 @@ LoadMenuMonIcon:
 	dw Trade_LoadMonIconGFX             ; MONICON_TRADE
 	dw Mobile_InitAnimatedMonIcon       ; MONICON_MOBILE1
 	dw Mobile_InitPartyMenuBGPal71      ; MONICON_MOBILE2
-	dw Unused_GetPartyMenuMonIcon       ; MONICON_UNUSED
+	dw Unused_InitFastAnimatedMonIcon   ; MONICON_UNUSED
 
-Unused_GetPartyMenuMonIcon:
+Unused_InitFastAnimatedMonIcon:
 	call InitPartyMenuIcon
-	call .GetPartyMonItemGFX
+	call .SpawnItemIcon
 	call SetPartyMonIconAnimSpeed
 	ret
 
-.GetPartyMonItemGFX:
+.SpawnItemIcon:
 	push bc
 	ldh a, [hObjectStructIndex]
 	ld hl, wPartyMon1Item
@@ -180,16 +180,16 @@ Unused_GetPartyMenuMonIcon:
 	callfar ItemIsMail
 	pop bc
 	pop hl
-	jr c, .not_mail
-	ld a, $06
-	jr .got_tile
-.not_mail
-	ld a, $05
+	jr c, .mail
+	ld a, SPRITE_ANIM_FRAMESET_PARTY_MON_WITH_ITEM_FAST
+	jr .got_frameset
+.mail
+	ld a, SPRITE_ANIM_FRAMESET_PARTY_MON_WITH_MAIL_FAST
 	; fallthrough
 
 .no_item
-	ld a, $04
-.got_tile
+	ld a, SPRITE_ANIM_FRAMESET_PARTY_MON_FAST
+.got_frameset
 	ld hl, SPRITEANIMSTRUCT_FRAMESET_ID
 	add hl, bc
 	ld [hl], a
@@ -199,15 +199,15 @@ Mobile_InitAnimatedMonIcon:
 	call PartyMenu_InitAnimatedMonIcon
 	ld hl, SPRITEANIMSTRUCT_ANIM_SEQ_ID
 	add hl, bc
-	ld a, SPRITE_ANIM_SEQ_NULL
+	ld a, SPRITE_ANIM_FUNC_NULL
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_XCOORD
 	add hl, bc
-	ld a, 9 * 8
+	ld a, 9 * TILE_WIDTH
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_YCOORD
 	add hl, bc
-	ld a, 9 * 8
+	ld a, 9 * TILE_WIDTH
 	ld [hl], a
 	ret
 
@@ -216,15 +216,15 @@ Mobile_InitPartyMenuBGPal71:
 	call SetPartyMonIconAnimSpeed
 	ld hl, SPRITEANIMSTRUCT_ANIM_SEQ_ID
 	add hl, bc
-	ld a, SPRITE_ANIM_SEQ_NULL
+	ld a, SPRITE_ANIM_FUNC_NULL
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_XCOORD
 	add hl, bc
-	ld a, 3 * 8
+	ld a, 3 * TILE_WIDTH
 	ld [hl], a
 	ld hl, SPRITEANIMSTRUCT_YCOORD
 	add hl, bc
-	ld a, 12 * 8
+	ld a, 12 * TILE_WIDTH
 	ld [hl], a
 	ld a, c
 	ld [wc608], a
@@ -256,11 +256,11 @@ PartyMenu_InitAnimatedMonIcon:
 	pop hl
 	jr c, .mail
 	ld a, SPRITE_ANIM_FRAMESET_PARTY_MON_WITH_ITEM
-	jr .okay
+	jr .got_frameset
 
 .mail
 	ld a, SPRITE_ANIM_FRAMESET_PARTY_MON_WITH_MAIL
-.okay
+.got_frameset
 	ld hl, SPRITEANIMSTRUCT_FRAMESET_ID
 	add hl, bc
 	ld [hl], a
@@ -290,7 +290,7 @@ InitPartyMenuIcon:
 ; x coord
 	ld e, $10
 ; type is partymon icon
-	ld a, SPRITE_ANIM_INDEX_PARTY_MON
+	ld a, SPRITE_ANIM_OBJ_PARTY_MON
 	call _InitSpriteAnimStruct
 	pop af
 	ld hl, SPRITEANIMSTRUCT_TILE_ID
@@ -339,11 +339,11 @@ NamingScreen_InitAnimatedMonIcon:
 	xor a
 	call GetIconGFX
 	depixel 4, 4, 4, 0
-	ld a, SPRITE_ANIM_INDEX_PARTY_MON
+	ld a, SPRITE_ANIM_OBJ_PARTY_MON
 	call _InitSpriteAnimStruct
 	ld hl, SPRITEANIMSTRUCT_ANIM_SEQ_ID
 	add hl, bc
-	ld [hl], SPRITE_ANIM_SEQ_NULL
+	ld [hl], SPRITE_ANIM_FUNC_NULL
 	ret
 
 MoveList_InitAnimatedMonIcon:
@@ -355,13 +355,13 @@ MoveList_InitAnimatedMonIcon:
 	ld [wCurIcon], a
 	xor a
 	call GetIconGFX
-	ld d, 3 * 8 + 2 ; depixel 3, 4, 2, 4
-	ld e, 4 * 8 + 4
-	ld a, SPRITE_ANIM_INDEX_PARTY_MON
+	ld d, 3 * TILE_WIDTH + 2 ; depixel 3, 4, 2, 4
+	ld e, 4 * TILE_WIDTH + 4
+	ld a, SPRITE_ANIM_OBJ_PARTY_MON
 	call _InitSpriteAnimStruct
 	ld hl, SPRITEANIMSTRUCT_ANIM_SEQ_ID
 	add hl, bc
-	ld [hl], SPRITE_ANIM_SEQ_NULL
+	ld [hl], SPRITE_ANIM_FUNC_NULL
 	ret
 
 Trade_LoadMonIconGFX:
@@ -496,11 +496,11 @@ FreezeMonIcons:
 	jr z, .next
 	cp d
 	jr z, .loadwithtwo
-	ld a, SPRITE_ANIM_SEQ_NULL
+	ld a, SPRITE_ANIM_FUNC_NULL
 	jr .ok
 
 .loadwithtwo
-	ld a, SPRITE_ANIM_SEQ_PARTY_MON_SWITCH
+	ld a, SPRITE_ANIM_FUNC_PARTY_MON_SWITCH
 
 .ok
 	push hl
@@ -530,7 +530,7 @@ UnfreezeMonIcons:
 	ld b, h
 	ld hl, SPRITEANIMSTRUCT_ANIM_SEQ_ID
 	add hl, bc
-	ld [hl], SPRITE_ANIM_SEQ_PARTY_MON
+	ld [hl], SPRITE_ANIM_FUNC_PARTY_MON
 	pop hl
 .next
 	ld bc, $10
@@ -550,11 +550,11 @@ HoldSwitchmonIcon:
 	jr z, .next
 	cp d
 	jr z, .is_switchmon
-	ld a, SPRITE_ANIM_SEQ_PARTY_MON_SELECTED
+	ld a, SPRITE_ANIM_FUNC_PARTY_MON_SELECTED
 	jr .join_back
 
 .is_switchmon
-	ld a, SPRITE_ANIM_SEQ_PARTY_MON_SWITCH
+	ld a, SPRITE_ANIM_FUNC_PARTY_MON_SWITCH
 .join_back
 	push hl
 	ld c, l

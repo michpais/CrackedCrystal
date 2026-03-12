@@ -104,7 +104,7 @@ MoveMonWOMail_InsertMon_SaveGame:
 	call SaveBackupPokemonData
 	call SaveBackupChecksum
 	farcall BackupPartyMonMail
-	farcall BackupMobileEventIndex
+	farcall BackupGSBallFlag
 	farcall SaveRTC
 	call LoadBox
 	call ResumeGameLogic
@@ -161,17 +161,17 @@ AddHallOfFameEntry:
 	ld bc, wHallOfFamePokemonListEnd - wHallOfFamePokemonList + 1
 	call CopyBytes
 	call CloseSRAM
-; This vc_hook causes the Virtual Console to set [sMobileEventIndex] and [sMobileEventIndexBackup]
-; to MOBILE_EVENT_OBJECT_GS_BALL, which enables you to get the GS Ball, take it to Kurt, and
-; encounter Celebi. It assumes that sMobileEventIndex and sMobileEventIndexBackup are at their
+; This vc_hook causes the Virtual Console to set [sGSBallFlag] and [sGSBallFlagBackup]
+; to GS_BALL_AVAILABLE, which enables you to get the GS Ball, take it to Kurt, and
+; encounter Celebi. It assumes that sGSBallFlag and sGSBallFlagBackup are at their
 ; original addresses.
 	vc_hook Enable_GS_Ball_mobile_event
-	vc_assert BANK(sMobileEventIndex) == $1 && sMobileEventIndex == $be3c, \
-		"sMobileEventIndex is no longer located at 01:be3c."
-	vc_assert BANK(sMobileEventIndexBackup) == $1 && sMobileEventIndexBackup == $be44, \
-		"sMobileEventIndexBackup is no longer located at 01:be44."
-	vc_assert MOBILE_EVENT_OBJECT_GS_BALL == $0b, \
-		"MOBILE_EVENT_OBJECT_GS_BALL is no longer equal to $0b."
+	vc_assert BANK(sGSBallFlag) == $1 && sGSBallFlag == $be3c, \
+		"sGSBallFlag is no longer located at 01:be3c."
+	vc_assert BANK(sGSBallFlagBackup) == $1 && sGSBallFlagBackup == $be44, \
+		"sGSBallFlagBackup is no longer located at 01:be44."
+	vc_assert GS_BALL_AVAILABLE == $b, \
+		"GS_BALL_AVAILABLE is no longer equal to $b."
 	ret
 
 SaveGameData:
@@ -281,7 +281,7 @@ _SaveGameData:
 	call SaveBackupChecksum
 	call UpdateStackTop
 	farcall BackupPartyMonMail
-	farcall BackupMobileEventIndex
+	farcall BackupGSBallFlag
 	farcall SaveRTC
 	ld a, BANK(sBattleTowerChallengeState)
 	call OpenSRAM
@@ -451,19 +451,19 @@ Function14d6c: ; unreferenced
 	ret
 
 Function14d83: ; unreferenced
-	ld a, BANK(s4_a60c) ; aka BANK(s4_a60d) ; MBC30 bank used by JP Crystal; inaccessible by MBC3
+	ld a, BANK(s4_a60c) ; MBC30 bank used by JP Crystal; inaccessible by MBC3
 	call OpenSRAM
 	xor a
 	ld [s4_a60c], a ; address of MBC30 bank
-	ld [s4_a60d], a ; address of MBC30 bank
+	ld [s4_a60c+1], a ; address of MBC30 bank
 	call CloseSRAM
 	ret
 
-Function14d93: ; unreferenced
-	ld a, BANK(s7_a000) ; MBC30 bank used by JP Crystal; inaccessible by MBC3
+DisableMobileStadium: ; unreferenced
+	ld a, BANK(sMobileStadiumFlag)
 	call OpenSRAM
 	xor a
-	ld [s7_a000], a ; address of MBC30 bank
+	ld [sMobileStadiumFlag], a
 	call CloseSRAM
 	ret
 
@@ -600,7 +600,7 @@ TryLoadSaveFile:
 	call LoadPokemonData
 	call LoadBox
 	farcall RestorePartyMonMail
-	farcall RestoreMobileEventIndex
+	farcall RestoreGSBallFlag
 	farcall RestoreMysteryGift
 	call ValidateBackupSave
 	call SaveBackupOptions
@@ -617,7 +617,7 @@ TryLoadSaveFile:
 	call LoadBackupPokemonData
 	call LoadBox
 	farcall RestorePartyMonMail
-	farcall RestoreMobileEventIndex
+	farcall RestoreGSBallFlag
 	farcall RestoreMysteryGift
 	call ValidateSave
 	call SaveOptions
@@ -840,15 +840,15 @@ _SaveData:
 	call CopyBytes
 
 	; This block originally had some mobile functionality, but since we're still in
-	; BANK(sCrystalData), it instead overwrites the sixteen wEventFlags starting at 1:s4_a60e with
-	; garbage from wd479. This isn't an issue, since ErasePreviousSave is followed by a regular
+	; BANK(sCrystalData), it instead overwrites the sixteen wEventFlags starting at 1:sCrystalFlags with
+	; garbage from wCrystalFlags. This isn't an issue, since ErasePreviousSave is followed by a regular
 	; save that unwrites the garbage.
 
-	ld hl, wd479
+	ld hl, wCrystalFlags
 	ld a, [hli]
-	ld [s4_a60e + 0], a
+	ld [sCrystalFlags + 0], a
 	ld a, [hli]
-	ld [s4_a60e + 1], a
+	ld [sCrystalFlags + 1], a
 
 	jp CloseSRAM
 
@@ -861,12 +861,12 @@ _LoadData:
 	call CopyBytes
 
 	; This block originally had some mobile functionality to mirror _SaveData above, but instead it
-	; (harmlessly) writes the aforementioned wEventFlags to the unused wd479.
+	; (harmlessly) writes the aforementioned wEventFlags to the unused wCrystalFlags.
 
-	ld hl, wd479
-	ld a, [s4_a60e + 0]
+	ld hl, wCrystalFlags
+	ld a, [sCrystalFlags + 0]
 	ld [hli], a
-	ld a, [s4_a60e + 1]
+	ld a, [sCrystalFlags + 1]
 	ld [hli], a
 
 	jp CloseSRAM
@@ -1077,7 +1077,7 @@ EraseBoxes:
 	ret
 
 BoxAddresses:
-	table_width 5, BoxAddresses
+	table_width 5
 for n, 1, NUM_BOXES + 1
 	db BANK(sBox{d:n}) ; aka BANK(sBox{d:n}End)
 	dw sBox{d:n}, sBox{d:n}End

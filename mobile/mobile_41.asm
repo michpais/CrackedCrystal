@@ -512,27 +512,27 @@ CalculateTrainerRankingsChecksum:
 	pop bc
 	ret
 
-BackupMobileEventIndex:
-	ld a, BANK(sMobileEventIndex)
+BackupGSBallFlag:
+	ld a, BANK(sGSBallFlag)
 	call OpenSRAM
-	ld a, [sMobileEventIndex]
+	ld a, [sGSBallFlag]
 	push af
-	ld a, BANK(sMobileEventIndexBackup)
+	ld a, BANK(sGSBallFlagBackup)
 	call OpenSRAM
 	pop af
-	ld [sMobileEventIndexBackup], a
+	ld [sGSBallFlagBackup], a
 	call CloseSRAM
 	ret
 
-RestoreMobileEventIndex:
-	ld a, BANK(sMobileEventIndexBackup)
+RestoreGSBallFlag:
+	ld a, BANK(sGSBallFlagBackup)
 	call OpenSRAM
-	ld a, [sMobileEventIndexBackup]
+	ld a, [sGSBallFlagBackup]
 	push af
-	ld a, BANK(sMobileEventIndex)
+	ld a, BANK(sGSBallFlag)
 	call OpenSRAM
 	pop af
-	ld [sMobileEventIndex], a
+	ld [sGSBallFlag], a
 	call CloseSRAM
 	ret
 
@@ -547,11 +547,11 @@ VerifyTrainerRankingsChecksum: ; unreferenced
 	cp [hl]
 	ret
 
-DeleteMobileEventIndex:
-	ld a, BANK(sMobileEventIndex)
+ClearGSBallFlag:
+	ld a, BANK(sGSBallFlag)
 	call OpenSRAM
 	xor a
-	ld [sMobileEventIndex], a
+	ld [sGSBallFlag], a
 	call CloseSRAM
 	ret
 
@@ -684,13 +684,13 @@ endr
 	jr .done
 
 .create_digit
-	ld a, "0"
+	ld a, '0'
 	add c
 	ld [hl], a
 
 .done
 	call .Function1062ff
-	ld a, "0"
+	ld a, '0'
 	add b
 	ld [hli], a
 	pop de
@@ -698,21 +698,21 @@ endr
 	ret
 
 ._9
-	dd 1000000000
+	bigdd 10**9
 ._8
-	dd 100000000
+	bigdd 10**8
 ._7
-	dd 10000000
+	bigdd 10**7
 ._6
-	dd 1000000
+	bigdd 10**6
 ._5
-	dd 100000
+	bigdd 10**5
 ._4
-	dd 10000
+	bigdd 10**4
 ._3
-	dd 1000
+	bigdd 10**3
 ._2
-	dd 100
+	bigdd 10**2
 
 .Function1062b2:
 	ld c, $0
@@ -789,53 +789,55 @@ endr
 
 ; functions related to the cable club and various NPC scripts referencing communications
 
-Mobile_DummyReturnFalse:
+CheckMobileAdapterStatusSpecial: ; unused
+	; this routine calls CheckMobileAdapterStatus
+	; in the Japanese version
 	xor a
 	ld [wScriptVar], a
 	ret
 
-Stubbed_Function106314:
+SetMobileAdapterStatus: ; unused
 	ret
-	ld a, BANK(s4_b000)
+	; the instructions below are the
+	; original Japanese version code
+	ld a, BANK(sMobileAdapterStatus)
 	call OpenSRAM
 	ld a, c
 	cpl
-	ld [s4_b000], a
+	ld [sMobileAdapterStatus], a
 	call CloseSRAM
-	ld a, BANK(s7_a800)
+	ld a, BANK(sMobileAdapterStatus2)
 	call OpenSRAM
 	ld a, c
-	ld [s7_a800], a
+	ld [sMobileAdapterStatus2], a
 	call CloseSRAM
 	ret
 
-Mobile_AlwaysReturnNotCarry:
+CheckMobileAdapterStatus: ; unused
 	or a
 	ret
-
-Function106331: ; unreferenced
-; called by Mobile_DummyReturnFalse in JP Crystal
-	; check ~[s4_b000] == [s7_a800]
-	ld a, BANK(s4_b000)
+	; the instructions below are the
+	; original Japanese version code
+	ld a, BANK(sMobileAdapterStatus)
 	call OpenSRAM
-	ld a, [s4_b000]
+	ld a, [sMobileAdapterStatus]
 	cpl
 	ld b, a
 	call CloseSRAM
-	ld a, BANK(s7_a800)
+	ld a, BANK(sMobileAdapterStatus2)
 	call OpenSRAM
-	ld a, [s7_a800]
+	ld a, [sMobileAdapterStatus2]
 	ld c, a
 	call CloseSRAM
 	ld a, c
 	cp b
 	jr nz, .nope
 
-	; check [s7_a800] != 0
+	; check [sMobileAdapterStatus2] != 0
 	and a
 	jr z, .nope
 
-	; check !([s7_a800] & %01110000)
+	; check !([sMobileAdapterStatus2] & %01110000)
 	and %10001111
 	cp c
 	jr nz, .nope
@@ -851,7 +853,7 @@ Function106331: ; unreferenced
 
 Function10635c:
 	ld a, [wMobileCommsJumptableIndex]
-	bit 7, a
+	bit JUMPTABLE_EXIT_F, a
 	ret nz
 	ld a, [wMobileCommsJumptableIndex]
 	ld hl, .Jumptable
@@ -891,7 +893,7 @@ Function106392:
 	ret
 
 .asm_1063a2
-	call Mobile_AlwaysReturnNotCarry
+	call CheckMobileAdapterStatus
 	ld a, c
 	and a
 	jr nz, .asm_1063b4
@@ -966,14 +968,14 @@ Function106403:
 	or c
 	inc a
 	ld c, a
-	call Stubbed_Function106314
+	call SetMobileAdapterStatus
 	ld a, [wMobileCommsJumptableIndex]
 	inc a
 	ld [wMobileCommsJumptableIndex], a
 	ret
 
 .asm_106426
-	call Mobile_AlwaysReturnNotCarry
+	call CheckMobileAdapterStatus
 	ld a, c
 	and a
 	jr z, .asm_106435
@@ -984,7 +986,7 @@ Function106403:
 
 .asm_106435
 	ld c, $0
-	call Stubbed_Function106314
+	call SetMobileAdapterStatus
 	ld a, [wMobileCommsJumptableIndex]
 	inc a
 	ld [wMobileCommsJumptableIndex], a
@@ -1002,7 +1004,7 @@ Function106442:
 
 Function106453:
 	ld a, [wMobileCommsJumptableIndex]
-	set 7, a
+	set JUMPTABLE_EXIT_F, a
 	ld [wMobileCommsJumptableIndex], a
 	nop
 	ld a, $4
@@ -1015,15 +1017,15 @@ Stubbed_Function106462:
 
 Function106464::
 	ld de, FontsExtra_SolidBlackGFX
-	ld hl, vTiles2 tile "■" ; $60
+	ld hl, vTiles2 tile '■' ; $60
 	lb bc, BANK(FontsExtra_SolidBlackGFX), 1
 	call Get2bpp
 	ld de, FontsExtra2_UpArrowGFX
-	ld hl, vTiles2 tile "▲" ; $61
+	ld hl, vTiles2 tile '▲' ; $61
 	lb bc, BANK(FontsExtra2_UpArrowGFX), 1
 	call Get2bpp
 	ld de, MobileDialingFrameGFX
-	ld hl, vTiles2 tile "☎" ; $62
+	ld hl, vTiles2 tile '☎' ; $62
 	ld c, 9
 	ld b, BANK(MobileDialingFrameGFX)
 	call Get2bpp
@@ -1037,16 +1039,16 @@ Function106464::
 Function10649b: ; unreferenced
 	ld a, [wTextboxFrame]
 	maskbits NUM_FRAMES
-	ld bc, 6 * LEN_1BPP_TILE
+	ld bc, TEXTBOX_FRAME_TILES * TILE_1BPP_SIZE
 	ld hl, Frames
 	call AddNTimes
 	ld d, h
 	ld e, l
-	ld hl, vTiles2 tile "┌" ; $79
-	ld c, 6 ; "┌" to "┘"
+	ld hl, vTiles2 tile '┌' ; $79
+	ld c, TEXTBOX_FRAME_TILES ; '┌' to '┘'
 	ld b, BANK(Frames)
 	call Function1064c3
-	ld hl, vTiles2 tile " " ; $7f
+	ld hl, vTiles2 tile ' ' ; $7f
 	ld de, TextboxSpaceGFX
 	ld c, 1
 	ld b, BANK(TextboxSpaceGFX)
@@ -1054,10 +1056,10 @@ Function10649b: ; unreferenced
 	ret
 
 Function1064c3:
-	ldh a, [rSVBK]
+	ldh a, [rWBK]
 	push af
 	ld a, $6
-	ldh [rSVBK], a
+	ldh [rWBK], a
 	push bc
 	push hl
 	ld hl, Function3f88
@@ -1066,14 +1068,14 @@ Function1064c3:
 	pop hl
 	pop bc
 	pop af
-	ldh [rSVBK], a
+	ldh [rWBK], a
 	jr asm_1064ed
 
 Function1064d8: ; unreferenced
-	ldh a, [rSVBK]
+	ldh a, [rWBK]
 	push af
 	ld a, $6
-	ldh [rSVBK], a
+	ldh [rWBK], a
 	push bc
 	push hl
 	ld hl, Function3f9f
@@ -1082,16 +1084,16 @@ Function1064d8: ; unreferenced
 	pop hl
 	pop bc
 	pop af
-	ldh [rSVBK], a
+	ldh [rWBK], a
 	jr asm_1064ed
 
 asm_1064ed:
 	ld de, wDecompressScratch
 	ld b, $0
-	ldh a, [rSVBK]
+	ldh a, [rWBK]
 	push af
 	ld a, $6
-	ldh [rSVBK], a
+	ldh [rWBK], a
 	ldh a, [rVBK]
 	push af
 	ld a, $1
@@ -1100,7 +1102,7 @@ asm_1064ed:
 	pop af
 	ldh [rVBK], a
 	pop af
-	ldh [rSVBK], a
+	ldh [rWBK], a
 	ret
 
 Function10650a: ; unreferenced

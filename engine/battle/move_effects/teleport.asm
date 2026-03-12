@@ -1,6 +1,6 @@
 BattleCommand_Teleport:
 	ld a, [wBattleType]
-	cp BATTLETYPE_SHINY
+	cp BATTLETYPE_FORCESHINY
 	jr z, .failed
 	cp BATTLETYPE_TRAP
 	jr z, .failed
@@ -79,7 +79,7 @@ BattleCommand_Teleport:
 .run_away
 	call UpdateBattleMonInParty
 	xor a
-	ld [wNumHits], a
+	ld [wBattleAfterAnim], a
 	inc a
 	ld [wForcedSwitch], a
 	ld [wBattleAnimParam], a
