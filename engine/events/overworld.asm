@@ -509,6 +509,7 @@ SurfFromMenuScript:
 
 UsedSurfScript:
 ; BUG: Surfing directly across a map connection does not load the new map (see docs/bugs_and_glitches.md)
+; 	   BUG is only applicable if we edit the map to have this be possible.
 	writetext UsedSurfText ; "used SURF!"
 	waitbutton
 	closetext

@@ -1719,7 +1719,7 @@ AI_Smart_Thief:
 	ret
 
 ;AI_Smart_Conversion2:
-;; BUG: "Smart" AI discourages Conversion2 after the first turn (see docs/bugs_and_glitches.md)
+;; BUG (NA): "Smart" AI discourages Conversion2 after the first turn (see docs/bugs_and_glitches.md)
 ;	ld a, [wLastPlayerMove]
 ;	and a
 ;	jr nz, .discourage
@@ -3180,10 +3180,10 @@ AI_Cautious:
 	pop hl
 	jr nc, .loop
 
-; BUG: "Cautious" AI may fail to discourage residual moves (see docs/bugs_and_glitches.md)
+; BUG (fixed): "Cautious" AI may fail to discourage residual moves (see docs/bugs_and_glitches.md)
 	call Random
 	cp 90 percent + 1
-	ret nc
+	jr nc, .loop
 
 	inc [hl]
 	jr .loop

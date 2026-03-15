@@ -216,11 +216,11 @@ PokeBallEffect:
 	jp z, Ball_BoxIsFullMessage
 
 .room_in_party
-; BUG: Using a Park Ball in non-Contest battles has a corrupt animation (see docs/bugs_and_glitches.md)
+; BUG (fixed): Using a Park Ball in non-Contest battles has a corrupt animation (see docs/bugs_and_glitches.md)
 	xor a
 	ld [wWildMon], a
-	ld a, [wCurItem]
-	cp PARK_BALL
+	ld a, [wBattleType]
+	cp BATTLETYPE_CONTEST
 	call nz, ReturnToBattle_UseBall
 
 	ld hl, wOptions
@@ -297,7 +297,16 @@ PokeBallEffect:
 	srl b
 	rr c
 
-	; BUG: Catch rate formula breaks for Pokémon with max HP > 341 (see docs/bugs_and_glitches.md)
+	; BUG (fixed): Catch rate formula breaks for Pokémon with max HP > 341 (see docs/bugs_and_glitches.md)
+	; Divide by 2 again if there's still something in the high byte
+	ld a, d
+	and a
+	jr z, .check_cur_low
+	srl d
+	rr e
+	srl b
+	rr c
+.check_cur_low
 	ld a, c
 	and a
 	jr nz, .okay_1
@@ -912,9 +921,8 @@ MoonBallMultiplier:
 	pop bc
 	ret nz
 
-; BUG: Moon Ball does not boost catch rate (see docs/bugs_and_glitches.md)
-	inc hl
-	inc hl
+; BUG (fixed): Moon Ball does not boost catch rate (see docs/bugs_and_glitches.md)
+; BUG: Note that this fix only accounts for Pokémon that evolve via Moon Stone as their first evolution method
 	inc hl
 
 	push bc
