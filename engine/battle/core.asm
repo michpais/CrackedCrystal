@@ -271,6 +271,7 @@ BattleTurn:
 	jp .loop
 
 .quit
+	farcall RunPostBattleAbilities
 	ret
 
 Stubbed_Increments5_a89a:
@@ -2854,7 +2855,6 @@ UpdateFaintedPlayerMon:
 	ld [wBattleResult], a
 	ld a, [wWhichMonFaintedFirst]
 	and a
-	ret z
 	; code was probably dummied out here
 	ret
 
@@ -2924,6 +2924,7 @@ ForcePlayerMonChoice:
 
 .send_out_pokemon
 	call ClearSprites
+	farcall RunSwitchAbilities
 	ld a, [wCurBattleMon]
 	ld [wLastPlayerMon], a
 	ld a, [wCurPartyMon]
@@ -2953,6 +2954,7 @@ ForcePlayerMonChoice:
 	ret
 
 PlayerPartyMonEntrance:
+	farcall RunSwitchAbilities
 	ld a, [wCurBattleMon]
 	ld [wLastPlayerMon], a
 	ld a, [wCurPartyMon]
@@ -3288,6 +3290,7 @@ SlideBattlePicOut:
 
 ForceEnemySwitch:
 	call ResetEnemyBattleVars
+	farcall RunSwitchAbilities
 	ld a, [wEnemySwitchMonIndex]
 	dec a
 	ld b, a
@@ -3305,6 +3308,7 @@ EnemySwitch:
 	jr nc, EnemySwitch_SetMode
 	; Shift Mode
 	call ResetEnemyBattleVars
+	farcall RunSwitchAbilities
 	call CheckWhetherSwitchmonIsPredetermined
 	jr c, .skip
 	call FindMonInOTPartyToSwitchIntoBattle
@@ -3330,6 +3334,7 @@ EnemySwitch:
 
 EnemySwitch_SetMode:
 	call ResetEnemyBattleVars
+	farcall RunSwitchAbilities
 	call CheckWhetherSwitchmonIsPredetermined
 	jr c, .skip
 	call FindMonInOTPartyToSwitchIntoBattle
@@ -3674,6 +3679,7 @@ OfferSwitch:
 	call SetUpBattlePartyMenu
 	call PickSwitchMonInBattle
 	jr c, .canceled_switch
+	farcall RunSwitchAbilities
 	ld a, [wCurBattleMon]
 	ld [wLastPlayerMon], a
 	ld a, [wCurPartyMon]
@@ -4183,8 +4189,9 @@ InitEnemyMon:
 	ld [wCurOTMon], a
 	ret
 
-SwitchPlayerMon:
+SwitchPlayerMon: ; only run during forceswitch right now
 	call ClearSprites
+	farcall RunSwitchAbilities
 	ld a, [wCurBattleMon]
 	ld [wLastPlayerMon], a
 	ld a, [wCurPartyMon]
@@ -5400,6 +5407,7 @@ TryPlayerSwitch:
 .try_switch
 	call CheckIfCurPartyMonIsFitToFight
 	jp z, BattleMenuPKMN_Loop
+	farcall RunSwitchAbilities
 	ld a, [wCurBattleMon]
 	ld [wLastPlayerMon], a
 	ld a, BATTLEPLAYERACTION_SWITCH

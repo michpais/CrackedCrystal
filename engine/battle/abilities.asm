@@ -71,7 +71,7 @@ HealStatusAbility:
 	ret z ; not afflicted/wrong status
 ;	call DisableAnimations
 ;	call ShowAbilityActivation
-	farcall AbilityRecoveryAnim
+;	farcall AbilityRecoveryAnim
 	ld a, BATTLE_VARS_STATUS
 	call GetBattleVarAddr
 	xor a
@@ -120,7 +120,7 @@ EndturnAbilitiesA:
 	; fallthrough
 EndturnAbilities:
 	push hl
-	farcall HasUserFainted
+	call HasUserFainted
 	pop hl
 	ret z
 ;	call UserAbilityJumptable
@@ -136,11 +136,62 @@ ShedSkinAbility:
 	call BattleRandom
 	cp 1 + (30 percent)
 	ret nc
-	; fallthrough
+	jr HealAllStatusAbility
+
 NaturalCureAbility:
+	call HasUserFainted ; returns z if fainted
+	ret z
+	; fallthrough
 HealAllStatusAbility:
 	ld a, ALL_STATUS
 	jr HealStatusAbility
+
+RunSwitchAbilities:
+; abilities that activate when you switch out
+	call GetUserAbility
+	cp NATURAL_CURE
+    jr z, NaturalCureAbility
+	ret
+
+RunPostBattleAbilities::
+; Checks party for potentially finding items (Pickup) or curing status (Natural Cure)
+	; Ensure that ability slideouts appear for the correct side for Pickup.
+	call SetPlayerTurn
+	ld a, [wPartyCount]
+	jr .first_pass
+.loop
+	ld a, [wCurPartyMon]
+.first_pass
+	dec a
+	and a ;cp $ff
+	ret z
+
+	ld [wCurPartyMon], a
+
+	ld a, MON_SPECIES
+	call GetPartyParamLocation
+	ld a, [hl]
+    cp EGG
+    jr z, .loop
+
+	ld a, MON_ABILITY
+    call GetPartyParamLocation
+	ld a, [hl]
+	cp NATURAL_CURE
+	jr z, .natural_cure
+;	;cp PICKUP
+;	;call z, .Pickup
+	jr .loop
+
+.natural_cure
+	; Heal status
+	ld a, MON_STATUS
+	call GetPartyParamLocation
+	xor a
+	ld [hl], a
+	jr .loop
+;
+;INCLUDE "engine/battle/ability_gfx.asm"
 
 ; Lasts 5 turns consistent with Generation VI.
 ;DrizzleAbility: ;may be added later
@@ -306,7 +357,7 @@ TargetContactAbilities:
 	dbw -1, -1
 
 CuteCharmAbility:
-	farcall HasUserFainted
+	call HasUserFainted
 	ret z
 
 	; Only works if opponent isn't already attracted
@@ -665,13 +716,6 @@ EnemyThickFatAbility:
 	ln a, 1, 2 ; x0.5
 	jmp MultiplyAndDivide
 
-;RunSwitchAbilities:
-;; abilities that activate when you switch out
-;	call GetTrueUserAbility
-;	cp NATURAL_CURE
-;    jr z, NaturalCureAbility
-;	ret nz
-;
 ;DisableAnimations:
 ;	ld a, [wAnimationsDisabled]
 ;	and a
@@ -709,46 +753,6 @@ EnemyThickFatAbility:
 ;
 ;	jmp PopBCDEHL
 ;
-;RunPostBattleAbilities::
-;; Checks party for potentially finding items (Pickup) or curing status (Natural Cure)
-;	; Ensure that ability slideouts appear for the correct side for Pickup.
-;	call SetPlayerTurn
-;	ld a, [wPartyCount]
-;	jr .first_pass
-;.loop
-;	ld a, [wCurPartyMon]
-;.first_pass
-;	dec a
-;	cp $ff
-;	ret z
-;
-;	ld [wCurPartyMon], a
-;
-;	ld a, MON_SPECIES
-;	call GetPartyParamLocation
-;	ld c, [hl]
-;	ld a, c
-;    cp EGG
-;    jr z, .loop
-;
-;	ld a, MON_ABILITY
-;    call GetPartyParamLocation
-;	ld a, [hl]
-;	cp NATURAL_CURE
-;	jr z, .natural_cure
-;	;cp PICKUP
-;	;call z, .Pickup
-;	jr .loop
-;
-;.natural_cure
-;	; Heal status
-;	ld a, MON_STATUS
-;	call GetPartyParamLocation
-;	xor a
-;	ld [hl], a
-;	jr .loop
-;
-;INCLUDE "engine/battle/ability_gfx.asm"
 
 CanPoisonTarget:
 	;ld a, b
