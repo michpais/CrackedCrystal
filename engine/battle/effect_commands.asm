@@ -5375,27 +5375,33 @@ SetBattleDraw:
 BattleCommand_ForceSwitch:
 	ld a, [wBattleType]
 	cp BATTLETYPE_FORCESHINY
-	jp z, .fail
+	jp z, .fail_battletype_switch
 	cp BATTLETYPE_TRAP
-	jp z, .fail
+	jp z, .fail_battletype_switch
 	cp BATTLETYPE_CELEBI
-	jp z, .fail
+	jp z, .fail_battletype_switch
 	cp BATTLETYPE_SUICUNE
+	jp z, .fail_battletype_switch
+	call GetOpponentAbility
+	ld hl, SuctionCupsAnchoredText
+	cp SUCTION_CUPS
+	ld a, ATKFAIL_CUSTOM
 	jp z, .fail
+	ld a, [wAttackMissed]
+	and a
+	jp nz, .fail
 	ldh a, [hBattleTurn]
 	and a
 	jp nz, .force_player_switch
-	ld a, [wAttackMissed]
-	and a
-	jr nz, .missed
-	ld a, [wBattleMode]
+	ld a, [wBattleMode] ; 1=wild, 2=trainer
 	dec a
 	jr nz, .trainer
 	ld a, [wCurPartyLevel]
 	ld b, a
 	ld a, [wBattleMonLevel]
 	cp b
-	jr nc, .wild_force_flee
+	jr nc, .wild_force_flee ; if wild PKMN is higher level, the move fails
+	; calculate flee chance based on level difference
 	add b
 	ld c, a
 	inc c
@@ -5407,7 +5413,7 @@ BattleCommand_ForceSwitch:
 	srl b
 	cp b
 	jr nc, .wild_force_flee
-.missed
+	; failed
 	jp .fail
 
 .wild_force_flee
@@ -5422,10 +5428,10 @@ BattleCommand_ForceSwitch:
 
 .trainer
 	call FindAliveEnemyMons
-	jr c, .switch_fail
+	jp c, .fail_battletype_switch
 	ld a, [wEnemyGoesFirst]
 	and a
-	jr z, .switch_fail
+	jp z, .fail_battletype_switch
 	call UpdateEnemyMonInParty
 	ld a, $1
 	ld [wBattleAnimParam], a
@@ -5471,14 +5477,7 @@ BattleCommand_ForceSwitch:
 	farcall RunActivationAbilitiesInner
 	ret
 
-.switch_fail
-	jp .fail
-
 .force_player_switch
-	ld a, [wAttackMissed]
-	and a
-	jr nz, .player_miss
-
 	ld a, [wBattleMode]
 	dec a
 	jr nz, .vs_trainer
@@ -5502,9 +5501,6 @@ BattleCommand_ForceSwitch:
 	cp b
 	jr nc, .wild_succeed_playeristarget
 
-.player_miss
-	jr .fail
-
 .wild_succeed_playeristarget
 	call UpdateBattleMonInParty
 	xor a
@@ -5517,11 +5513,11 @@ BattleCommand_ForceSwitch:
 
 .vs_trainer
 	call CheckPlayerHasMonToSwitchTo
-	jr c, .fail
+	jr c, .fail_battletype_switch
 
 	ld a, [wEnemyGoesFirst]
 	cp $1
-	jr z, .switch_fail
+	jr z, .fail_battletype_switch
 
 	call UpdateBattleMonInParty
 	ld a, $1
@@ -5570,11 +5566,11 @@ BattleCommand_ForceSwitch:
 	farcall RunActivationAbilitiesInner
 	ret
 
+.fail_battletype_switch
+	ld a, ATKFAIL_GENERIC
 .fail
-	call BattleCommand_LowerSub
-	call BattleCommand_MoveDelay
-	call BattleCommand_RaiseSub
-	jp PrintButItFailed
+	ld [wAttackMissed], a
+	jp FailText_CheckOpponentProtect
 
 .succeed
 	push af
@@ -5587,10 +5583,11 @@ BattleCommand_ForceSwitch:
 	pop af
 
 	ld hl, FledInFearText
-	cp ROAR
-	jr z, .do_text
-	ld hl, BlownAwayText
-.do_text
+; remove comments below if implement Whirlwind again
+;	cp ROAR
+;	jr z, .do_text
+;	ld hl, BlownAwayText
+;.do_text
 	jp StdBattleTextbox
 
 CheckPlayerHasMonToSwitchTo:
