@@ -983,6 +983,14 @@ FirePoweredUpText:
 	cont "were powered up!"
 	prompt
 
+SuctionCupsResistText:
+	text "<TARGET>"
+	line "anchored itself in"
+
+	para "place with its"
+	line "SUCTION CUPS!"
+	prompt
+
 BecameHealthyText:
 	text "<USER>"
 	line "cured itself"
