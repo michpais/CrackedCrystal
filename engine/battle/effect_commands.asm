@@ -5356,7 +5356,7 @@ BattleCommand_ForceSwitch:
 	cp BATTLETYPE_SUICUNE
 	jp z, .fail_battletype_switch
 	call GetOpponentAbility
-	ld hl, SuctionCupsResistText
+	ld hl, SuctionCupsAnchoredText
 	cp SUCTION_CUPS
 	ld a, ATKFAIL_CUSTOM
 	jp z, .fail

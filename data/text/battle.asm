@@ -983,7 +983,7 @@ FirePoweredUpText:
 	cont "were powered up!"
 	prompt
 
-SuctionCupsResistText:
+SuctionCupsAnchoredText:
 	text "<TARGET>"
 	line "anchored itself in"
 
