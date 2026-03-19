@@ -11,7 +11,7 @@
 	db GENDER_UNKNOWN ; gender ratio
 	db 120 ; step cycles to hatch
 	INCBIN "gfx/pokemon/mew/front.dimensions"
-	db SYNCHRONIZE
+	db SYNCHRONIZE, SYNCHRONIZE
 	db GROWTH_MEDIUM_SLOW ; growth rate
 	dn EGG_NONE, EGG_NONE ; egg groups
 

@@ -11,7 +11,7 @@
 	db GENDER_F100 ; gender ratio
 	db 20 ; step cycles to hatch
 	INCBIN "gfx/pokemon/nidorina/front.dimensions"
-	db POISON_POINT
+	db POISON_POINT, POISON_POINT
 	db GROWTH_MEDIUM_SLOW ; growth rate
 	dn EGG_NONE, EGG_NONE ; egg groups
 

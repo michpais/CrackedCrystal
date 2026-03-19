@@ -11,7 +11,7 @@
 	db GENDER_F100 ; gender ratio
 	db 40 ; step cycles to hatch
 	INCBIN "gfx/pokemon/chansey/front.dimensions"
-	db SERENE_GRACE
+	db SERENE_GRACE, NATURAL_CURE
 	db GROWTH_FAST ; growth rate
 	dn EGG_FAIRY, EGG_FAIRY ; egg groups
 

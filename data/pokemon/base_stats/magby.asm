@@ -11,7 +11,7 @@
 	db GENDER_F25 ; gender ratio
 	db 25 ; step cycles to hatch
 	INCBIN "gfx/pokemon/magby/front.dimensions"
-	db FLAME_BODY
+	db FLAME_BODY, FLAME_BODY
 	db GROWTH_MEDIUM_FAST ; growth rate
 	dn EGG_NONE, EGG_NONE ; egg groups
 

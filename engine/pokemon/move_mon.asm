@@ -12,10 +12,10 @@ TryAddMonToParty:
 .getpartylocation
 	; Do we have room for it?
 	ld a, [de]
-	inc a
-	cp PARTY_LENGTH + 1
+	cp PARTY_LENGTH
 	ret nc
 	; Increase the party count
+	inc a
 	ld [de], a
 	ld a, [de] ; Why are we doing this?
 	ldh [hMoveMon], a ; HRAM backup
@@ -167,18 +167,38 @@ endr
 
 	; Initialize stat experience.
 	xor a
-	ld b, MON_ABILITY - MON_EVS
+	ld b, MON_NATURE - MON_EVS
 .loop
 	ld [de], a
 	inc de
 	dec b
 	jr nz, .loop
 
-	; Initialize ability.
-	ld a, [wCurPartySpecies]
-	ld [wCurSpecies], a
-	call GetBaseData
-	ld a, [wBaseAbility]
+	; Initialize Nature (will need to implement this later), always 0 now
+	ld [de], a
+	inc de
+
+	; Initialize ability if not a wild pokemon or trainer.
+	ld a, [wBattleMode]
+	and a
+	jr z, .randomlygenerateability
+	ld a, [wEnemyAbility]
+	jr .got_ability
+.randomlygenerateability
+	call Random
+	and $1
+	jr z, .ability_2
+	; load ability 1
+	ld a, [wBaseAbility1]
+	jr .got_ability
+.ability_2
+	; load ability 2
+	ld a, [wBaseAbility2]
+.got_ability
+	;ld a, [wCurPartySpecies]
+	;ld [wCurSpecies], a
+	;call GetBaseData
+	;ld a, [wBaseAbility]
 	ld [de], a
 	inc de
 

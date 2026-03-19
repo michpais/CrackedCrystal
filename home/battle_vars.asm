@@ -84,8 +84,8 @@ BattleVarPairs:
 .Substatus4Opp:  db ENEMY_SUBSTATUS_4,     PLAYER_SUBSTATUS_4
 .Substatus5:     db PLAYER_SUBSTATUS_5,    ENEMY_SUBSTATUS_5
 .Substatus5Opp:  db ENEMY_SUBSTATUS_5,     PLAYER_SUBSTATUS_5
-.Ability:		 db PLAYER_ABILITY,	       ENEMY_ABILITY
-.AbilityOpp:     db ENEMY_ABILITY,	       PLAYER_ABILITY
+.Ability:		 db PLAYER_ABILITY,        ENEMY_ABILITY
+.AbilityOpp:     db ENEMY_ABILITY,         PLAYER_ABILITY
 .Status:         db PLAYER_STATUS,         ENEMY_STATUS
 .StatusOpp:      db ENEMY_STATUS,          PLAYER_STATUS
 .MoveAnim:       db PLAYER_MOVE_ANIMATION, ENEMY_MOVE_ANIMATION

@@ -11,7 +11,7 @@
 	db GENDER_F12_5 ; gender ratio
 	db 30 ; step cycles to hatch
 	INCBIN "gfx/pokemon/kabutops/front.dimensions"
-	db SHELL_ARMOR
+	db SHELL_ARMOR, SWIFT_SWIM
 	db GROWTH_MEDIUM_FAST ; growth rate
 	dn EGG_WATER_1, EGG_WATER_3 ; egg groups
 

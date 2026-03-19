@@ -11,7 +11,7 @@
 	db GENDER_F50 ; gender ratio
 	db 20 ; step cycles to hatch
 	INCBIN "gfx/pokemon/kingdra/front.dimensions"
-	db SNIPER
+	db SNIPER, SNIPER
 	db GROWTH_MEDIUM_FAST ; growth rate
 	dn EGG_WATER_1, EGG_DRAGON ; egg groups
 

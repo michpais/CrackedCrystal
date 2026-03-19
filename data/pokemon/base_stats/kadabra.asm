@@ -11,7 +11,7 @@
 	db GENDER_F25 ; gender ratio
 	db 20 ; step cycles to hatch
 	INCBIN "gfx/pokemon/kadabra/front.dimensions"
-	db INNER_FOCUS
+	db SYNCHRONIZE, INNER_FOCUS
 	db GROWTH_MEDIUM_SLOW ; growth rate
 	dn EGG_HUMANSHAPE, EGG_HUMANSHAPE ; egg groups
 

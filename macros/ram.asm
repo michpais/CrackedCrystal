@@ -83,9 +83,9 @@ MACRO battle_struct
 \1Species::   db
 \1Item::      db
 \1Moves::     ds NUM_MOVES
+\1Ability::   db
 \1DVs::       dw
 \1PP::        ds NUM_MOVES
-\1Ability::   db
 \1Happiness:: db
 \1Level::     db
 \1Status::    ds 2

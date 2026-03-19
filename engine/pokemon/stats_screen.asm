@@ -264,8 +264,6 @@ StatsScreen_CopyToTempMon:
 	ld de, wTempMon
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call CopyBytes
-	ld a, [wBaseAbility]
-	ld [wTempMonAbility], a
 	jr .done
 
 .not_tempmon

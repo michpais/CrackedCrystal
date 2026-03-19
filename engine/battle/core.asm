@@ -3798,10 +3798,12 @@ endr
 	ld hl, wPlayerSubStatus5
 	res SUBSTATUS_CANT_RUN, [hl]
 ResetEnemyAbility:
-	ld a, [wTempEnemyMonSpecies]
-	call GetBaseData
-	ld a, [wBaseAbility]
-	ld [wEnemyAbility], a
+	; for some reason, resetting the enemy mon's ability
+	; here messes things up for wild pokemon (maybe for trainer pokemon?)
+	; I haven't figured this out yet.
+;	ld a, [wEnemyMonAbility]
+;	ld [wEnemyAbility], a
+;	xor a ; not sure if this is needed
 	ret
 
 ResetEnemyStatLevels:
@@ -4056,10 +4058,10 @@ InitBattleMon:
 	ld de, wBattleMonSpecies
 	ld bc, MON_OT_ID
 	call CopyBytes
-	ld bc, MON_DVS - MON_OT_ID
+	ld bc, MON_ABILITY - MON_OT_ID ; update to MON_NATURE later
 	add hl, bc
-	ld de, wBattleMonDVs
-	ld bc, MON_POKERUS - MON_DVS
+	ld de, wBattleMonAbility ; need to update MON_NATURE in battle_struct later
+	ld bc, MON_POKERUS - MON_ABILITY ; update to MON_NATURE later
 	call CopyBytes
 	inc hl
 	inc hl
@@ -4142,10 +4144,10 @@ InitEnemyMon:
 	ld de, wEnemyMonSpecies
 	ld bc, MON_OT_ID
 	call CopyBytes
-	ld bc, MON_DVS - MON_OT_ID
+	ld bc, MON_ABILITY - MON_OT_ID ; update to MON_NATURE later
 	add hl, bc
-	ld de, wEnemyMonDVs
-	ld bc, MON_POKERUS - MON_DVS
+	ld de, wEnemyMonAbility ; need to update MON_NATURE in battle_struct later
+	ld bc, MON_POKERUS - MON_ABILITY ; update to MON_NATURE later
 	call CopyBytes
 	inc hl
 	inc hl
@@ -4291,10 +4293,9 @@ endr
 	ld hl, wEnemySubStatus5
 	res SUBSTATUS_CANT_RUN, [hl]
 ResetPlayerAbility:
-	ld a, [wTempBattleMonSpecies]
-	call GetBaseData
-	ld a, [wBaseAbility]
+	ld a, [wBattleMonAbility]
 	ld [wPlayerAbility], a
+	xor a ; not sure if this is needed
 	ret
 
 BreakAttraction:
@@ -6545,8 +6546,34 @@ LoadEnemyMon:
 ; Finally done with DVs
 
 .Ability:
-	ld a, [wBaseAbility]
+	; Check if this is a wild (1) or trainer (2) battle
+	ld a, [wBattleMode]
+	dec a
+	jr z, .WildAbility
+	; If we're in a trainer battle, the ability is in the party struct
+	ld a, [wCurPartyMon]
+	ld hl, wOTPartyMon1Ability
+	call GetPartyLocation
+	ld a, [hl]
+	; compare this to 0, if it is 0, no ability has been set, so go to .WildAbility
+	and a
+	jr z, .WildAbility
+	jr .set_ability
+	; If we're in a trainer battle, determine the ability randomly
+.WildAbility
+	call BattleRandom
+	and $1
+	jr z, .ability2
+	; load ability 1
+	ld a, [wBaseAbility1]
+	jr .set_ability
+.ability2
+	; load ability 2
+	ld a, [wBaseAbility2]
+.set_ability
 	ld [wEnemyAbility], a
+
+.happiness
 ; Set happiness
 	ld a, BASE_HAPPINESS
 	ld [wEnemyMonHappiness], a
@@ -6757,9 +6784,7 @@ CheckSleepingTreeMon:
 	jr nz, .NotSleeping
 
 ; Don't do anything if the mon's ability is Insomnia/Vital Spirit
-	ld a, [wTempEnemyMonSpecies]
-	call GetBaseData
-	ld a, [wBaseAbility]
+	ld a, [wEnemyAbility]
 	cp INSOMNIA
 	jr z, .NotSleeping
 	cp VITAL_SPIRIT

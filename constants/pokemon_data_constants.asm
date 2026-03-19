@@ -26,7 +26,10 @@ DEF BASE_ITEM_2      rb
 DEF BASE_GENDER      rb
 DEF BASE_EGG_STEPS   rb
 DEF BASE_PIC_SIZE    rb
-DEF BASE_ABILITY     rb
+DEF BASE_ABILITIES   rb 2
+rsset BASE_ABILITIES
+DEF BASE_ABILITY_1   rb
+DEF BASE_ABILITY_2   rb
 DEF BASE_GROWTH_RATE rb
 DEF BASE_EGG_GROUPS  rb
 DEF BASE_TMHM        rb (NUM_TM_HM_TUTOR + 7) / 8
@@ -88,7 +91,8 @@ DEF MON_DEF_EV             rb
 DEF MON_SPD_EV             rb
 DEF MON_SAT_EV             rb
 DEF MON_SDF_EV             rb
-                           rb_skip 3
+                           rb_skip 2
+DEF MON_NATURE			   rb ; not implemented yet, but space is reserved for it
 DEF MON_ABILITY            rb
 DEF MON_DVS                rw
 DEF MON_PP                 rb NUM_MOVES

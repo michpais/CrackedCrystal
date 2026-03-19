@@ -11,7 +11,7 @@
 	db GENDER_F25 ; gender ratio
 	db 20 ; step cycles to hatch
 	INCBIN "gfx/pokemon/growlithe/front.dimensions"
-	db INTIMIDATE
+	db INTIMIDATE, FLASH_FIRE
 	db GROWTH_SLOW ; growth rate
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 

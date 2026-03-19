@@ -11,7 +11,7 @@
 	db GENDER_F100 ; gender ratio
 	db 20 ; step cycles to hatch
 	INCBIN "gfx/pokemon/miltank/front.dimensions"
-	db THICK_FAT
+	db THICK_FAT, THICK_FAT
 	db GROWTH_SLOW ; growth rate
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 

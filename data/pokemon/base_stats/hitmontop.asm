@@ -11,7 +11,7 @@
 	db GENDER_F0 ; gender ratio
 	db 25 ; step cycles to hatch
 	INCBIN "gfx/pokemon/hitmontop/front.dimensions"
-	db INTIMIDATE
+	db INTIMIDATE, INTIMIDATE
 	db GROWTH_MEDIUM_FAST ; growth rate
 	dn EGG_HUMANSHAPE, EGG_HUMANSHAPE ; egg groups
 

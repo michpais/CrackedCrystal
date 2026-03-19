@@ -11,7 +11,7 @@
 	db GENDER_UNKNOWN ; gender ratio
 	db 20 ; step cycles to hatch
 	INCBIN "gfx/pokemon/starmie/front.dimensions"
-	db NATURAL_CURE
+	db NATURAL_CURE, NATURAL_CURE
 	db GROWTH_SLOW ; growth rate
 	dn EGG_WATER_3, EGG_WATER_3 ; egg groups
 

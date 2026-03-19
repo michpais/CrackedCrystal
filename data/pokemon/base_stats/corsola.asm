@@ -11,7 +11,7 @@
 	db GENDER_F75 ; gender ratio
 	db 20 ; step cycles to hatch
 	INCBIN "gfx/pokemon/corsola/front.dimensions"
-	db NATURAL_CURE
+	db NATURAL_CURE, NATURAL_CURE
 	db GROWTH_FAST ; growth rate
 	dn EGG_WATER_1, EGG_WATER_3 ; egg groups
 

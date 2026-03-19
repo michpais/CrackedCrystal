@@ -11,7 +11,7 @@
 	db GENDER_F50 ; gender ratio
 	db 20 ; step cycles to hatch
 	INCBIN "gfx/pokemon/delibird/front.dimensions"
-	db VITAL_SPIRIT
+	db VITAL_SPIRIT, VITAL_SPIRIT
 	db GROWTH_FAST ; growth rate
 	dn EGG_WATER_1, EGG_GROUND ; egg groups
 

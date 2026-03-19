@@ -11,7 +11,7 @@
 	db GENDER_F75 ; gender ratio
 	db 10 ; step cycles to hatch
 	INCBIN "gfx/pokemon/cleffa/front.dimensions"
-	db CUTE_CHARM
+	db CUTE_CHARM, CUTE_CHARM
 	db GROWTH_FAST ; growth rate
 	dn EGG_NONE, EGG_NONE ; egg groups
 

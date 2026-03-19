@@ -11,7 +11,7 @@
 	db GENDER_F50 ; gender ratio
 	db 20 ; step cycles to hatch
 	INCBIN "gfx/pokemon/krabby/front.dimensions"
-	db SHELL_ARMOR
+	db SHELL_ARMOR, HYPER_CUTTER
 	db GROWTH_MEDIUM_FAST ; growth rate
 	dn EGG_WATER_3, EGG_WATER_3 ; egg groups
 

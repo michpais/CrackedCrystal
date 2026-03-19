@@ -11,7 +11,7 @@
 	db GENDER_F50 ; gender ratio
 	db 25 ; step cycles to hatch
 	INCBIN "gfx/pokemon/heracross/front.dimensions"
-	db GUTS
+	db GUTS, SWARM
 	db GROWTH_SLOW ; growth rate
 	dn EGG_BUG, EGG_BUG ; egg groups
 

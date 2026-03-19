@@ -11,7 +11,7 @@
 	db GENDER_F50 ; gender ratio
 	db 25 ; step cycles to hatch
 	INCBIN "gfx/pokemon/steelix/front.dimensions"
-	db STURDY
+	db STURDY, ROCK_HEAD
 	db GROWTH_MEDIUM_FAST ; growth rate
 	dn EGG_MINERAL, EGG_MINERAL ; egg groups
 

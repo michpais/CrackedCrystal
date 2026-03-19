@@ -11,7 +11,7 @@
 	db GENDER_F50 ; gender ratio
 	db 40 ; step cycles to hatch
 	INCBIN "gfx/pokemon/lapras/front.dimensions"
-	db SHELL_ARMOR
+	db SHELL_ARMOR, SHELL_ARMOR
 	db GROWTH_SLOW ; growth rate
 	dn EGG_MONSTER, EGG_WATER_1 ; egg groups
 

@@ -2275,7 +2275,7 @@ wTMHMPocketCursor::     db
 wMedsPocketCursor::     db
 
 wPCItemsScrollPosition::        db
-	ds 1
+;	ds 1
 wItemsPocketScrollPosition::    db
 wKeyItemsPocketScrollPosition:: db
 wBallsPocketScrollPosition::    db
@@ -2384,7 +2384,7 @@ wCurPartyLevel:: db
 
 wScrollingMenuListSize:: db
 
-	ds 1
+;	ds 1
 
 ; used when following a map warp
 wNextWarp:: db
@@ -2690,7 +2690,8 @@ wBaseItem2:: db
 wBaseGender:: db
 wBaseEggSteps:: db
 wBasePicSize:: db
-wBaseAbility:: db
+wBaseAbility1:: db
+wBaseAbility2:: db
 wBaseGrowthRate:: db
 wBaseEggGroups:: db
 wBaseTMHM:: flag_array NUM_TM_HM_TUTOR

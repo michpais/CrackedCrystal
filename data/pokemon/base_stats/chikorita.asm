@@ -11,7 +11,7 @@
 	db GENDER_F12_5 ; gender ratio
 	db 20 ; step cycles to hatch
 	INCBIN "gfx/pokemon/chikorita/front.dimensions"
-	db OVERGROW
+	db OVERGROW, OVERGROW
 	db GROWTH_MEDIUM_SLOW ; growth rate
 	dn EGG_MONSTER, EGG_PLANT ; egg groups
 
