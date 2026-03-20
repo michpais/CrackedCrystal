@@ -178,27 +178,41 @@ endr
 	ld [de], a
 	inc de
 
-	; Initialize ability if not a wild pokemon or trainer.
+	; Initialize ability if not a wild pokemon or OT (opposing trainer).
 	ld a, [wBattleMode]
 	and a
 	jr z, .randomlygenerateability
+	; randomly generate ability if its a trainer battle
+	; NOTE: if an OT pokemon ability is defined, this will get overwritten in ReadTrainerParty
+	dec a
+	jr nz, .randomlygenerateability
+	; Otherwise, we are a wild pokemon that was just caught, so get the ability from the WILDMON
+	; check if wEnemyAbility index is 0 or 1, since it doesn't contain the index bit
+	ld a, [wBaseAbility1]
+	; after getting this ability, we need to check if its index 0 or 1
+	ld b, a
 	ld a, [wEnemyAbility]
+	cp b
+	; if they are the same, then its index 0 (ability 1)
+	jr z, .got_ability
+	; otherwise, its index 1 (ability 2)
+	set 7, a ; setting this bit indicates it's ability 2
 	jr .got_ability
 .randomlygenerateability
 	call Random
-	and $1
-	jr z, .ability_2
+	and ABILITY_INDEX_MASK
+	bit 7, a
+	jr nz, .ability_2
 	; load ability 1
 	ld a, [wBaseAbility1]
+	; no reference to mask since its 0
 	jr .got_ability
 .ability_2
 	; load ability 2
 	ld a, [wBaseAbility2]
+	set 7, a ; setting this bit indicates it's ability 2
 .got_ability
-	;ld a, [wCurPartySpecies]
-	;ld [wCurSpecies], a
-	;call GetBaseData
-	;ld a, [wBaseAbility]
+	; bit 7 identifies the ability index, the rest of the bits are the ability constant
 	ld [de], a
 	inc de
 

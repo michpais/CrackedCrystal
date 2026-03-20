@@ -4294,6 +4294,7 @@ endr
 	res SUBSTATUS_CANT_RUN, [hl]
 ResetPlayerAbility:
 	ld a, [wBattleMonAbility]
+	and ABILITY_CONST_MASK
 	ld [wPlayerAbility], a
 	xor a ; not sure if this is needed
 	ret
@@ -6562,14 +6563,17 @@ LoadEnemyMon:
 	; If we're in a trainer battle, determine the ability randomly
 .WildAbility
 	call BattleRandom
-	and $1
-	jr z, .ability2
+	and ABILITY_INDEX_MASK
+	bit 7, a
+	jr nz, .ability2
 	; load ability 1
 	ld a, [wBaseAbility1]
+	; no reference to mask since its 0
 	jr .set_ability
 .ability2
 	; load ability 2
 	ld a, [wBaseAbility2]
+	; don't set the highest bit since wEnemyAbility should only have the ability, not the index
 .set_ability
 	ld [wEnemyAbility], a
 

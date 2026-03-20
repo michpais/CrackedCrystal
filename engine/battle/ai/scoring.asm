@@ -3237,12 +3237,14 @@ AI_Status:
 	cp POISON
 	jr z, .immune
 	ld a, [wBattleMonAbility]
+	and ABILITY_CONST_MASK
 	cp IMMUNITY
 	jr z, .immune
 	jr .typeimmunity
 
 .sleepimmunity
 	ld a, [wBattleMonAbility]
+	and ABILITY_CONST_MASK
 	cp VITAL_SPIRIT
 	jr z, .immune
 	cp INSOMNIA
@@ -3257,18 +3259,21 @@ AI_Status:
 	cp ELECTRIC
 	jr z, .immune
 	ld a, [wBattleMonAbility]
+	and ABILITY_CONST_MASK
 	cp LIMBER
 	jr z, .immune
 	jr .typeimmunity
 
 .confuseimmunity
 	ld a, [wBattleMonAbility]
+	and ABILITY_CONST_MASK
 	cp OWN_TEMPO
 	jr z, .immune
 	jr .typeimmunity
 
 ;.attractimmunity ; for when we implement oblivious
 ;	ld a, [wBattleMonAbility]
+;	and ABILITY_CONST_MASK
 ;	cp OBLIVIOUS
 ;	jr z, .immune
 ;	jr .typeimmunity

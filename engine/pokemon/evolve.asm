@@ -288,6 +288,22 @@ EvolveAfterBattle_MasterLoop:
 	adc b
 	ld [hl], a
 
+	; update ability upon evolution
+	ld a, [wTempMonAbility]
+	and ABILITY_INDEX_MASK
+	bit 7, a
+	jr nz, .ability2
+	; load ability 1
+	ld a, [wBaseAbility1]
+	; no reference to mask since its 0
+	jr .set_ability
+.ability2
+	; load ability 2
+	ld a, [wBaseAbility2]
+	set 7, a ; setting this bit indicates it's ability 2
+.set_ability
+	ld [wTempMonAbility], a
+
 	ld hl, wTempMonSpecies
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call CopyBytes

@@ -2275,7 +2275,7 @@ wTMHMPocketCursor::     db
 wMedsPocketCursor::     db
 
 wPCItemsScrollPosition::        db
-;	ds 1
+	ds 1
 wItemsPocketScrollPosition::    db
 wKeyItemsPocketScrollPosition:: db
 wBallsPocketScrollPosition::    db

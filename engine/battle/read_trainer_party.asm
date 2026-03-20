@@ -86,6 +86,8 @@ TrainerTypes:
 	dw TrainerType2 ; level, species, moves
 	dw TrainerType3 ; level, species, item
 	dw TrainerType4 ; level, species, item, moves
+;	dw TrainerType5 ; level, species, abilities
+;	dw TrainerType6 ; level, species, abilities, item, moves
 
 TrainerType1:
 ; normal (level, species)
@@ -301,6 +303,37 @@ TrainerType4:
 	pop hl
 	jr .loop
 
+;TrainerType5:
+;; ability (level, species, ability)
+;	ld h, d
+;	ld l, e
+;.loop
+;	ld a, [hli]
+;	cp $ff
+;	ret z
+;
+;	ld [wCurPartyLevel], a
+;	ld a, [hli]
+;	ld [wCurPartySpecies], a
+;	ld a, OTPARTYMON
+;	ld [wMonType], a
+;	push hl
+;	predef TryAddMonToParty
+;	ld a, [wOTPartyCount]
+;	dec a
+;	ld hl, wOTPartyMon1Ability
+;	ld bc, PARTYMON_STRUCT_LENGTH
+;	call AddNTimes
+;	ld d, h
+;	ld e, l
+;	pop hl
+;	ld a, [hli]
+;	; Note that here we don't need to check for the ability index bit here
+;	; since we would never catch or receive an OT pokemon. So the lack of
+;	; index is okay.
+;	ld [de], a
+;	jr .loop
+;
 ComputeTrainerReward:
 	ld hl, hProduct
 	xor a

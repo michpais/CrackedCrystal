@@ -827,6 +827,7 @@ LoadOrangePage:
 	cp EGG
 	jr z, .egg
 	ld a, [wTempMonAbility]
+	and ABILITY_CONST_MASK
 	ld [wNamedObjectIndex], a
 	call GetAbilityName
 	ld b, e ; load ability into b for desc
