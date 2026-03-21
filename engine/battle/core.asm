@@ -6556,8 +6556,9 @@ LoadEnemyMon:
 	ld hl, wOTPartyMon1Ability
 	call GetPartyLocation
 	ld a, [hl]
+	and ABILITY_CONST_MASK
 	; compare this to 0, if it is 0, no ability has been set, so go to .WildAbility
-	and a
+	; This is a fallback and should not happen
 	jr z, .WildAbility
 	jr .set_ability
 	; If we're in a trainer battle, determine the ability randomly

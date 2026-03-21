@@ -193,7 +193,7 @@ endr
 	ld b, a
 	ld a, [wEnemyAbility]
 	cp b
-	; if they are the same, then its index 0 (ability 1)
+	; if they are the same (since base ability 1 is index 0), then its index 0 (ability 1)
 	jr z, .got_ability
 	; otherwise, its index 1 (ability 2)
 	set 7, a ; setting this bit indicates it's ability 2
